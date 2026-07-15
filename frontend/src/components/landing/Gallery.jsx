@@ -105,7 +105,7 @@ export default function Gallery() {
                             transition={{ duration: 0.9, delay: (i % 3) * 0.08, ease: [0.16, 1, 0.3, 1] }}
                             className={`mb-3 block w-full text-left frame overflow-hidden group ${p.aspect} relative break-inside-avoid`}
                         >
-                            <img src={p.src} alt={p.caption} className="absolute inset-0 w-full h-full object-cover gallery-img" />
+                            <img src={p.src} alt={p.caption} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover gallery-img" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
                             <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
                                 <span className="font-display text-lg leading-tight text-[var(--text)]">{p.caption}</span>
