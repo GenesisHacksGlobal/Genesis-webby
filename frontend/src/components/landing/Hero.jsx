@@ -137,7 +137,7 @@ export default function Hero() {
                             onClick={() => scrollTo("about")}
                             className="btn-ghost"
                         >
-                            How DezHub works
+                            How Genesis works
                         </button>
                     </div>
                 </motion.div>

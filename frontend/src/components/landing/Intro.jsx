@@ -49,7 +49,7 @@ export default function Intro({ onDone }) {
                         transition={{ delay: 0.2, duration: 0.6 }}
                         className="absolute top-10 left-1/2 -translate-x-1/2 overline text-[var(--text)]"
                     >
-                        DezHub Cinematic Universe · Reel 01
+                        Genesis Cinematic Universe · Reel 01
                     </motion.div>
 
                     {/* logo reveal */}
@@ -60,14 +60,14 @@ export default function Intro({ onDone }) {
                         transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                         className="relative z-10 flex flex-col items-center"
                     >
-                        <img src={LOGO_URL} alt="DezHub" className="w-28 h-28 md:w-36 md:h-36" />
+                        <img src={LOGO_URL} alt="Genesis" className="w-28 h-28 md:w-36 md:h-36" />
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.1, duration: 0.8 }}
                             className="mt-6 font-display text-4xl md:text-5xl text-[var(--text)] tracking-tight"
                         >
-                            DezHub India
+                            Genesis
                         </motion.div>
                         <motion.div
                             initial={{ opacity: 0 }}

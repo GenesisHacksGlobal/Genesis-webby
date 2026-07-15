@@ -39,7 +39,7 @@ export default function About() {
     });
 
     const lines = [
-        "DezHub bridges the gap between “I'm learning a skill”",
+        "Genesis bridges the gap between “I'm learning a skill”",
         "and “I'm earning from it.” Students, early freelancers",
         "and industry mentors — under one roof.",
     ];

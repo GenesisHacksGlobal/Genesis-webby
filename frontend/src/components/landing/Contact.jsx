@@ -16,9 +16,9 @@ export default function Contact() {
             setError("Please fill in name, email and message.");
             return;
         }
-        const subject = encodeURIComponent(`DezHub enquiry — ${form.role} — ${form.name}`);
+        const subject = encodeURIComponent(`Genesis enquiry — ${form.role} — ${form.name}`);
         const body = encodeURIComponent(
-            `Name: ${form.name}\nEmail: ${form.email}\nI am a: ${form.role}\n\n${form.message}\n\n— Sent via dezhub.in`,
+            `Name: ${form.name}\nEmail: ${form.email}\nI am a: ${form.role}\n\n${form.message}\n\n— Sent via genesis.in`,
         );
         window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
         setStatus("success");
@@ -149,7 +149,7 @@ export default function Contact() {
 
                                 <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                                     <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[28ch]">
-                                        By submitting, you agree to be contacted by the DezHub team.
+                                        By submitting, you agree to be contacted by the Genesis team.
                                     </p>
                                     <button
                                         data-testid={LANDING.contactSubmit}

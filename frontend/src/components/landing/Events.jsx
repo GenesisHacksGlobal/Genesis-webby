@@ -13,8 +13,8 @@ const pastEvents = [
         date: "Sep 27, 2025",
         city: "Microsoft IDC · Noida, UP",
         blurb:
-            "A hands-on UX research workshop with the DezHub India community. A full day of methods, real-world exercises and frameworks — from problem framing to synthesis — with Umesh and Sachin Verma.",
-        hosts: "DezHub India · Umesh & Sachin Verma",
+            "A hands-on UX research workshop with the Genesis community. A full day of methods, real-world exercises and frameworks — from problem framing to synthesis — with Umesh and Sachin Verma.",
+        hosts: "Genesis · Umesh & Sachin Verma",
         time: "9:30 AM – 4:00 PM",
         image: SAMVEDNA_HERO,
         luma: "https://luma.com/8dqnhrif?tk=94waKT",
@@ -23,13 +23,13 @@ const pastEvents = [
     {
         slug: "no-agenda-1",
         title: "No Agenda Meetup",
-        subtitle: "DezHub India × Genesis",
+        subtitle: "Genesis × Genesis",
         kicker: "Edition I · Aug 2025",
         date: "Aug 22, 2025",
         city: "Microsoft · Gurugram, HR",
         blurb:
-            "DezHub India X Genesis. No slides. No boring talks. Just honest conversations, collabs and ideas — five hours of live teardown sessions, gig swaps and impromptu collabs.",
-        hosts: "DezHub India · Sachin Verma & Umesh",
+            "Genesis. No slides. No boring talks. Just honest conversations, collabs and ideas — five hours of live teardown sessions, gig swaps and impromptu collabs.",
+        hosts: "Genesis · Sachin Verma & Umesh",
         time: "10:00 AM – 3:00 PM IST",
         image: NO_AGENDA_1_HERO,
         luma: "https://luma.com/fvn3pg6m?tk=QxoVik",
@@ -187,7 +187,7 @@ function UpcomingPanel() {
                             Meetup <span className="text-[var(--text-dim)]">2.0</span>
                         </h3>
                         <p className="mt-3 text-sm text-[var(--text-dim)] italic">
-                            Hosted by DezHub India Community
+                            Hosted by Genesis Community
                         </p>
                         <p className="mt-5 text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
                             <span className="text-[var(--text)]">Opportunities don't come to the best. They come to those who stand out.</span> Six hours, one room, real briefs — no slides.

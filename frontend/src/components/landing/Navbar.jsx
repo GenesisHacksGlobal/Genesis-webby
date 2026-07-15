@@ -48,13 +48,13 @@ export default function Navbar() {
                     data-testid={LANDING.navLogo}
                     onClick={() => scrollTo("hero")}
                     className="flex items-center gap-3 group"
-                    aria-label="DezHub India"
+                    aria-label="Genesis India"
                 >
                     <span className="block w-9 h-9 border border-border bg-card overflow-hidden">
-                        <img src={LOGO_URL} alt="DezHub" className="w-full h-full object-cover" />
+                        <img src={LOGO_URL} alt="Genesis" className="w-full h-full object-cover" />
                     </span>
                     <span className="hidden sm:flex flex-col leading-none">
-                        <span className="font-display text-[19px] tracking-tight text-[var(--text)]">DezHub</span>
+                        <span className="font-display text-[19px] tracking-tight text-[var(--text)]">Genesis</span>
                         <span className="overline mt-1">India</span>
                     </span>
                 </button>

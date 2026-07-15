@@ -15,7 +15,6 @@ import Events from "@/components/landing/Events";
 import Gallery from "@/components/landing/Gallery";
 import Contact from "@/components/landing/Contact";
 import ScribbleDivider from "@/components/landing/ScribbleDivider";
-import HugeWordmark from "@/components/landing/HugeWordmark";
 import Footer from "@/components/landing/Footer";
 import useLenis from "@/hooks/useLenis";
 
@@ -37,7 +36,6 @@ const Landing = () => {
                 <Events />
                 <Gallery />
                 <Contact />
-                <HugeWordmark />
             </main>
             <Footer />
             <Toaster theme="dark" position="bottom-right" />
