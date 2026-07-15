@@ -73,6 +73,8 @@ function PastEventCard({ event, index }) {
                     <motion.img
                         src={event.image}
                         alt={event.title}
+                        loading="lazy"
+                        decoding="async"
                         style={{ y: imgY }}
                         className="w-full h-[120%] object-cover"
                     />

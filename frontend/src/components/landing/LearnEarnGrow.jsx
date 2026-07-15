@@ -53,6 +53,8 @@ function Step({ step, progress, index, total }) {
                     <img
                         src={step.img}
                         alt={step.title}
+                        loading="lazy"
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-cover"
                         style={{ filter: "grayscale(20%) contrast(1.05) brightness(0.85)" }}
                     />
