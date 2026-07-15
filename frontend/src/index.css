@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+    /* ─── Design Tokens ─────────────────────────────────── */
     --bg: #ffffff;
     --bg-2: #fcfcfc;
     --surface: #f4f4f5;
@@ -13,6 +14,14 @@
     --text-dim: #71717a;
     --text-faint: #a1a1aa;
     --accent: #09090b;
+
+    /* ─── Typography Tokens ─────────────────────────────── */
+    /* Body / UI copy  →  Aeonik  */
+    --font-sans: "Aeonik", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Hero / display headings  →  Gridular  */
+    --font-display: "Gridular", "Bebas Neue", sans-serif;
+    /* Code / mono  →  JetBrains Mono  */
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 
 @layer base {
@@ -50,7 +59,7 @@ body {
     margin: 0;
     background-color: var(--bg);
     color: var(--text);
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--font-sans);
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -88,20 +97,20 @@ body {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
-/* Display type: Bebas Neue */
+/* Display type — uses --font-display token */
 .font-display {
-    font-family: "Bebas Neue", "Inter", sans-serif;
+    font-family: var(--font-display);
     font-weight: 400;
     letter-spacing: 0.005em;
     text-transform: uppercase;
 }
 
 .font-mono {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-family: var(--font-mono);
 }
 
 .overline {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-display);
     font-size: 11px;
     letter-spacing: 0.24em;
     text-transform: uppercase;
@@ -156,7 +165,7 @@ body {
     border-bottom: 1px solid var(--border-strong);
     color: var(--text);
     padding: 14px 0;
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-sans);
     font-size: 15px;
     width: 100%;
     outline: none;
@@ -177,7 +186,7 @@ body {
     padding: 14px 28px;
     background: var(--text);
     color: var(--bg);
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-sans);
     font-weight: 500;
     font-size: 13px;
     letter-spacing: 0.08em;
@@ -199,7 +208,7 @@ body {
     background: transparent;
     color: var(--text);
     border: 1px solid var(--border-strong);
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-sans);
     font-weight: 500;
     font-size: 13px;
     letter-spacing: 0.08em;
@@ -213,7 +222,7 @@ body {
 }
 
 .tick {
-    font-family: "Bebas Neue", sans-serif;
+    font-family: var(--font-display);
     font-feature-settings: "lnum" 1, "tnum" 1;
     letter-spacing: 0.01em;
 }
