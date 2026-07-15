@@ -1,0 +1,35 @@
+export const LANDING = {
+    // Navbar
+    navLogo: "nav-logo",
+    navAbout: "nav-link-about",
+    navLoop: "nav-link-loop",
+    navEvents: "nav-link-events",
+    navGallery: "nav-link-gallery",
+    navContact: "nav-link-contact",
+    navRsvpBtn: "nav-rsvp-btn",
+    // Hero
+    heroCtaPrimary: "hero-cta-rsvp",
+    heroCtaSecondary: "hero-cta-about",
+    // Events
+    eventCardSamvedna: "event-card-samvedna",
+    eventCardNoAgenda1: "event-card-no-agenda-1",
+    upcomingPanel: "upcoming-event-panel",
+    rsvpForm: "rsvp-form",
+    rsvpName: "rsvp-input-name",
+    rsvpEmail: "rsvp-input-email",
+    rsvpCity: "rsvp-input-city",
+    rsvpRole: "rsvp-select-role",
+    rsvpSubmit: "rsvp-submit-btn",
+    rsvpSuccess: "rsvp-success-message",
+    // Gallery
+    gallerySection: "gallery-section",
+    galleryItem: "gallery-item",
+    // Contact
+    contactForm: "contact-form",
+    contactName: "contact-input-name",
+    contactEmail: "contact-input-email",
+    contactRole: "contact-select-role",
+    contactMessage: "contact-textarea-message",
+    contactSubmit: "contact-submit-btn",
+    contactSuccess: "contact-success-message",
+};
