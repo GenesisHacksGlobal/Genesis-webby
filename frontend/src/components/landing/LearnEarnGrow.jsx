@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { SAMVEDNA_PHOTOS, NO_AGENDA_1_PHOTOS } from "@/data/photos";
 
 const loop = [
     {
@@ -7,21 +8,21 @@ const loop = [
         title: "Learn",
         body: "Curated sprints, peer-led practice and workshops with practitioners doing the work today.",
         tags: ["Cohorts", "Sprints", "Reviews"],
-        img: "/photos/Samvedna-3.jpg",
+        img: SAMVEDNA_PHOTOS[2].src,
     },
     {
         n: "02",
         title: "Earn",
         body: "Work on gigs & client projects sourced through the community. Ship real, get paid.",
         tags: ["Gigs", "Briefs", "Payouts"],
-        img: "/photos/NoAgendaMeetup-2.jpg",
+        img: NO_AGENDA_1_PHOTOS[1].src,
     },
     {
         n: "03",
         title: "Grow",
         body: "Feedback, mentorship and long-term collabs that compound into a serious freelance career.",
         tags: ["Mentorship", "Network", "Career"],
-        img: "/photos/Samvedna-4.jpg",
+        img: SAMVEDNA_PHOTOS[3].src,
     },
 ];
 
@@ -30,17 +31,39 @@ function Step({ step, progress, index, total }) {
     const slot = 1 / total;
     const start = slot * index;
     const end = slot * (index + 1);
+    
+    // Dynamic opacity ranges:
+    // - Phase 01: starts at opacity 1 at scroll 0, fades out at its end.
+    // - Phase 03: fades in, stays at opacity 1 at the end of the scroll (scroll 1).
+    // - Phase 02 (Middle): fades in and fades out.
     const opacity = useTransform(
         progress,
-        [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
-        [0, 1, 1, 0],
+        [
+            index === 0 ? 0 : start - 0.05,
+            index === 0 ? 0.05 : start + 0.05,
+            index === total - 1 ? 1 - 0.05 : end - 0.05,
+            index === total - 1 ? 1 : end + 0.05
+        ],
+        index === 0 
+            ? [1, 1, 1, 0] 
+            : index === total - 1 
+                ? [0, 1, 1, 1] 
+                : [0, 1, 1, 0],
+        { clamp: true }
     );
-    const y = useTransform(progress, [start, end], [40, -40]);
-    const scale = useTransform(progress, [start, end], [1.06, 0.98]);
+    
+    // Clamp y and scale transforms to prevent off-screen extrapolation
+    const y = useTransform(progress, [start, end], [40, -40], { clamp: true });
+    const scale = useTransform(progress, [start, end], [1.06, 0.98], { clamp: true });
+    
+    // Dynamically disable pointer events when a step is not active so hidden steps do not block hovers/clicks
+    const pointerEvents = useTransform(progress, p => 
+        (p >= (index === 0 ? 0 : start - 0.05) && p <= (index === total - 1 ? 1 : end + 0.05)) ? "auto" : "none"
+    );
 
     return (
         <motion.div
-            style={{ opacity }}
+            style={{ opacity, pointerEvents }}
             className="absolute inset-0 flex items-center"
             aria-hidden={false}
         >
