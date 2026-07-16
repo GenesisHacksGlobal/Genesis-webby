@@ -25,11 +25,11 @@
 }
 
 #hero {
-    /* ─── Landing Page Specific Design Tokens (#F85323 background) ─── */
-    --bg: #F85323;
-    --bg-2: #F85323;
-    --surface: #e44015;
-    --surface-2: #c43911;
+    /* ─── Hero Specific Design Tokens (#9c33b4 background) ─── */
+    --bg: #9c33b4;
+    --bg-2: #9c33b4;
+    --surface: #812596;
+    --surface-2: #661d76;
     --border: rgba(9, 9, 11, 0.15);
     --border-strong: rgba(9, 9, 11, 0.28);
     --text: #09090b;
@@ -61,20 +61,20 @@
     }
 
     #hero {
-        --background: 13 94% 55%; /* #F85323 */
+        --background: 289 56% 45%; /* #9c33b4 */
         --foreground: 240 10% 3.9%;
-        --card: 13 94% 55%;
+        --card: 289 56% 45%;
         --card-foreground: 240 10% 3.9%;
-        --popover: 13 94% 55%;
+        --popover: 289 56% 45%;
         --popover-foreground: 240 10% 3.9%;
-        --secondary: 13 94% 50%;
+        --secondary: 289 56% 40%;
         --secondary-foreground: 240 5.9% 10%;
-        --muted: 13 94% 50%;
+        --muted: 289 56% 40%;
         --muted-foreground: 240 3.8% 46.1%;
-        --accent: 13 94% 50%;
+        --accent: 289 56% 40%;
         --accent-foreground: 240 5.9% 10%;
-        --border: 13 84% 42%;
-        --input: 13 84% 42%;
+        --border: 289 45% 32%;
+        --input: 289 45% 32%;
         --ring: 240 5.9% 10%;
     }
 }

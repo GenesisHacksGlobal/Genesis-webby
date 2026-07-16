@@ -3,6 +3,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { LANDING } from "@/constants/testIds";
 import Tilt from "./Tilt";
 import { SAMVEDNA_HERO, NO_AGENDA_1_HERO, POSTER_2 } from "@/data/photos";
+import EventMap from "./EventMap";
+
 
 const pastEvents = [
     {
@@ -267,6 +269,9 @@ export default function Events() {
 
                 {/* upcoming hero panel */}
                 <UpcomingPanel />
+
+                {/* Interactive map */}
+                <EventMap />
             </div>
         </section>
     );
