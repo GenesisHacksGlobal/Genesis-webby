@@ -56,7 +56,7 @@ export default function Footer() {
                     flex-wrap: wrap;
                 }
                 .footer-wordmark {
-                    font-family: 'Gridular', 'Bebas Neue', sans-serif;
+                    font-family: 'OTBrut', 'Bebas Neue', sans-serif;
                     font-size: clamp(48px, 19vw, 300px);
                     color: #0a0a0a;
                     letter-spacing: -0.01em;
@@ -100,7 +100,7 @@ export default function Footer() {
                 <div>
                     <h2
                         style={{
-                            fontFamily: "'Gridular', 'Bebas Neue', sans-serif",
+                            fontFamily: "'OTBrut', 'Bebas Neue', sans-serif",
                             fontSize: "clamp(2rem, 4vw, 3.5rem)",
                             lineHeight: 1.0,
                             color: "#0a0a0a",
