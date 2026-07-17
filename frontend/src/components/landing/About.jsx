@@ -57,13 +57,13 @@ export default function About() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.92] text-[var(--text)] max-w-[20ch]"
+                    className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.92] text-[var(--heading)] max-w-[20ch]"
                 >
                     A hybrid space to start, ship and scale.
                 </motion.h2>
 
                 <div className="mt-16 grid md:grid-cols-12 gap-10">
-                    <div className="md:col-span-7 md:col-start-2 font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight text-[var(--text)]">
+                    <div className="md:col-span-7 md:col-start-2 font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight text-[var(--heading)]">
                         <ScrubLines lines={lines} progress={scrollYProgress} />
                     </div>
                     <motion.p

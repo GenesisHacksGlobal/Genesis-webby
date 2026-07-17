@@ -91,7 +91,7 @@ function Step({ step, progress, index, total }) {
                 {/* text */}
                 <motion.div style={{ y }} className="md:col-span-6 md:pl-6">
                     <div className="overline mb-4">Phase {step.n}</div>
-                    <h3 className="font-display text-7xl md:text-8xl lg:text-[160px] tracking-tight text-[var(--text)] leading-[0.88]">
+                    <h3 className="font-display text-7xl md:text-8xl lg:text-[160px] tracking-tight text-[var(--heading)] leading-[0.88]">
                         {step.title}<span className="text-[var(--text-faint)]">.</span>
                     </h3>
                     <p className="mt-8 text-lg md:text-xl text-[var(--text-dim)] leading-relaxed max-w-[42ch]">
@@ -133,7 +133,7 @@ export default function LearnEarnGrow() {
             className="relative z-[3] border-t border-border"
             style={{ height: "320vh" }}
         >
-            <div className="sticky top-0 h-[100svh] flex flex-col overflow-hidden">
+            <div className="sticky top-0 h-[var(--app-height)] flex flex-col overflow-hidden">
                 <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-28 md:pt-32">
                     <div className="flex items-center gap-3 mb-6">
                         <span className="block w-10 h-px bg-[var(--text-dim)]" />
@@ -141,7 +141,7 @@ export default function LearnEarnGrow() {
                     </div>
                     <motion.h2
                         style={{ opacity: headlineOpacity }}
-                        className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-[1.02] text-[var(--text)]"
+                        className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-[1.02] text-[var(--heading)]"
                     >
                         Learn <span className="text-[var(--text-faint)]">/</span> Earn{" "}
                         <span className="text-[var(--text-faint)]">/</span> Grow.
@@ -180,7 +180,7 @@ export default function LearnEarnGrow() {
                 </div>
 
                 {/* progress bar at bottom */}
-                <div className="h-px bg-[#141416] mx-6 md:mx-10 mb-6">
+                <div className="h-px bg-[var(--border)] mx-6 md:mx-10 mb-6">
                     <motion.div
                         style={{ width: barWidth }}
                         className="h-px bg-[var(--text)] origin-left"

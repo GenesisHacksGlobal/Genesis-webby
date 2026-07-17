@@ -176,7 +176,7 @@ export default function EventMap() {
                         <span className="overline">Interactive footprint</span>
                     </div>
                     
-                    <h3 className="font-display text-5xl md:text-6xl tracking-tight leading-[0.95] text-[var(--text)]">
+                    <h3 className="font-display text-5xl md:text-6xl tracking-tight leading-[0.95] text-[var(--heading)]">
                         Genesis <br />
                         Across India
                     </h3>
@@ -194,17 +194,17 @@ export default function EventMap() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
                                     transition={{ duration: 0.3 }}
-                                    className="p-6 border border-[#9c33b4]/35 bg-[var(--bg)] shadow-[0_15px_40px_-15px_rgba(156,51,180,0.12)]"
+                                    className="p-6 border border-[#c4b5fd]/35 bg-[rgba(8,2,18,0.45)] shadow-[0_15px_40px_-15px_rgba(196,181,253,0.18)]"
                                 >
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-[#9c33b4]/10 text-[#9c33b4] border border-[#9c33b4]/20">
+                                        <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-[#c4b5fd]/10 text-[#c4b5fd] border border-[#c4b5fd]/20">
                                             {activeLocation.stateName}
                                         </span>
                                         <span className="font-mono text-xs text-[var(--text-faint)]">
                                             {activeLocation.event.date}
                                         </span>
                                     </div>
-                                    <h4 className="font-display text-2xl text-[var(--text)]">
+                                    <h4 className="font-display text-2xl text-[var(--heading)]">
                                         {activeLocation.event.title}
                                     </h4>
                                     <p className="text-xs text-[var(--text-dim)] font-mono mt-1">
@@ -245,7 +245,7 @@ export default function EventMap() {
                                                         : hasEvent
                                                         ? "var(--surface-2)"
                                                         : "var(--bg)",
-                                                    stroke: isActiveState ? "#9c33b4" : "var(--border)",
+                                                    stroke: isActiveState ? "#c4b5fd" : "var(--border)",
                                                     strokeWidth: isActiveState ? 1.5 : 0.8,
                                                 }}
                                             />
@@ -286,11 +286,11 @@ export default function EventMap() {
                                                 cx={loc.x}
                                                 cy={loc.y}
                                                 r={isActive ? 8 : 5}
-                                                fill="#9c33b4"
+                                                fill="#c4b5fd"
                                                 className="transition-all duration-300 pointer-events-none"
                                                 style={{
                                                     filter: isActive
-                                                        ? "drop-shadow(0 0 8px #9c33b4)"
+                                                        ? "drop-shadow(0 0 8px #c4b5fd)"
                                                         : "none",
                                                 }}
                                             />

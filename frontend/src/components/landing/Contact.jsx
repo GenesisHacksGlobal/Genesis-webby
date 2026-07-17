@@ -39,7 +39,7 @@ export default function Contact() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 1 }}
-                            className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-[1.02] text-[var(--text)]"
+                            className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-[1.02] text-[var(--heading)]"
                         >
                             Let's build something together.
                         </motion.h2>
@@ -53,7 +53,7 @@ export default function Contact() {
                                 <div className="overline">Email</div>
                                 <a
                                     href="mailto:hello@dezhub.in"
-                                    className="mt-2 block font-display text-2xl text-[var(--text)] link-draw"
+                                    className="mt-2 block font-display text-2xl text-[var(--heading)] link-draw"
                                 >
                                     hello@dezhub.in
                                 </a>
@@ -62,7 +62,7 @@ export default function Contact() {
                                 <div className="overline">Socials</div>
                                 <div className="mt-2 flex flex-wrap gap-x-5 gap-y-2">
                                     {["Instagram", "X / Twitter", "LinkedIn"].map((s) => (
-                                        <a key={s} href="#" className="font-display text-xl text-[var(--text-dim)] link-draw hover:text-[var(--text)] transition-colors">
+                                        <a key={s} href="#" className="font-display text-xl text-[var(--heading)]/70 link-draw hover:text-[var(--heading)] transition-colors">
                                             {s}
                                         </a>
                                     ))}
@@ -89,7 +89,7 @@ export default function Contact() {
                                 className="border border-[var(--border)] p-12 bg-[var(--surface)]"
                             >
                                 <div className="overline">Message received</div>
-                                <h4 className="mt-4 font-display text-3xl md:text-4xl text-[var(--text)]">
+                                <h4 className="mt-4 font-display text-3xl md:text-4xl text-[var(--heading)]">
                                     Thanks for reaching out. <br /> We'll write back within 48 hours.
                                 </h4>
                                 <button onClick={() => setStatus("idle")} className="btn-ghost mt-8">

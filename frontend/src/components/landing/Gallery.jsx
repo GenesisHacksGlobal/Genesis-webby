@@ -44,7 +44,7 @@ export default function Gallery() {
                             e.stopPropagation();
                             setActive(null);
                         }}
-                        className="absolute top-6 right-6 w-12 h-12 border border-[var(--border)] text-[var(--text)] font-mono hover:bg-white hover:text-black transition-colors z-[1001]"
+                        className="absolute top-6 right-6 w-12 h-12 border border-[var(--border)] text-[var(--text)] font-mono hover:bg-[var(--text)] hover:text-[#0a0443] transition-colors z-[1001]"
                         aria-label="Close"
                     >
                         ✕
@@ -59,7 +59,7 @@ export default function Gallery() {
                         onClick={(e) => e.stopPropagation()}
                     />
                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-center pointer-events-none">
-                        <div className="font-display text-2xl text-[var(--text)]">{photos[active].caption}</div>
+                        <div className="font-display text-2xl text-[var(--heading)]">{photos[active].caption}</div>
                         <div className="overline mt-2">{photos[active].meta}</div>
                     </div>
                 </motion.div>
@@ -80,7 +80,7 @@ export default function Gallery() {
                             <span className="block w-10 h-px bg-[var(--text-dim)]" />
                             <span className="overline">Chapter 04 · Stills</span>
                         </div>
-                        <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[1.02] text-[var(--text)] max-w-[20ch]">
+                        <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[1.02] text-[var(--heading)] max-w-[20ch]">
                             Frames from the floor.
                         </h2>
                     </div>
@@ -108,7 +108,7 @@ export default function Gallery() {
                             <img src={p.src} alt={p.caption} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover gallery-img" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-90 group-hover:opacity-100 transition-opacity" />
                             <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-                                <span className="font-display text-lg leading-tight text-[var(--text)]">{p.caption}</span>
+                                <span className="font-display text-lg leading-tight text-[var(--heading)]">{p.caption}</span>
                                 <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-dim)]">
                                     {p.meta}
                                 </span>

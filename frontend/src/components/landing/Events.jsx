@@ -96,7 +96,7 @@ function PastEventCard({ event, index }) {
             <div className="p-7 md:p-10">
                 <motion.h3
                     style={{ x: titleX, opacity: titleOpacity }}
-                    className="font-display text-3xl md:text-4xl tracking-tight text-[var(--text)]"
+                    className="font-display text-3xl md:text-4xl tracking-tight text-[var(--heading)]"
                 >
                     {event.title}
                 </motion.h3>
@@ -170,7 +170,7 @@ function UpcomingPanel() {
 
             <div className="grid md:grid-cols-12">
                 {/* poster side — real artwork shown properly, portrait */}
-                <div className="md:col-span-5 relative bg-[#070707] flex items-center justify-center p-6 md:p-10 border-b md:border-b-0 md:border-r border-[var(--border)]">
+                <div className="md:col-span-5 relative bg-[rgba(8,2,18,0.55)] flex items-center justify-center p-6 md:p-10 border-b md:border-b-0 md:border-r border-[var(--border)]">
                     <motion.div
                         style={{ scale: posterScale, y: posterY }}
                         className="relative w-full max-w-[440px] aspect-[4/5] overflow-hidden frame shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]"
@@ -186,7 +186,7 @@ function UpcomingPanel() {
                 {/* details + form */}
                 <div className="md:col-span-7 p-8 md:p-12 bg-[var(--bg)] flex flex-col">
                     <motion.div style={{ y: titleY }}>
-                        <h3 className="font-display text-6xl sm:text-7xl md:text-7xl lg:text-8xl leading-[0.88] tracking-tight text-[var(--text)]">
+                        <h3 className="font-display text-6xl sm:text-7xl md:text-7xl lg:text-8xl leading-[0.88] tracking-tight text-[var(--heading)]">
                             No Agenda <br />
                             Meetup <span className="text-[var(--text-dim)]">2.0</span>
                         </h3>
@@ -200,17 +200,17 @@ function UpcomingPanel() {
                         <div className="mt-8 grid grid-cols-3 gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
                             <div>
                                 <div className="overline">Date</div>
-                                <div className="mt-2 font-display text-3xl text-[var(--text)] leading-none">Jul 25</div>
+                                <div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">Jul 25</div>
                                 <div className="text-xs text-[var(--text-dim)] font-mono mt-1">Saturday · 2026</div>
                             </div>
                             <div>
                                 <div className="overline">Time</div>
-                                <div className="mt-2 font-display text-3xl text-[var(--text)] leading-none">10–4</div>
+                                <div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">10–4</div>
                                 <div className="text-xs text-[var(--text-dim)] font-mono mt-1">10 AM – 4 PM</div>
                             </div>
                             <div>
                                 <div className="overline">Venue</div>
-                                <div className="mt-2 font-display text-3xl text-[var(--text)] leading-none">TBA</div>
+                                <div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">TBA</div>
                                 <div className="text-xs text-[var(--text-dim)] font-mono mt-1">India · Offline</div>
                             </div>
                         </div>
@@ -250,7 +250,7 @@ export default function Events() {
                             <span className="block w-10 h-px bg-[var(--text-dim)]" />
                             <span className="overline">Chapter 03 · Programme</span>
                         </div>
-                        <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.95] text-[var(--text)] max-w-[20ch]">
+                        <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.95] text-[var(--heading)] max-w-[20ch]">
                             Events / A film festival for freelancers.
                         </h2>
                     </div>

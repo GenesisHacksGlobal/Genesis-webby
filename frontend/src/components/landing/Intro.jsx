@@ -65,7 +65,7 @@ export default function Intro({ onDone }) {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 1.1, duration: 0.8 }}
-                            className="mt-6 font-display text-4xl md:text-5xl text-[var(--text)] tracking-tight"
+                            className="mt-6 font-display text-4xl md:text-5xl text-[var(--heading)] tracking-tight"
                         >
                             Genesis
                         </motion.div>

@@ -1,7 +1,20 @@
-/* App-level shell */
+/* App-level shell — fixed faceted gradient behind all sections */
 .App {
-    min-height: 100vh;
-    background: var(--bg);
+    min-height: var(--app-height);
+    background: transparent;
     color: var(--text);
     position: relative;
+}
+
+.App::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--bg);
+    background-image: url("./assets/landing-gradient.png");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    pointer-events: none;
 }

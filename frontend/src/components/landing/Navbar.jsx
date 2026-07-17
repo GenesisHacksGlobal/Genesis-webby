@@ -54,7 +54,7 @@ export default function Navbar() {
                         <img src={LOGO_URL} alt="Genesis" className="w-full h-full object-cover" />
                     </span>
                     <span className="hidden sm:flex flex-col leading-none">
-                        <span className="font-display text-[19px] tracking-tight text-[var(--text)]">Genesis</span>
+                        <span className="font-display text-[19px] tracking-tight text-[var(--heading)]">Genesis</span>
                         <span className="overline mt-1">India</span>
                     </span>
                 </button>
@@ -109,7 +109,7 @@ export default function Navbar() {
                                 key={l.id}
                                 data-testid={`mobile-${l.testid}`}
                                 onClick={() => scrollTo(l.id)}
-                                className="text-left font-display text-2xl text-[var(--text)]"
+                                className="text-left font-display text-2xl text-[var(--heading)]"
                             >
                                 {l.label}
                             </button>

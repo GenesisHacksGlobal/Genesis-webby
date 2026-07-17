@@ -38,8 +38,8 @@ const row2 = [
 const sizes = {
     sm: "text-2xl md:text-3xl text-[var(--text-faint)]",
     md: "text-3xl md:text-5xl text-[var(--text-dim)]",
-    lg: "text-4xl md:text-6xl text-[var(--text)]",
-    xl: "text-5xl md:text-7xl text-[var(--text)]",
+    lg: "text-4xl md:text-6xl text-[var(--heading)]",
+    xl: "text-5xl md:text-7xl text-[var(--heading)]",
 };
 
 function Row({ items, dir = "left", speed = 38 }) {
@@ -67,7 +67,7 @@ function Row({ items, dir = "left", speed = 38 }) {
 
 export default function Marquee() {
     return (
-        <section className="border-y border-border py-6 md:py-10 overflow-hidden bg-[var(--bg)] relative">
+        <section className="border-y border-border py-6 md:py-10 overflow-hidden bg-transparent relative">
             <Row items={row1} dir="left" speed={42} />
             <Row items={row2} dir="right" speed={56} />
 

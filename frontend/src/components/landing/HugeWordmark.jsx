@@ -10,7 +10,7 @@ function Letter({ ch, i, dir, progress }) {
     return (
         <motion.span
             style={{ x, y, rotate: rot, opacity }}
-            className="font-display tracking-tight leading-[0.85] text-[22vw] md:text-[18vw] lg:text-[280px] text-[var(--text)] inline-block hover:text-[var(--text-dim)] transition-colors duration-700 will-change-transform"
+            className="font-display tracking-tight leading-[0.85] text-[22vw] md:text-[18vw] lg:text-[280px] text-[var(--heading)] inline-block hover:opacity-70 transition-colors duration-700 will-change-transform"
             data-cursor
         >
             {ch}

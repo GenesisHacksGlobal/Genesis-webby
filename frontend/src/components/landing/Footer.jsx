@@ -6,14 +6,14 @@ export default function Footer() {
     return (
         <footer
             style={{
-                backgroundColor: "#ffffff",
-                color: "#0a0a0a",
-                minHeight: "100vh",
+                backgroundColor: "transparent",
+                color: "var(--text)",
+                minHeight: "var(--app-height)",
                 display: "flex",
                 flexDirection: "column",
                 position: "relative",
                 zIndex: 3,
-                borderTop: "1px solid rgba(0,0,0,0.12)",
+                borderTop: "1px solid var(--border)",
             }}
         >
             <style>{`
@@ -31,39 +31,43 @@ export default function Footer() {
                 }
                 .footer-email-input {
                     padding: 0.7rem 1.1rem;
-                    border: 1.5px solid rgba(0,0,0,0.2);
+                    border: 1.5px solid var(--border-strong);
                     border-radius: 5px;
                     font-size: 0.9rem;
-                    background: rgba(0,0,0,0.04);
-                    color: #0a0a0a;
+                    background: var(--surface);
+                    color: var(--text);
                     outline: none;
-                    font-family: inherit;
+                    font-family: var(--font-sans);
                     width: 220px;
                     min-width: 0;
+                }
+                .footer-email-input::placeholder {
+                    color: var(--text-faint);
                 }
                 .footer-bottom-bar {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     padding: 0.9rem 3rem;
-                    border-top: 1px solid rgba(0,0,0,0.1);
-                    font-family: 'JetBrains Mono', monospace;
+                    border-top: 1px solid var(--border);
+                    font-family: var(--font-mono);
                     font-size: 0.7rem;
                     letter-spacing: 0.1em;
                     text-transform: uppercase;
-                    color: rgba(10,10,10,0.4);
+                    color: var(--text-faint);
                     gap: 1rem;
                     flex-wrap: wrap;
                 }
                 .footer-wordmark {
-                    font-family: 'OTBrut', 'Bebas Neue', sans-serif;
+                    font-family: var(--font-display);
                     font-size: clamp(48px, 19vw, 300px);
-                    color: #0a0a0a;
+                    color: var(--heading);
                     letter-spacing: -0.01em;
                     line-height: 0.78;
                     white-space: nowrap;
                     text-align: center;
                     width: 100%;
+                    text-transform: uppercase;
                 }
                 @media (max-width: 640px) {
                     .footer-grid {
@@ -100,13 +104,14 @@ export default function Footer() {
                 <div>
                     <h2
                         style={{
-                            fontFamily: "'OTBrut', 'Bebas Neue', sans-serif",
+                            fontFamily: "var(--font-display)",
                             fontSize: "clamp(2rem, 4vw, 3.5rem)",
                             lineHeight: 1.0,
-                            color: "#0a0a0a",
+                            color: "var(--heading)",
                             letterSpacing: "-0.01em",
                             marginBottom: "2rem",
                             fontWeight: 400,
+                            textTransform: "uppercase",
                         }}
                     >
                         Drop us a line
@@ -123,18 +128,19 @@ export default function Footer() {
                         <button
                             style={{
                                 padding: "0.7rem 1.4rem",
-                                background: "#0a0a0a",
-                                color: "#fff",
+                                background: "var(--text)",
+                                color: "#0a0443",
                                 border: "none",
                                 borderRadius: "5px",
                                 fontSize: "0.82rem",
-                                fontFamily: "'JetBrains Mono', monospace",
+                                fontFamily: "var(--font-sans)",
                                 cursor: "pointer",
                                 letterSpacing: "0.06em",
                                 display: "flex",
                                 alignItems: "center",
                                 gap: "0.5rem",
                                 whiteSpace: "nowrap",
+                                textTransform: "uppercase",
                             }}
                         >
                             Contact →
@@ -148,9 +154,10 @@ export default function Footer() {
                         style={{
                             fontSize: "0.9rem",
                             lineHeight: 1.75,
-                            color: "rgba(10,10,10,0.6)",
+                            color: "var(--text-dim)",
                             maxWidth: "44ch",
                             margin: 0,
+                            fontFamily: "var(--font-sans)",
                         }}
                     >
                         Book a meeting or leave a request. We're ready to embark on this journey with you. Are you?
@@ -162,22 +169,22 @@ export default function Footer() {
                                 key={link}
                                 href="#"
                                 style={{
-                                    fontFamily: "'JetBrains Mono', monospace",
+                                    fontFamily: "var(--font-mono)",
                                     fontSize: "0.68rem",
                                     letterSpacing: "0.13em",
-                                    color: "rgba(10,10,10,0.5)",
-                                    border: "1px solid rgba(0,0,0,0.18)",
+                                    color: "var(--text-faint)",
+                                    border: "1px solid var(--border)",
                                     padding: "0.28rem 0.65rem",
                                     textDecoration: "none",
                                     transition: "all 0.2s",
                                 }}
                                 onMouseEnter={(e) => {
-                                    e.currentTarget.style.color = "#0a0a0a";
-                                    e.currentTarget.style.borderColor = "#0a0a0a";
+                                    e.currentTarget.style.color = "var(--text)";
+                                    e.currentTarget.style.borderColor = "var(--border-strong)";
                                 }}
                                 onMouseLeave={(e) => {
-                                    e.currentTarget.style.color = "rgba(10,10,10,0.5)";
-                                    e.currentTarget.style.borderColor = "rgba(0,0,0,0.18)";
+                                    e.currentTarget.style.color = "var(--text-faint)";
+                                    e.currentTarget.style.borderColor = "var(--border)";
                                 }}
                             >
                                 [ {link} ]
