@@ -21,7 +21,9 @@ export default function Contact() {
             `Name: ${form.name}\nEmail: ${form.email}\nI am a: ${form.role}\n\n${form.message}\n\n— Sent via genesis.in`,
         );
         window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-        setStatus("success");
+        // Show a transient status — mail client may or may not send, so we don't claim success
+        setStatus("opening");
+        setTimeout(() => setStatus("idle"), 4000);
     };
 
     return (
@@ -81,20 +83,20 @@ export default function Contact() {
 
                     {/* form */}
                     <div className="md:col-span-7">
-                        {status === "success" ? (
+                        {status === "opening" ? (
                             <motion.div
-                                data-testid={LANDING.contactSuccess}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="border border-[var(--border)] p-12 bg-[var(--surface)]"
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="border border-[var(--border)] p-8 bg-[var(--surface)] text-center"
                             >
-                                <div className="overline">Message received</div>
-                                <h4 className="mt-4 font-display text-3xl md:text-4xl text-[var(--heading)]">
-                                    Thanks for reaching out. <br /> We'll write back within 48 hours.
-                                </h4>
-                                <button onClick={() => setStatus("idle")} className="btn-ghost mt-8">
-                                    Send another message
-                                </button>
+                                <div className="overline">Opening mail client…</div>
+                                <p className="mt-3 text-sm text-[var(--text-dim)]">
+                                    Complete sending from your email app. If nothing opened,{" "}
+                                    <a href={`mailto:${CONTACT_EMAIL}`} className="underline text-[var(--text)]">
+                                        click here
+                                    </a>
+                                    .
+                                </p>
                             </motion.div>
                         ) : (
                             <form

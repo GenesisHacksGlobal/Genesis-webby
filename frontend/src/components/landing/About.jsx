@@ -1,28 +1,37 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
+// helper: single word with scroll-scrubbed opacity — hook called at component top level
+function AnimatedWord({ word, progress, idx, totalWords }) {
+    const start = idx / totalWords;
+    const end = (idx + 1) / totalWords;
+    const opacity = useTransform(progress, [start * 0.7, end * 0.7 + 0.05], [0.15, 1]);
+    return (
+        <motion.span style={{ opacity }} className="inline-block mr-[0.22em]">
+            {word}
+        </motion.span>
+    );
+}
+
 // helper: split a sentence into words for scroll-scrubbed reveal
 function ScrubLines({ lines, progress }) {
-    const totalWords = lines.reduce((a, l) => a + l.split(" ").length, 0);
-    let k = 0;
+    const allWords = lines.flatMap((line) => line.split(" "));
+    const totalWords = allWords.length;
+    let wordIndex = 0;
     return (
         <>
             {lines.map((line, li) => (
                 <span key={li} className="block">
                     {line.split(" ").map((w, i) => {
-                        const idx = k++;
-                        const start = idx / totalWords;
-                        const end = (idx + 1) / totalWords;
-                        // eslint-disable-next-line react-hooks/rules-of-hooks
-                        const opacity = useTransform(progress, [start * 0.7, end * 0.7 + 0.05], [0.15, 1]);
+                        const idx = wordIndex++;
                         return (
-                            <motion.span
+                            <AnimatedWord
                                 key={`${li}-${i}`}
-                                style={{ opacity }}
-                                className="inline-block mr-[0.22em]"
-                            >
-                                {w}
-                            </motion.span>
+                                word={w}
+                                progress={progress}
+                                idx={idx}
+                                totalWords={totalWords}
+                            />
                         );
                     })}
                 </span>

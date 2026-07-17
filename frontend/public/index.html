@@ -24,6 +24,21 @@
             }
         </style>
         <title>Genesis · Learn · Earn · Grow</title>
+
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Genesis" />
+        <meta property="og:title" content="Genesis · Learn · Earn · Grow" />
+        <meta property="og:description" content="A hybrid freelance community where students and freelancers learn, earn and grow with real gigs, events and collaborations." />
+        <meta property="og:image" content="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop" />
+        <meta property="og:url" content="https://genesis.dezhub.in/" />
+
+        <!-- Twitter / X Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Genesis · Learn · Earn · Grow" />
+        <meta name="twitter:description" content="A hybrid freelance community where students and freelancers learn, earn and grow with real gigs, events and collaborations." />
+        <meta name="twitter:image" content="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop" />
+
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
     </head>
     <body>
@@ -70,8 +85,8 @@
                     }),
                     (e.__SV = 1));
             })(document, window.posthog || []);
-            posthog.init("phc_xAvL2Iq4tFmANRE7kzbKwaSqp1HJjN7x48s3vr0CMjs", {
-                api_host: "https://us.i.posthog.com",
+            posthog.init("%REACT_APP_POSTHOG_KEY%", {
+                api_host: "%REACT_APP_POSTHOG_HOST%",
                 person_profiles: "identified_only",
                 session_recording: {
                     recordCrossOriginIframes: true,
