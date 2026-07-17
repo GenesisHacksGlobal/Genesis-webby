@@ -60,26 +60,26 @@ function Step({ step, progress, index, total }) {
                         style={{ filter: "grayscale(20%) contrast(1.05) brightness(0.85)" }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-black/30" />
-                    <div className="absolute top-5 left-5 overline text-[var(--text)]">step</div>
-                    <div className="absolute bottom-6 right-6 font-display text-[18vw] md:text-[14vw] lg:text-[200px] leading-none text-white/15 select-none tick">
+                    <div className="absolute top-5 left-5 overline !text-white/80">step</div>
+                    <div className="absolute bottom-6 right-6 font-display text-[18vw] md:text-[14vw] lg:text-[200px] leading-none text-white/20 select-none tick">
                         {step.n}
                     </div>
                 </motion.div>
 
                 {/* text */}
                 <motion.div style={{ y }} className="md:col-span-6 md:pl-6">
-                    <div className="overline mb-4">Phase {step.n}</div>
-                    <h3 className="font-display text-7xl md:text-8xl lg:text-[160px] tracking-tight text-[var(--heading)] leading-[0.88]">
-                        {step.title}<span className="text-[var(--text-faint)]">.</span>
+                    <div className="overline mb-4 !text-black/50">Phase {step.n}</div>
+                    <h3 className="font-display text-7xl md:text-8xl lg:text-[160px] tracking-tight !text-black leading-[0.88]">
+                        {step.title}<span className="text-black/35">.</span>
                     </h3>
-                    <p className="mt-8 text-lg md:text-xl text-[var(--text-dim)] leading-relaxed max-w-[42ch]">
+                    <p className="mt-8 text-lg md:text-xl text-black/60 leading-relaxed max-w-[42ch]">
                         {step.body}
                     </p>
                     <div className="mt-10 flex flex-wrap gap-2">
                         {step.tags.map((t) => (
                             <span
                                 key={t}
-                                className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] border border-[var(--border)] px-2.5 py-1"
+                                className="text-[11px] font-mono uppercase tracking-[0.18em] text-black/50 border border-black/20 px-2.5 py-1"
                             >
                                 {t}
                             </span>
@@ -108,21 +108,21 @@ export default function LearnEarnGrow() {
         <section
             id="loop"
             ref={containerRef}
-            className="relative z-[3] border-t border-border"
+            className="relative z-[3] border-t border-black/10 bg-white text-black"
             style={{ height: "320vh" }}
         >
-            <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+            <div className="sticky top-0 h-screen flex flex-col overflow-hidden bg-white">
                 <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-24 md:pt-28 shrink-0">
                     <div className="flex items-center gap-3 mb-4">
-                        <span className="block w-10 h-px bg-[var(--text-dim)]" />
-                        <span className="overline">Chapter 02 · The Loop</span>
+                        <span className="block w-10 h-px bg-black/40" />
+                        <span className="overline !text-black/50">Chapter 02 · The Loop</span>
                     </div>
                     <motion.h2
                         style={{ opacity: headlineOpacity }}
-                        className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-[1.02] text-[var(--heading)]"
+                        className="font-display text-4xl sm:text-5xl md:text-6xl tracking-tighter leading-[1.02] !text-black"
                     >
-                        Learn <span className="text-[var(--text-faint)]">/</span> Earn{" "}
-                        <span className="text-[var(--text-faint)]">/</span> Grow.
+                        Learn <span className="text-black/35">/</span> Earn{" "}
+                        <span className="text-black/35">/</span> Grow.
                     </motion.h2>
 
                     {/* phase chips */}
@@ -135,10 +135,10 @@ export default function LearnEarnGrow() {
                             <motion.span
                                 key={i}
                                 style={{ opacity: c.o }}
-                                className="text-[11px] font-mono uppercase tracking-[0.2em] text-[var(--text)]"
+                                className="text-[11px] font-mono uppercase tracking-[0.2em] text-black"
                             >
                                 {c.l}
-                                {i < 2 && <span className="ml-4 text-[var(--text-faint)]">/</span>}
+                                {i < 2 && <span className="ml-4 text-black/35">/</span>}
                             </motion.span>
                         ))}
                     </div>
@@ -158,10 +158,10 @@ export default function LearnEarnGrow() {
                 </div>
 
                 {/* progress bar at bottom */}
-                <div className="h-px bg-[var(--border)] mx-6 md:mx-10 mb-6 shrink-0">
+                <div className="h-px bg-black/15 mx-6 md:mx-10 mb-6 shrink-0">
                     <motion.div
                         style={{ width: barWidth }}
-                        className="h-px bg-[var(--text)] origin-left"
+                        className="h-px bg-black origin-left"
                     />
                 </div>
             </div>

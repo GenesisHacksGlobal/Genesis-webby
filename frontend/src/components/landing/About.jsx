@@ -45,11 +45,16 @@ export default function About() {
     ];
 
     return (
-        <section id="about" ref={ref} className="relative py-28 md:py-44 z-[3]" style={{ position: "relative" }}>
+        <section
+            id="about"
+            ref={ref}
+            className="relative py-28 md:py-44 z-[3] bg-white text-black"
+            style={{ position: "relative" }}
+        >
             <div className="max-w-[1400px] mx-auto px-6 md:px-10">
                 <div className="flex items-center gap-3 mb-12">
-                    <span className="block w-10 h-px bg-[var(--text-dim)]" />
-                    <span className="overline">Chapter 01 · About</span>
+                    <span className="block w-10 h-px bg-black/40" />
+                    <span className="overline !text-black/50">Chapter 01 · About</span>
                 </div>
 
                 <motion.h2
@@ -57,13 +62,13 @@ export default function About() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.92] text-[var(--heading)] max-w-[20ch]"
+                    className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.92] !text-black max-w-[20ch]"
                 >
                     A hybrid space to start, ship and scale.
                 </motion.h2>
 
                 <div className="mt-16 grid md:grid-cols-12 gap-10">
-                    <div className="md:col-span-7 md:col-start-2 font-sans text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight text-[var(--heading)]">
+                    <div className="md:col-span-7 md:col-start-2 font-sans text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight !text-black">
                         <ScrubLines lines={lines} progress={scrollYProgress} />
                     </div>
                     <motion.p
@@ -71,7 +76,7 @@ export default function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="md:col-span-4 md:col-start-9 text-base text-[var(--text-faint)] leading-relaxed border-l border-[var(--border)] pl-6 self-end"
+                        className="md:col-span-4 md:col-start-9 text-base text-black/55 leading-relaxed border-l border-black/15 pl-6 self-end"
                     >
                         A community-led initiative building a structured freelance ecosystem.
                         From design and dev to content, marketing and ops — we connect skilled
@@ -93,7 +98,7 @@ export default function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.7, delay: i * 0.08 }}
-                            className="px-4 py-2 border border-[var(--border)] text-xs uppercase tracking-[0.18em] text-[var(--text-dim)] font-mono"
+                            className="px-4 py-2 border border-black/20 text-xs uppercase tracking-[0.18em] text-black/60 font-mono"
                         >
                             {chip}
                         </motion.span>
