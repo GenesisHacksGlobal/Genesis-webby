@@ -1,21 +1,24 @@
 import React from "react";
-import "@/App.css";
+import "@/styles/shell.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import Intro from "@/components/landing/Intro";
-import Cursor from "@/components/landing/Cursor";
-import ChapterRail from "@/components/landing/ChapterRail";
-import Navbar from "@/components/landing/Navbar";
-import Hero from "@/components/landing/Hero";
-import Marquee from "@/components/landing/Marquee";
-import About from "@/components/landing/About";
-import LearnEarnGrow from "@/components/landing/LearnEarnGrow";
-import Events from "@/components/landing/Events";
-import Gallery from "@/components/landing/Gallery";
-import Contact from "@/components/landing/Contact";
-import ScribbleDivider from "@/components/landing/ScribbleDivider";
-import Footer from "@/components/landing/Footer";
+import {
+    Intro,
+    Cursor,
+    ChapterRail,
+    Navbar,
+    Marquee,
+    ScribbleDivider,
+    Footer,
+} from "@/components/layout";
+
+import { Hero } from "@/components/sections/Hero";
+import { About } from "@/components/sections/About";
+import { TheLoop } from "@/components/sections/TheLoop";
+import { Events } from "@/components/sections/Events";
+import { Gallery } from "@/components/sections/Gallery";
+import { Contact } from "@/components/sections/Contact";
 import useLenis from "@/hooks/useLenis";
 
 const Landing = () => {
@@ -31,7 +34,7 @@ const Landing = () => {
                 <Marquee />
                 <About />
                 <ScribbleDivider variant="wave" />
-                <LearnEarnGrow />
+                <TheLoop />
                 <ScribbleDivider variant="arrow" />
                 <Events />
                 <Gallery />

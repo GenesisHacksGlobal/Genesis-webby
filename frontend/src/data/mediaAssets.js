@@ -36,4 +36,3 @@ export const GALLERY_PHOTOS = [
     NO_AGENDA_1_PHOTOS[5],
     NO_AGENDA_1_PHOTOS[4],
 ];
-

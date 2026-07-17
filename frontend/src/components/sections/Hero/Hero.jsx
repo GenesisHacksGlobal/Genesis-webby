@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { LANDING } from "@/constants/testIds";
+import HeroCanvas from "./HeroCanvas";
 
 const words = ["Learn.", "Earn.", "Grow."];
 
@@ -54,23 +55,35 @@ export default function Hero() {
                 className="absolute inset-0 z-[0] opacity-[0.22] hero-grid"
             />
 
-            <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 pb-16 md:pb-24 mt-6 md:mt-10 -translate-y-10 md:-translate-y-16">
+            {/* 3D Model Canvas */}
+            <HeroCanvas />
+
+            <div className="w-full max-w-[1400px] mx-auto px-6 md:px-10 pb-16 md:pb-24 mt-6 md:mt-10">
                 <motion.h1
                     style={{ y: titleY, opacity: titleOpacity }}
-                    className="font-display leading-[0.86] tracking-[0.005em] text-[var(--heading)] max-w-[14ch] text-[18vw] sm:text-[16vw] md:text-[13vw] lg:text-[190px]"
+                    className="relative z-[1] -translate-y-10 md:-translate-y-16 font-display leading-[0.86] tracking-[0.005em] text-[var(--heading)] max-w-[14ch] text-[18vw] sm:text-[16vw] md:text-[13vw] lg:text-[190px]"
                 >
-                    {words.map((w, i) => (
-                        <span key={w} className="block">
-                            <MaskWord word={w} delay={0.4 + i * 0.18} />
-                        </span>
-                    ))}
+                    {words.map((w, i) => {
+                        let style = undefined;
+                        if (i === 0) style = { transform: "translateX(-30px)" };
+                        if (i === 1) style = { transform: "translateX(100px)" };
+                        return (
+                            <span
+                                key={w}
+                                className="block"
+                                style={style}
+                            >
+                                <MaskWord word={w} delay={0.4 + i * 0.18} />
+                            </span>
+                        );
+                    })}
                 </motion.h1>
 
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
-                    className="mt-12 grid md:grid-cols-12 gap-10 items-end"
+                    className="relative z-[10] -translate-y-10 md:-translate-y-16 mt-12 grid md:grid-cols-12 gap-10 items-end"
                 >
                     <p className="md:col-span-6 text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
                         A community-led initiative building a structured freelance ecosystem.
