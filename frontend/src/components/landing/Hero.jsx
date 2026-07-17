@@ -47,19 +47,19 @@ export default function Hero() {
         <section
             id="hero"
             ref={ref}
-            className="relative min-h-[100svh] flex items-end overflow-hidden pt-[72px] bg-[var(--bg)]"
+            className="relative min-h-[var(--app-height)] flex items-end overflow-hidden pt-[130px] md:pt-[160px] bg-transparent"
         >
-            {/* minimal geometric backdrop — just a faint grid + concentric ring */}
+            {/* faint grid over the faceted gradient */}
             <motion.div
                 style={{ y: gridY }}
                 aria-hidden
-                className="absolute inset-0 z-[0] opacity-[0.06] bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:120px_120px]"
+                className="absolute inset-0 z-[0] opacity-[0.08] hero-grid"
             />
             <motion.svg
                 aria-hidden
                 style={{ y: ringY }}
                 viewBox="0 0 800 800"
-                className="absolute right-[-200px] top-[12%] w-[60vw] max-w-[800px] opacity-20 pointer-events-none"
+                className="absolute right-[-200px] top-[12%] w-[60vw] max-w-[800px] opacity-25 pointer-events-none"
             >
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                     <circle
@@ -68,37 +68,18 @@ export default function Hero() {
                         cy="400"
                         r={70 * i}
                         fill="none"
-                        stroke="#f5f5f5"
+                        stroke="#f5f0ff"
                         strokeWidth="0.6"
                         opacity={0.18 + i * 0.05}
                     />
                 ))}
-                <circle cx="400" cy="400" r="3" fill="#f5f5f5" opacity="0.5" />
+                <circle cx="400" cy="400" r="3" fill="#f5f0ff" opacity="0.5" />
             </motion.svg>
 
-            {/* subtle fade to next section */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 z-[1] bg-gradient-to-t from-[var(--bg)] to-transparent pointer-events-none" />
-
-            <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 pb-20 md:pb-28">
-                {/* overline */}
-                <motion.div
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="flex items-center gap-3 mb-10"
-                >
-                    <motion.span
-                        className="block h-px bg-[var(--text-dim)]"
-                        initial={{ width: 0 }}
-                        animate={{ width: 40 }}
-                        transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                    />
-                    <span className="overline">Hybrid Freelance Community · India</span>
-                </motion.div>
-
+            <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 pb-16 md:pb-24 mt-6 md:mt-10">
                 <motion.h1
                     style={{ y: titleY, opacity: titleOpacity }}
-                    className="font-display leading-[0.86] tracking-[0.005em] text-[var(--text)] max-w-[14ch] text-[18vw] sm:text-[16vw] md:text-[13vw] lg:text-[190px]"
+                    className="font-display leading-[0.86] tracking-[0.005em] text-[var(--heading)] max-w-[14ch] text-[18vw] sm:text-[16vw] md:text-[13vw] lg:text-[190px]"
                 >
                     {words.map((w, i) => (
                         <span key={w} className="block">
@@ -155,18 +136,6 @@ export default function Hero() {
                     <Stat n={2026} suffix="" label="Cinematic season" />
                 </motion.div>
             </div>
-
-            {/* scroll cue */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-                <span className="overline">Scroll</span>
-                <span className="block w-px h-12 bg-[var(--text-dim)] relative overflow-hidden">
-                    <motion.span
-                        className="absolute inset-0 bg-[var(--text)]"
-                        animate={{ y: ["-100%", "100%"] }}
-                        transition={{ duration: 2.2, ease: "easeInOut", repeat: Infinity }}
-                    />
-                </span>
-            </div>
         </section>
     );
 }
@@ -174,7 +143,7 @@ export default function Hero() {
 function Stat({ n, suffix, label }) {
     return (
         <div>
-            <div className="tick font-display text-3xl md:text-4xl text-[var(--text)]">
+            <div className="tick font-display text-3xl md:text-4xl text-[var(--heading)]">
                 <CountUp value={n} suffix={suffix} duration={2} />
             </div>
             <div className="overline mt-2">{label}</div>
