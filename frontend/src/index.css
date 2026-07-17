@@ -3,79 +3,50 @@
 @tailwind utilities;
 
 :root {
-    /* ─── Design Tokens ─────────────────────────────────── */
-    --bg: #ffffff;
-    --bg-2: #fcfcfc;
-    --surface: #f4f4f5;
-    --surface-2: #e4e4e7;
-    --border: #e4e4e7;
-    --border-strong: #d4d4d8;
-    --text: #09090b;
-    --text-dim: #71717a;
-    --text-faint: #a1a1aa;
-    --accent: #09090b;
+    /* ─── Design Tokens — faceted violet gradient ───────── */
+    --bg: #0a0443;
+    --bg-2: #14085a;
+    --surface: rgba(255, 255, 255, 0.06);
+    --surface-2: rgba(255, 255, 255, 0.1);
+    --border: rgba(255, 255, 255, 0.14);
+    --border-strong: rgba(255, 255, 255, 0.28);
+    --text: #f5f0ff;
+    --text-dim: rgba(245, 240, 255, 0.72);
+    --text-faint: rgba(245, 240, 255, 0.48);
+    --brand: #c4b5fd;
+    --heading: #e2efba;
+    /* Stable viewport height — set by lockStableViewportHeight() */
+    --app-height: 100vh;
 
     /* ─── Typography Tokens ─────────────────────────────── */
-    /* Body / UI copy  →  AeonikPro  */
-    --font-sans: "AeonikPro", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    /* Hero / display headings  →  OTBrut  */
-    --font-display: "OTBrut", "Bebas Neue", sans-serif;
-    /* Code / mono  →  JetBrains Mono  */
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
-}
-
-#hero {
-    /* ─── Hero Specific Design Tokens (#9c33b4 background) ─── */
-    --bg: #9c33b4;
-    --bg-2: #9c33b4;
-    --surface: #812596;
-    --surface-2: #661d76;
-    --border: rgba(9, 9, 11, 0.15);
-    --border-strong: rgba(9, 9, 11, 0.28);
-    --text: #09090b;
-    --text-dim: rgba(9, 9, 11, 0.7);
-    --text-faint: rgba(9, 9, 11, 0.55);
-    --accent: #09090b;
+    /* Body / UI copy  →  OTBrut  */
+    --font-sans: "OTBrut", sans-serif;
+    /* Headings / display  →  Gridular  */
+    --font-display: "Gridular", sans-serif;
+    /* Labels / mono  →  Gridular  */
+    --font-mono: "Gridular", sans-serif;
 }
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 240 10% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 240 10% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 240 10% 3.9%;
-        --primary: 240 5.9% 10%;
-        --primary-foreground: 0 0% 98%;
-        --secondary: 240 4.8% 95.9%;
-        --secondary-foreground: 240 5.9% 10%;
-        --muted: 240 4.8% 95.9%;
-        --muted-foreground: 240 3.8% 46.1%;
-        --accent: 240 4.8% 95.9%;
-        --accent-foreground: 240 5.9% 10%;
-        --border: 240 5.9% 90%;
-        --input: 240 5.9% 90%;
-        --ring: 240 5.9% 10%;
+        --background: 258 90% 14%;
+        --foreground: 260 40% 96%;
+        --card: 258 70% 18%;
+        --card-foreground: 260 40% 96%;
+        --popover: 258 80% 12%;
+        --popover-foreground: 260 40% 96%;
+        --primary: 260 40% 96%;
+        --primary-foreground: 258 90% 10%;
+        --secondary: 268 55% 28%;
+        --secondary-foreground: 260 40% 96%;
+        --muted: 268 45% 24%;
+        --muted-foreground: 260 20% 72%;
+        --accent: 258 90% 78%;
+        --accent-foreground: 258 90% 10%;
+        --border: 260 30% 40%;
+        --input: 260 30% 40%;
+        --ring: 260 40% 96%;
         --radius: 0.125rem;
-    }
-
-    #hero {
-        --background: 289 56% 45%; /* #9c33b4 */
-        --foreground: 240 10% 3.9%;
-        --card: 289 56% 45%;
-        --card-foreground: 240 10% 3.9%;
-        --popover: 289 56% 45%;
-        --popover-foreground: 240 10% 3.9%;
-        --secondary: 289 56% 40%;
-        --secondary-foreground: 240 5.9% 10%;
-        --muted: 289 56% 40%;
-        --muted-foreground: 240 3.8% 46.1%;
-        --accent: 289 56% 40%;
-        --accent-foreground: 240 5.9% 10%;
-        --border: 289 45% 32%;
-        --input: 289 45% 32%;
-        --ring: 240 5.9% 10%;
     }
 }
 
@@ -129,7 +100,7 @@ body {
     height: 6px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--bg);
+    background: transparent;
 }
 ::-webkit-scrollbar-thumb {
     background: var(--border-strong);
@@ -145,7 +116,7 @@ body {
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.04;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
@@ -156,6 +127,11 @@ body {
     font-weight: 400;
     letter-spacing: 0.005em;
     text-transform: uppercase;
+    color: var(--heading);
+}
+
+.font-display.text-white\/15 {
+    color: rgba(255, 255, 255, 0.15);
 }
 
 .font-mono {
@@ -203,11 +179,11 @@ body {
 
 /* Gallery image filter */
 .gallery-img {
-    filter: grayscale(60%) contrast(1.02);
+    filter: grayscale(40%) contrast(1.05);
     transition: filter 700ms ease, transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .gallery-img:hover {
-    filter: grayscale(0%) contrast(1.05);
+    filter: grayscale(0%) contrast(1.08);
     transform: scale(1.04);
 }
 
@@ -238,7 +214,7 @@ body {
     gap: 10px;
     padding: 14px 28px;
     background: var(--text);
-    color: var(--bg);
+    color: #0a0443;
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 13px;
@@ -280,6 +256,13 @@ body {
     letter-spacing: 0.01em;
 }
 
+.hero-grid {
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.35) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+    background-size: 120px 120px;
+}
+
 /* Frame border */
 .frame {
     position: relative;
@@ -289,7 +272,7 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    border: 1px solid rgba(245, 245, 245, 0.06);
+    border: 1px solid rgba(245, 240, 255, 0.08);
     pointer-events: none;
     z-index: 5;
 }
@@ -301,4 +284,3 @@ body {
     pointer-events: none !important;
     visibility: hidden !important;
 }
-
