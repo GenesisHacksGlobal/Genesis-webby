@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { LANDING } from "@/constants/testIds";
-import CountUp from "./CountUp";
 
 const words = ["Learn.", "Earn.", "Grow."];
 
@@ -31,7 +30,6 @@ export default function Hero() {
     const titleY = useTransform(scrollYProgress, [0, 1], [0, -80]);
     const titleOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.1]);
     const gridY = useTransform(scrollYProgress, [0, 1], [0, 120]);
-    const ringY = useTransform(scrollYProgress, [0, 1], [0, -160]);
 
     const scrollTo = (id) => {
         const el = document.getElementById(id);
@@ -49,34 +47,14 @@ export default function Hero() {
             ref={ref}
             className="relative min-h-[var(--app-height)] flex items-end overflow-hidden pt-[130px] md:pt-[160px] bg-transparent"
         >
-            {/* faint grid over the faceted gradient */}
+            {/* grid over the faceted gradient */}
             <motion.div
                 style={{ y: gridY }}
                 aria-hidden
-                className="absolute inset-0 z-[0] opacity-[0.08] hero-grid"
+                className="absolute inset-0 z-[0] opacity-[0.22] hero-grid"
             />
-            <motion.svg
-                aria-hidden
-                style={{ y: ringY }}
-                viewBox="0 0 800 800"
-                className="absolute right-[-200px] top-[12%] w-[60vw] max-w-[800px] opacity-25 pointer-events-none"
-            >
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <circle
-                        key={i}
-                        cx="400"
-                        cy="400"
-                        r={70 * i}
-                        fill="none"
-                        stroke="#f5f0ff"
-                        strokeWidth="0.6"
-                        opacity={0.18 + i * 0.05}
-                    />
-                ))}
-                <circle cx="400" cy="400" r="3" fill="#f5f0ff" opacity="0.5" />
-            </motion.svg>
 
-            <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 pb-16 md:pb-24 mt-6 md:mt-10">
+            <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-10 pb-16 md:pb-24 mt-6 md:mt-10 -translate-y-10 md:-translate-y-16">
                 <motion.h1
                     style={{ y: titleY, opacity: titleOpacity }}
                     className="font-display leading-[0.86] tracking-[0.005em] text-[var(--heading)] max-w-[14ch] text-[18vw] sm:text-[16vw] md:text-[13vw] lg:text-[190px]"
@@ -122,31 +100,7 @@ export default function Hero() {
                         </button>
                     </div>
                 </motion.div>
-
-                {/* stat bar */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.2, delay: 1.4 }}
-                    className="mt-20 border-t border-border pt-8 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-6"
-                >
-                    <Stat n={1000} suffix="+" label="Community freelancers" />
-                    <Stat n={12} suffix="" label="Cities reached" />
-                    <Stat n={40} suffix="+" label="Live cohorts & jams" />
-                    <Stat n={2026} suffix="" label="Cinematic season" />
-                </motion.div>
             </div>
         </section>
-    );
-}
-
-function Stat({ n, suffix, label }) {
-    return (
-        <div>
-            <div className="tick font-display text-3xl md:text-4xl text-[var(--heading)]">
-                <CountUp value={n} suffix={suffix} duration={2} />
-            </div>
-            <div className="overline mt-2">{label}</div>
-        </div>
     );
 }

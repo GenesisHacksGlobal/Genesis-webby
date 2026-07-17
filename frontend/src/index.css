@@ -56,7 +56,8 @@
 
 html {
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    /* clip keeps sticky working; hidden on html breaks position:sticky */
+    overflow-x: clip;
 }
 
 body {
@@ -67,8 +68,7 @@ body {
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    max-width: 100vw;
+    overflow-x: clip;
 }
 
 /* Prevent any element from causing horizontal scroll */
@@ -258,8 +258,8 @@ body {
 
 .hero-grid {
     background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.35) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.35) 1px, transparent 1px);
+        linear-gradient(to right, rgba(255, 255, 255, 0.55) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.55) 1px, transparent 1px);
     background-size: 120px 120px;
 }
 

@@ -63,7 +63,7 @@ export default function About() {
                 </motion.h2>
 
                 <div className="mt-16 grid md:grid-cols-12 gap-10">
-                    <div className="md:col-span-7 md:col-start-2 font-display text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight text-[var(--heading)]">
+                    <div className="md:col-span-7 md:col-start-2 font-sans text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight text-[var(--heading)]">
                         <ScrubLines lines={lines} progress={scrollYProgress} />
                     </div>
                     <motion.p

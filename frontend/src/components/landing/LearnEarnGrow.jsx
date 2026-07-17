@@ -31,39 +31,19 @@ function Step({ step, progress, index, total }) {
     const slot = 1 / total;
     const start = slot * index;
     const end = slot * (index + 1);
-    
-    // Dynamic opacity ranges:
-    // - Phase 01: starts at opacity 1 at scroll 0, fades out at its end.
-    // - Phase 03: fades in, stays at opacity 1 at the end of the scroll (scroll 1).
-    // - Phase 02 (Middle): fades in and fades out.
     const opacity = useTransform(
         progress,
-        [
-            index === 0 ? 0 : start - 0.05,
-            index === 0 ? 0.05 : start + 0.05,
-            index === total - 1 ? 1 - 0.05 : end - 0.05,
-            index === total - 1 ? 1 : end + 0.05
-        ],
-        index === 0 
-            ? [1, 1, 1, 0] 
-            : index === total - 1 
-                ? [0, 1, 1, 1] 
-                : [0, 1, 1, 0],
-        { clamp: true }
+        index === 0
+            ? [0, end - 0.05, end + 0.05]
+            : [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
+        index === 0 ? [1, 1, 0] : [0, 1, 1, 0],
     );
-    
-    // Clamp y and scale transforms to prevent off-screen extrapolation
-    const y = useTransform(progress, [start, end], [40, -40], { clamp: true });
-    const scale = useTransform(progress, [start, end], [1.06, 0.98], { clamp: true });
-    
-    // Dynamically disable pointer events when a step is not active so hidden steps do not block hovers/clicks
-    const pointerEvents = useTransform(progress, p => 
-        (p >= (index === 0 ? 0 : start - 0.05) && p <= (index === total - 1 ? 1 : end + 0.05)) ? "auto" : "none"
-    );
+    const y = useTransform(progress, [start, end], [40, -40]);
+    const scale = useTransform(progress, [start, end], [1.06, 0.98]);
 
     return (
         <motion.div
-            style={{ opacity, pointerEvents }}
+            style={{ opacity }}
             className="absolute inset-0 flex items-center"
             aria-hidden={false}
         >
@@ -76,8 +56,6 @@ function Step({ step, progress, index, total }) {
                     <img
                         src={step.img}
                         alt={step.title}
-                        loading="lazy"
-                        decoding="async"
                         className="absolute inset-0 w-full h-full object-cover"
                         style={{ filter: "grayscale(20%) contrast(1.05) brightness(0.85)" }}
                     />
@@ -120,7 +98,7 @@ export default function LearnEarnGrow() {
         offset: ["start start", "end end"],
     });
 
-    const headlineOpacity = useTransform(scrollYProgress, [0, 0.05, 0.92, 1], [0, 1, 1, 0]);
+    const headlineOpacity = useTransform(scrollYProgress, [0, 0.92, 1], [1, 1, 0]);
     const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
     const chip0 = useTransform(scrollYProgress, [0, 0.33], [1, 0.3]);
     const chip1 = useTransform(scrollYProgress, [0.2, 0.5, 0.66], [0.3, 1, 0.3]);
@@ -133,9 +111,9 @@ export default function LearnEarnGrow() {
             className="relative z-[3] border-t border-border"
             style={{ height: "320vh" }}
         >
-            <div className="sticky top-0 h-[var(--app-height)] flex flex-col overflow-hidden">
-                <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-28 md:pt-32">
-                    <div className="flex items-center gap-3 mb-6">
+            <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+                <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-24 md:pt-28 shrink-0">
+                    <div className="flex items-center gap-3 mb-4">
                         <span className="block w-10 h-px bg-[var(--text-dim)]" />
                         <span className="overline">Chapter 02 · The Loop</span>
                     </div>
@@ -148,7 +126,7 @@ export default function LearnEarnGrow() {
                     </motion.h2>
 
                     {/* phase chips */}
-                    <div className="mt-6 flex items-center gap-4">
+                    <div className="mt-4 flex items-center gap-4">
                         {[
                             { l: "01 · Learn", o: chip0 },
                             { l: "02 · Earn", o: chip1 },
@@ -167,7 +145,7 @@ export default function LearnEarnGrow() {
                 </div>
 
                 {/* stage */}
-                <div className="flex-1 relative max-w-[1400px] w-full mx-auto px-6 md:px-10 pb-10">
+                <div className="flex-1 relative min-h-0 max-w-[1400px] w-full mx-auto px-6 md:px-10 pb-6">
                     {loop.map((step, i) => (
                         <Step
                             key={step.n}
@@ -180,7 +158,7 @@ export default function LearnEarnGrow() {
                 </div>
 
                 {/* progress bar at bottom */}
-                <div className="h-px bg-[var(--border)] mx-6 md:mx-10 mb-6">
+                <div className="h-px bg-[var(--border)] mx-6 md:mx-10 mb-6 shrink-0">
                     <motion.div
                         style={{ width: barWidth }}
                         className="h-px bg-[var(--text)] origin-left"

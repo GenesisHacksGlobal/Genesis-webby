@@ -34,6 +34,8 @@ export default function useLenis() {
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smoothWheel: true,
             wheelMultiplier: 1,
+            // Keep CSS sticky / Framer useScroll in sync with native scroll
+            autoRaf: false,
         });
 
         const raf = (time) => {
@@ -43,6 +45,11 @@ export default function useLenis() {
         const id = requestAnimationFrame(raf);
 
         window.__lenis = lenis;
+
+        // Ensure scroll-linked animations see Lenis updates
+        lenis.on("scroll", () => {
+            window.dispatchEvent(new Event("scroll"));
+        });
 
         const onClick = (e) => {
             const a = e.target.closest("a[href^='#']");
