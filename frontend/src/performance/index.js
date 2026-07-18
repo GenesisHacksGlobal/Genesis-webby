@@ -22,6 +22,7 @@ export { FPSMonitor } from "./monitor/FPSMonitor";
 export { createGLTFLoader, loadGLTF } from "./loaders/createGLTFLoader";
 export { AdaptiveModelLoader } from "./loaders/AdaptiveModelLoader";
 export { disposeObject3D, applyRendererQuality } from "./utils/disposeObject3D";
+export { createPlayGate } from "./utils/createPlayGate";
 export {
   prepareModelGroup,
   applyHeroMaterials,

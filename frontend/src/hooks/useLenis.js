@@ -7,14 +7,15 @@ export default function useLenis() {
     useEffect(() => {
         if (typeof window === "undefined") return;
 
-        // Detect touch / mobile environments — skip Lenis on those entirely.
         const isCoarse = window.matchMedia?.("(pointer: coarse)").matches;
         const isTouch =
             "ontouchstart" in window ||
             (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
         const isNarrow = window.innerWidth < 1024;
-        if (isCoarse || isTouch || isNarrow) {
-            // Fallback: smooth in-page anchor clicks via native scrollIntoView.
+        const prefersReduced =
+            window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+        if (isCoarse || isTouch || isNarrow || prefersReduced) {
             const onClick = (e) => {
                 const a = e.target.closest("a[href^='#']");
                 if (!a) return;
@@ -34,21 +35,49 @@ export default function useLenis() {
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smoothWheel: true,
             wheelMultiplier: 1,
-            // Keep CSS sticky / Framer useScroll in sync with native scroll
             autoRaf: false,
         });
 
+        let rafId = 0;
+        let running = false;
+        let scrollDispatchPending = false;
+
         const raf = (time) => {
+            if (!running) return;
             lenis.raf(time);
-            requestAnimationFrame(raf);
+            rafId = requestAnimationFrame(raf);
         };
-        const id = requestAnimationFrame(raf);
+
+        const start = () => {
+            if (running || document.hidden) return;
+            running = true;
+            rafId = requestAnimationFrame(raf);
+        };
+
+        const stop = () => {
+            running = false;
+            if (rafId) cancelAnimationFrame(rafId);
+            rafId = 0;
+        };
+
+        const onVisibility = () => {
+            if (document.hidden) stop();
+            else start();
+        };
+
+        start();
+        document.addEventListener("visibilitychange", onVisibility);
 
         window.__lenis = lenis;
 
-        // Ensure scroll-linked animations see Lenis updates
+        // Throttle synthetic scroll events to once per frame
         lenis.on("scroll", () => {
-            window.dispatchEvent(new Event("scroll"));
+            if (scrollDispatchPending) return;
+            scrollDispatchPending = true;
+            requestAnimationFrame(() => {
+                scrollDispatchPending = false;
+                window.dispatchEvent(new Event("scroll"));
+            });
         });
 
         const onClick = (e) => {
@@ -64,7 +93,8 @@ export default function useLenis() {
         document.addEventListener("click", onClick);
 
         return () => {
-            cancelAnimationFrame(id);
+            stop();
+            document.removeEventListener("visibilitychange", onVisibility);
             document.removeEventListener("click", onClick);
             lenis.destroy();
             delete window.__lenis;

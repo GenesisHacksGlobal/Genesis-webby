@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import "@/styles/shell.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 
 import {
@@ -18,9 +19,24 @@ import { About } from "@/components/sections/About";
 import { TheLoop } from "@/components/sections/TheLoop";
 import { Events } from "@/components/sections/Events";
 import { Contact } from "@/components/sections/Contact";
-import GalleryPage from "@/pages/GalleryPage";
-import EventPage from "@/pages/EventPage";
 import useLenis from "@/hooks/useLenis";
+
+const GalleryPage = lazy(() => import("@/pages/GalleryPage"));
+const EventPage = lazy(() => import("@/pages/EventPage"));
+
+function RouteFallback() {
+    return (
+        <div
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-[var(--bg)] text-[var(--text-faint)]"
+            role="status"
+            aria-live="polite"
+        >
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em]">
+                Loading…
+            </p>
+        </div>
+    );
+}
 
 const Landing = () => {
     useLenis();
@@ -71,13 +87,17 @@ const Landing = () => {
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Landing />} />
-                <Route path="/gallery" element={<GalleryPage />} />
-                <Route path="/events" element={<EventPage />} />
-            </Routes>
-        </BrowserRouter>
+        <MotionConfig reducedMotion="user">
+            <BrowserRouter>
+                <Suspense fallback={<RouteFallback />}>
+                    <Routes>
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/gallery" element={<GalleryPage />} />
+                        <Route path="/events" element={<EventPage />} />
+                    </Routes>
+                </Suspense>
+            </BrowserRouter>
+        </MotionConfig>
     );
 }
 
