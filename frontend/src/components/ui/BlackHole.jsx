@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from "react";
+import { createPlayGate } from "@/performance/utils/createPlayGate";
 
 /**
  * BlackHole — Originkit-style accretion disk (canvas 2D).
@@ -205,9 +206,26 @@ export default function BlackHole(incomingProps) {
 
     let lastTime = performance.now();
     let alive = true;
+    let playing = true;
+    let draw = () => {};
 
-    const draw = (now) => {
+    const gate = createPlayGate(containerRef.current, {
+      rootMargin: "200px 0px",
+    });
+    const unsubGate = gate.subscribe((active) => {
+      playing = active;
+      if (active && alive && !animRef.current) {
+        lastTime = performance.now();
+        animRef.current = requestAnimationFrame(draw);
+      }
+    });
+
+    draw = (now) => {
       if (!alive) return;
+      if (!playing || !gate.active) {
+        animRef.current = 0;
+        return;
+      }
       const dt = Math.min((now - lastTime) / 16.667, 3);
       lastTime = now;
 
@@ -373,10 +391,15 @@ export default function BlackHole(incomingProps) {
       animRef.current = requestAnimationFrame(draw);
     };
 
-    animRef.current = requestAnimationFrame(draw);
+    if (gate.active) {
+      animRef.current = requestAnimationFrame(draw);
+    }
     return () => {
       alive = false;
+      unsubGate();
+      gate.destroy();
       cancelAnimationFrame(animRef.current);
+      animRef.current = 0;
     };
   }, [
     voidX,

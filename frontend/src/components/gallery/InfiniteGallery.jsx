@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GALLERY_PHOTOS } from "@/data/mediaAssets";
 import { fragmentShader, vertexShader } from "./shaders";
+import { createPlayGate } from "@/performance/utils/createPlayGate";
 
 const CELL_SIZE = 1.15;
 const MIN_ZOOM = 0.55;
@@ -448,9 +449,24 @@ export default function InfiniteGallery() {
     window.visualViewport?.addEventListener("scroll", onResize);
 
     let captionTick = 0;
+    let lastCaptionIdx = -1;
+    let playing = true;
+    let animate = () => {};
 
-    const animate = () => {
+    const gate = createPlayGate(container, { rootMargin: "0px" });
+    const unsubGate = gate.subscribe((active) => {
+      playing = active;
+      if (active && !cancelled && !rafId) {
+        rafId = requestAnimationFrame(animate);
+      }
+    });
+
+    animate = () => {
       if (cancelled) return;
+      if (!playing || !gate.active) {
+        rafId = 0;
+        return;
+      }
       rafId = requestAnimationFrame(animate);
 
       if (!dragActive && !isPinching) {
@@ -469,15 +485,31 @@ export default function InfiniteGallery() {
       uniforms.uZoom.value = zoom;
 
       captionTick += 1;
-      if (captionTick % 10 === 0) syncCaption();
+      if (captionTick % 10 === 0) {
+        const idx = cellIndexFromOffset(
+          offset,
+          zoom,
+          uniforms.uResolution.value,
+          uniforms.uMousePos.value,
+          CELL_SIZE,
+        );
+        if (idx !== lastCaptionIdx) {
+          lastCaptionIdx = idx;
+          syncCaption();
+        }
+      }
 
       renderer.render(scene, camera);
     };
 
-    rafId = requestAnimationFrame(animate);
+    if (gate.active) {
+      rafId = requestAnimationFrame(animate);
+    }
 
     return () => {
       cancelled = true;
+      unsubGate();
+      gate.destroy();
       cancelAnimationFrame(rafId);
       el.removeEventListener("pointerdown", onPointerDown);
       el.removeEventListener("pointermove", onPointerMove);

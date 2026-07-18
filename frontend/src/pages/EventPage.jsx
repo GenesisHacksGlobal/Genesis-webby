@@ -7,6 +7,7 @@ import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SAMVEDNA_PHOTOS, NO_AGENDA_1_PHOTOS } from "@/data/mediaAssets";
 import { eventDatabase } from "@/data/eventDatabase";
+import { createPlayGate } from "@/performance/utils/createPlayGate";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,6 +91,15 @@ export default function WorkSection({ cards = defaultCards }) {
     gsap.ticker.add(tickerHandler);
     gsap.ticker.lagSmoothing(0);
 
+    const onDocVisibility = () => {
+      if (document.hidden) {
+        gsap.ticker.sleep();
+      } else {
+        gsap.ticker.wake();
+      }
+    };
+    document.addEventListener("visibilitychange", onDocVisibility);
+
     const moveDistance = window.innerWidth * 5;
     let currentXPosition = 0;
     let targetXPosition = 0;
@@ -103,12 +113,12 @@ export default function WorkSection({ cards = defaultCards }) {
     const gridCtx = gridCanvas.getContext("2d");
 
     const resizeGridCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       gridCanvas.width = window.innerWidth * dpr;
       gridCanvas.height = window.innerHeight * dpr;
       gridCanvas.style.width = `${window.innerWidth}px`;
       gridCanvas.style.height = `${window.innerHeight}px`;
-      gridCtx.scale(dpr, dpr);
+      gridCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
 
     const drawGrid = (scrollProgress = 0) => {
@@ -149,13 +159,15 @@ export default function WorkSection({ cards = defaultCards }) {
     );
     lettersCamera.position.z = 20;
 
+    const isCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
     const lettersRenderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: !isCoarse,
       alpha: true,
+      powerPreference: isCoarse ? "default" : "high-performance",
     });
     lettersRenderer.setSize(window.innerWidth, window.innerHeight);
     lettersRenderer.setClearColor(0x000000, 0);
-    lettersRenderer.setPixelRatio(window.devicePixelRatio);
+    lettersRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     lettersRenderer.domElement.id = "letters-canvas";
     workSection.appendChild(lettersRenderer.domElement);
 
@@ -256,8 +268,34 @@ export default function WorkSection({ cards = defaultCards }) {
       gsap.set(cardsContainer, { x: currentXPosition });
     };
 
-    let animationFrameId;
-    const animate = () => {
+    let animationFrameId = 0;
+    let playing = true;
+    let animate = () => {};
+    let gridRaf = 0;
+    let pendingGridProgress = 0;
+
+    const scheduleGridDraw = (progress) => {
+      pendingGridProgress = progress;
+      if (gridRaf) return;
+      gridRaf = requestAnimationFrame(() => {
+        gridRaf = 0;
+        drawGrid(pendingGridProgress);
+      });
+    };
+
+    const gate = createPlayGate(workSection, { rootMargin: "120px 0px" });
+    const unsubGate = gate.subscribe((active) => {
+      playing = active;
+      if (active && !animationFrameId) {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    });
+
+    animate = () => {
+      if (!playing || !gate.active) {
+        animationFrameId = 0;
+        return;
+      }
       updateLetterPositions();
       updateCardsPosition();
       lettersRenderer.render(lettersScene, lettersCamera);
@@ -276,12 +314,14 @@ export default function WorkSection({ cards = defaultCards }) {
       onUpdate: (self) => {
         updateTargetPositions(self.progress);
         updateCardsTarget(self.progress);
-        drawGrid(self.progress);
+        scheduleGridDraw(self.progress);
       },
     });
 
     updateTargetPositions(0);
-    animate();
+    if (gate.active) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     const handleResize = () => {
       const progress = workTrigger ? workTrigger.progress : 0;
@@ -291,6 +331,7 @@ export default function WorkSection({ cards = defaultCards }) {
       lettersCamera.aspect = window.innerWidth / window.innerHeight;
       lettersCamera.updateProjectionMatrix();
       lettersRenderer.setSize(window.innerWidth, window.innerHeight);
+      lettersRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       
       updateTargetPositions(progress);
     };
@@ -299,10 +340,16 @@ export default function WorkSection({ cards = defaultCards }) {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      playing = false;
+      unsubGate();
+      gate.destroy();
       cancelAnimationFrame(animationFrameId);
+      if (gridRaf) cancelAnimationFrame(gridRaf);
+      document.removeEventListener("visibilitychange", onDocVisibility);
       workTrigger.kill();
       lenis.destroy();
       gsap.ticker.remove(tickerHandler);
+      gsap.ticker.wake();
       
       if (gridCanvas.parentNode) {
         gridCanvas.parentNode.removeChild(gridCanvas);
@@ -388,7 +435,12 @@ export default function WorkSection({ cards = defaultCards }) {
           {cards.map((card, idx) => (
             <div className="card" key={idx}>
               <div className="card-img">
-                <img src={card.img} alt={card.title} />
+                <img
+                  src={card.img}
+                  alt={card.title}
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div className="card-copy">
                 <p>{card.title}</p>
@@ -515,7 +567,13 @@ export default function WorkSection({ cards = defaultCards }) {
                   {/* Background Image for Tall / Featured / Wide cards */}
                   {(isFeatured || isTall || isWide) && (
                     <div className="absolute inset-0 z-0 overflow-hidden opacity-15 transition-opacity duration-500 group-hover:opacity-25">
-                      <img src={event.img} alt="" className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                      <img
+                        src={event.img}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0443] via-[#0a0443]/50 to-transparent" />
                     </div>
                   )}

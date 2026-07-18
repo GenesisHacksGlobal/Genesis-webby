@@ -79,7 +79,7 @@ export default function Navbar() {
             className={`fixed top-0 left-0 right-0 z-40 transform-gpu transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 navHidden ? "-translate-y-full" : "translate-y-0"
             } ${
-                scrolled ? "backdrop-blur-xl bg-white/[0.04] border-b border-white/10" : "bg-transparent border-b border-border/20"
+                scrolled ? "bg-[#0a0443]/92 md:backdrop-blur-xl md:bg-white/[0.04] border-b border-white/10" : "bg-transparent border-b border-border/20"
             }`}
         >
             <div className="w-full h-[72px] flex items-stretch justify-between">
@@ -145,7 +145,7 @@ export default function Navbar() {
             />
 
             {open && (
-                <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-xl">
+                <div className="md:hidden border-t border-border bg-[#0a0443]/98">
                     <div className="px-6 py-6 flex flex-col gap-5">
                         {links.map((l) => (
                             <button

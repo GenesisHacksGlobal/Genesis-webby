@@ -1,23 +1,38 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 // Subtle 3D mouse-tilt wrapper for cards (with optional motion-tracked glare)
 export default function Tilt({ children, className = "", max = 6, glare = true }) {
     const ref = useRef(null);
+    const [enabled, setEnabled] = useState(false);
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
     const sx = useSpring(mx, { stiffness: 250, damping: 22, mass: 0.4 });
     const sy = useSpring(my, { stiffness: 250, damping: 22, mass: 0.4 });
     const rotX = useTransform(sy, [-0.5, 0.5], [max, -max]);
     const rotY = useTransform(sx, [-0.5, 0.5], [-max, max]);
-    // glare position
     const gx = useTransform(sx, [-0.5, 0.5], [10, 90]);
     const gy = useTransform(sy, [-0.5, 0.5], [10, 90]);
     const glareBg = useTransform([gx, gy], ([x, y]) =>
         `radial-gradient(380px circle at ${x}% ${y}%, rgba(255,255,255,0.16), transparent 50%)`,
     );
 
+    useEffect(() => {
+        if (typeof window === "undefined") return undefined;
+        const fine = window.matchMedia("(pointer: fine)");
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const update = () => setEnabled(fine.matches && !reduced.matches);
+        update();
+        fine.addEventListener?.("change", update);
+        reduced.addEventListener?.("change", update);
+        return () => {
+            fine.removeEventListener?.("change", update);
+            reduced.removeEventListener?.("change", update);
+        };
+    }, []);
+
     const onMove = (e) => {
+        if (!enabled) return;
         const r = ref.current?.getBoundingClientRect();
         if (!r) return;
         mx.set((e.clientX - r.left) / r.width - 0.5);
@@ -27,6 +42,10 @@ export default function Tilt({ children, className = "", max = 6, glare = true }
         mx.set(0);
         my.set(0);
     };
+
+    if (!enabled) {
+        return <div className={`relative ${className}`}>{children}</div>;
+    }
 
     return (
         <motion.div

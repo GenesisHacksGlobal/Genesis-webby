@@ -16,10 +16,16 @@ export default function Cursor() {
     useEffect(() => {
         if (typeof window === "undefined") return;
         const coarseMq = window.matchMedia("(pointer:coarse)");
-        const update = () => setCoarse(coarseMq.matches);
+        const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const update = () =>
+            setCoarse(coarseMq.matches || reducedMq.matches);
         update();
         coarseMq.addEventListener?.("change", update);
-        return () => coarseMq.removeEventListener?.("change", update);
+        reducedMq.addEventListener?.("change", update);
+        return () => {
+            coarseMq.removeEventListener?.("change", update);
+            reducedMq.removeEventListener?.("change", update);
+        };
     }, []);
 
     useEffect(() => {

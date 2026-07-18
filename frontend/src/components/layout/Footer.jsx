@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from "react";
 import BlackHole from "@/components/ui/BlackHole";
+import { prefersReducedMotion } from "@/hooks/useAnimationLifecycle";
 
 export default function Footer() {
     const [email, setEmail] = useState("");
-    const [particleCount, setParticleCount] = useState(720);
+    const [particleCount, setParticleCount] = useState(520);
+    const [enableBlackHole, setEnableBlackHole] = useState(false);
 
     useEffect(() => {
-        const mq = window.matchMedia("(max-width: 768px)");
-        const apply = () => setParticleCount(mq.matches ? 380 : 720);
+        const narrow = window.matchMedia("(max-width: 768px)");
+        const saveData = navigator.connection?.saveData;
+        const apply = () => {
+            const reduced = prefersReducedMotion();
+            setEnableBlackHole(!reduced && !saveData);
+            setParticleCount(narrow.matches ? 280 : 520);
+        };
         apply();
-        mq.addEventListener("change", apply);
-        return () => mq.removeEventListener("change", apply);
+        narrow.addEventListener("change", apply);
+        const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+        motionMq.addEventListener?.("change", apply);
+        return () => {
+            narrow.removeEventListener("change", apply);
+            motionMq.removeEventListener?.("change", apply);
+        };
     }, []);
 
     return (
@@ -253,22 +265,24 @@ export default function Footer() {
 
             {/* ── BOTTOM WORDMARK + Black Hole behind GENESIS ── */}
             <div className="footer-wordmark-stage" aria-hidden={false}>
-                <div className="footer-blackhole" aria-hidden="true">
-                    <BlackHole
-                        particleCount={particleCount}
-                        particleSize={5}
-                        colors={["#ffffff", "#e9e4ff", "#c4b5fd"]}
-                        outerRadius={78}
-                        tilt={18}
-                        tiltSideway={158}
-                        trail={48}
-                        orbitSpeed={3.6}
-                        pullSpeed={0}
-                        voidColor="#0a0443"
-                        background="transparent"
-                        centre={{ voidRadius: 74, voidX: 50, voidY: 34 }}
-                    />
-                </div>
+                {enableBlackHole && (
+                    <div className="footer-blackhole" aria-hidden="true">
+                        <BlackHole
+                            particleCount={particleCount}
+                            particleSize={5}
+                            colors={["#ffffff", "#e9e4ff", "#c4b5fd"]}
+                            outerRadius={78}
+                            tilt={18}
+                            tiltSideway={158}
+                            trail={48}
+                            orbitSpeed={3.6}
+                            pullSpeed={0}
+                            voidColor="#0a0443"
+                            background="transparent"
+                            centre={{ voidRadius: 74, voidX: 50, voidY: 34 }}
+                        />
+                    </div>
+                )}
                 <div className="footer-wordmark">GENESIS</div>
             </div>
 
