@@ -6,6 +6,7 @@ import {
   QualityManager,
   DEBUG_PERFORMANCE,
 } from "../../../performance";
+import { createPlayGate } from "../../../performance/utils/createPlayGate";
 
 export default function HeroCanvas() {
   const mountRef = useRef(null);
@@ -28,31 +29,47 @@ export default function HeroCanvas() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.28;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.style.width = "100%";
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
     container.appendChild(renderer.domElement);
 
-    const ambientLight = new THREE.AmbientLight(0x181528, 0.8);
+    // Cinematic cool key/fill/rim — no warm/yellow lights
+    const ambientLight = new THREE.AmbientLight(0x1a1248, 0.35);
     scene.add(ambientLight);
 
-    const dirLight1 = new THREE.DirectionalLight(0x00f0ff, 4.5);
-    dirLight1.position.set(6, 5, 5);
-    scene.add(dirLight1);
+    // Key — icy cool white from upper front-right
+    const keyLight = new THREE.DirectionalLight(0xdce9ff, 3.4);
+    keyLight.position.set(4.5, 6.5, 5.5);
+    scene.add(keyLight);
 
-    const dirLight2 = new THREE.DirectionalLight(0xd946ef, 4.0);
-    dirLight2.position.set(-6, -2, 2);
-    scene.add(dirLight2);
+    // Fill — soft violet from left (keeps brand mood, lower contrast side)
+    const fillLight = new THREE.DirectionalLight(0xa78bfa, 1.55);
+    fillLight.position.set(-5.5, 2.2, 4);
+    scene.add(fillLight);
 
-    const pointLight = new THREE.PointLight(0x22d3ee, 0.6, 15);
-    pointLight.position.set(0, 0, 4);
-    scene.add(pointLight);
-
-    const rimLight = new THREE.DirectionalLight(0xff7a00, 6.0);
-    rimLight.position.set(0, 5, -5);
+    // Rim / backlight — electric cyan edge separation (replaces orange rim)
+    const rimLight = new THREE.DirectionalLight(0x67e8f9, 4.2);
+    rimLight.position.set(-1.5, 4.5, -6.5);
     scene.add(rimLight);
+
+    // Hair kick — magenta from back-left for cinematic color contrast
+    const kickLight = new THREE.DirectionalLight(0xe879f9, 2.1);
+    kickLight.position.set(5.5, 3.5, -4.5);
+    scene.add(kickLight);
+
+    // Soft frontal catch light for face/detail readability
+    const catchLight = new THREE.PointLight(0xb8c9ff, 1.15, 18, 2);
+    catchLight.position.set(0.4, 1.8, 5.5);
+    scene.add(catchLight);
+
+    // Subtle under-bounce (deep indigo) — grounds the silhouette
+    const underLight = new THREE.PointLight(0x4c1d95, 0.85, 14, 2);
+    underLight.position.set(0, -3.2, 2.5);
+    scene.add(underLight);
 
     let model = null;
     let cancelled = false;
@@ -131,11 +148,26 @@ export default function HeroCanvas() {
     window.addEventListener("mousemove", onMouseMove);
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    let animationFrameId;
+    let animationFrameId = 0;
     let lastTime = performance.now();
     let swapInFlight = false;
+    let playing = true;
+    let animate = () => {};
 
-    const animate = (time) => {
+    const gate = createPlayGate(container, { rootMargin: "200px 0px" });
+    const unsubGate = gate.subscribe((active) => {
+      playing = active;
+      if (active && !animationFrameId) {
+        lastTime = performance.now();
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    });
+
+    animate = (time) => {
+      if (!playing || !gate.active) {
+        animationFrameId = 0;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
 
       const dt = Math.min((time - lastTime) / 1000, 0.1);
@@ -195,7 +227,9 @@ export default function HeroCanvas() {
       renderer.render(scene, camera);
     };
 
-    animationFrameId = requestAnimationFrame(animate);
+    if (gate.active) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
 
     let resizeRaf = null;
     const onResize = () => {
@@ -227,7 +261,11 @@ export default function HeroCanvas() {
 
     return () => {
       cancelled = true;
+      playing = false;
+      unsubGate();
+      gate.destroy();
       cancelAnimationFrame(animationFrameId);
+      animationFrameId = 0;
       if (resizeRaf) cancelAnimationFrame(resizeRaf);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("scroll", onScroll);

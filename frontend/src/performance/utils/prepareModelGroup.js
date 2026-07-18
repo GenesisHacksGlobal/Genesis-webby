@@ -48,7 +48,7 @@ export function prepareModelGroup(gltfScene, { targetSize = 5.7 } = {}) {
 }
 
 /**
- * Matte material tuning + anisotropy matching current hero look.
+ * Material tuning so cinematic cool lights read with soft specular response.
  */
 export function applyHeroMaterials(root, anisotropy = 1) {
   root.traverse((child) => {
@@ -73,11 +73,20 @@ export function applyHeroMaterials(root, anisotropy = 1) {
         material.map.needsUpdate = true;
       }
 
+      // Slightly glossier than flat matte so key/rim catch without looking plastic
       if (material.roughness !== undefined) {
-        material.roughness = Math.max(0.78, material.roughness);
+        material.roughness = THREE.MathUtils.clamp(
+          material.roughness * 0.85,
+          0.42,
+          0.72,
+        );
       }
       if (material.metalness !== undefined) {
-        material.metalness *= 0.2;
+        material.metalness = THREE.MathUtils.clamp(
+          material.metalness * 0.45,
+          0,
+          0.35,
+        );
       }
       if (material.envMapIntensity !== undefined) {
         material.envMapIntensity = 0;
