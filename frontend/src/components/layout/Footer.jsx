@@ -1,7 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import BlackHole from "@/components/ui/BlackHole";
 
 export default function Footer() {
     const [email, setEmail] = useState("");
+    const [particleCount, setParticleCount] = useState(720);
+
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 768px)");
+        const apply = () => setParticleCount(mq.matches ? 380 : 720);
+        apply();
+        mq.addEventListener("change", apply);
+        return () => mq.removeEventListener("change", apply);
+    }, []);
 
     return (
         <footer
@@ -25,6 +35,8 @@ export default function Footer() {
                     grid-template-columns: 1fr 1fr;
                     gap: 2rem;
                     padding: 3rem 3rem 0;
+                    position: relative;
+                    z-index: 2;
                 }
                 .footer-email-row {
                     display: flex;
@@ -60,8 +72,33 @@ export default function Footer() {
                     color: var(--text-faint);
                     gap: 1rem;
                     flex-wrap: wrap;
+                    position: relative;
+                    z-index: 2;
+                    background: linear-gradient(to top, var(--bg) 60%, transparent);
+                }
+                .footer-wordmark-stage {
+                    position: relative;
+                    overflow: hidden;
+                    user-select: none;
+                    width: 100%;
+                    /* Square-ish stage so full disk diameter fits (radius ≈ half width) */
+                    height: min(78vw, 720px);
+                    min-height: min(78vw, 720px);
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
+                    isolation: isolate;
+                }
+                .footer-blackhole {
+                    position: absolute;
+                    inset: 0;
+                    z-index: 0;
+                    pointer-events: none;
+                    opacity: 0.95;
                 }
                 .footer-wordmark {
+                    position: relative;
+                    z-index: 1;
                     font-family: var(--font-display);
                     font-size: clamp(48px, 19vw, 300px);
                     color: var(--heading);
@@ -71,6 +108,8 @@ export default function Footer() {
                     text-align: center;
                     width: 100%;
                     text-transform: uppercase;
+                    text-shadow: 0 2px 28px rgba(10, 4, 67, 0.65);
+                    padding-bottom: 0.06em;
                 }
                 @media (max-width: 640px) {
                     .footer-grid {
@@ -88,9 +127,13 @@ export default function Footer() {
                         align-items: flex-start;
                         gap: 0.75rem;
                     }
+                    .footer-wordmark-stage {
+                        height: min(82vw, 420px);
+                        min-height: min(82vw, 420px);
+                        margin-top: 2.5rem;
+                    }
                     .footer-wordmark {
                         font-size: clamp(44px, 19vw, 300px);
-                        margin-top: 2.5rem;
                     }
                 }
                 @media (min-width: 641px) and (max-width: 900px) {
@@ -100,6 +143,11 @@ export default function Footer() {
                     }
                     .footer-wordmark {
                         font-size: clamp(56px, 19vw, 300px);
+                    }
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .footer-blackhole {
+                        display: none;
                     }
                 }
             `}</style>
@@ -203,8 +251,24 @@ export default function Footer() {
             {/* ── MIDDLE SPACER ── */}
             <div style={{ flex: 1 }} />
 
-            {/* ── BOTTOM WORDMARK — always fits screen width ── */}
-            <div style={{ overflow: "hidden", userSelect: "none", lineHeight: 0.78 }}>
+            {/* ── BOTTOM WORDMARK + Black Hole behind GENESIS ── */}
+            <div className="footer-wordmark-stage" aria-hidden={false}>
+                <div className="footer-blackhole" aria-hidden="true">
+                    <BlackHole
+                        particleCount={particleCount}
+                        particleSize={5}
+                        colors={["#ffffff", "#e9e4ff", "#c4b5fd"]}
+                        outerRadius={78}
+                        tilt={18}
+                        tiltSideway={158}
+                        trail={48}
+                        orbitSpeed={3.6}
+                        pullSpeed={0}
+                        voidColor="#0a0443"
+                        background="transparent"
+                        centre={{ voidRadius: 74, voidX: 50, voidY: 34 }}
+                    />
+                </div>
                 <div className="footer-wordmark">GENESIS</div>
             </div>
 

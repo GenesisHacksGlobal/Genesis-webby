@@ -400,32 +400,35 @@ export default function WorkSection({ cards = defaultCards }) {
       </section>
 
       {/* Bento Grid Event Gallery Section */}
-      <section className="bento-section py-24 px-6 md:px-12 max-w-[1500px] mx-auto border-t border-white/10 relative z-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <span className="block w-6 h-px bg-[var(--brand)] animate-pulse" />
+      <section className="bento-section relative z-20 w-full border-t border-white/10 px-4 py-14 sm:px-6 sm:py-20 md:px-10 md:py-24 lg:px-12 xl:px-16">
+        <div className="mb-8 flex flex-col justify-between gap-6 sm:mb-12 md:mb-16 md:flex-row md:items-end md:gap-8">
+          <div className="min-w-0">
+            <div className="mb-3 flex items-center gap-3 sm:mb-4">
+              <span className="block h-px w-6 bg-[var(--brand)] animate-pulse" />
               <span className="overline text-[var(--brand)]">Curated Bento Layout</span>
             </div>
-            <h2 className="font-display text-4xl md:text-6xl text-[var(--heading)] tracking-tight">
+            <h2 className="font-display text-[clamp(1.75rem,6vw,3.75rem)] leading-[1.05] tracking-tight text-[var(--heading)]">
               THE BENTO GALLERY
             </h2>
           </div>
           
           {/* Bento Search HUD */}
-          <div className="relative w-full md:max-w-md">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[var(--text-faint)] tracking-widest">[ FIND ]</span>
+          <div className="relative w-full shrink-0 md:max-w-md">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-[9px] tracking-widest text-[var(--text-faint)] sm:left-4 sm:text-[10px]">
+              [ FIND ]
+            </span>
             <input
-              type="text"
+              type="search"
               placeholder="Search title, venue, sponsors..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-black/45 border border-white/10 focus:border-[var(--brand)] text-[var(--text)] py-3.5 pl-24 pr-12 outline-none font-sans text-xs tracking-wide transition-all duration-300 placeholder:text-white/20 rounded shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+              className="w-full rounded border border-white/10 bg-black/45 py-3 pl-[4.5rem] pr-14 font-sans text-xs tracking-wide text-[var(--text)] outline-none transition-all duration-300 placeholder:text-white/20 focus:border-[var(--brand)] sm:py-3.5 sm:pl-24 sm:pr-12 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
             />
             {searchQuery && (
               <button 
+                type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono text-[var(--brand)] hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 min-h-9 min-w-9 -translate-y-1/2 font-mono text-[10px] text-[var(--brand)] transition-colors hover:text-white sm:right-4"
               >
                 CLEAR
               </button>
@@ -433,24 +436,27 @@ export default function WorkSection({ cards = defaultCards }) {
           </div>
         </div>
 
-        {/* Bento Category HUD */}
-        <div className="flex flex-wrap gap-2 mb-12">
-          {categories.map(cat => {
-            const isActive = selectedCategory === cat;
-            return (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-5 py-2.5 text-[10px] font-mono uppercase tracking-widest transition-all duration-300 rounded border ${
-                  isActive 
-                    ? "bg-[var(--brand)] text-[#0a0443] border-[var(--brand)] font-bold shadow-[0_0_20px_rgba(196,181,253,0.35)]" 
-                    : "bg-transparent text-[var(--text-dim)] border-white/10 hover:border-white/30 hover:text-white"
-                }`}
-              >
-                {cat}s
-              </button>
-            );
-          })}
+        {/* Bento Category HUD — scrollable on small screens */}
+        <div className="bento-category-hud mb-8 sm:mb-10 md:mb-12">
+          <div className="bento-category-track">
+            {categories.map(cat => {
+              const isActive = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`shrink-0 rounded border px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-all duration-300 sm:px-5 ${
+                    isActive 
+                      ? "border-[var(--brand)] bg-[var(--brand)] font-bold text-[#0a0443] shadow-[0_0_20px_rgba(196,181,253,0.35)]" 
+                      : "border-white/10 bg-transparent text-[var(--text-dim)] hover:border-white/30 hover:text-white"
+                  }`}
+                >
+                  {cat}s
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Bento Grid */}
@@ -461,22 +467,24 @@ export default function WorkSection({ cards = defaultCards }) {
           {/* Static Stats Bento Block */}
           <motion.div
             layout
-            className="bento-cell bento-small flex flex-col justify-between p-6 border border-dashed border-white/20 bg-white/[0.01] rounded"
+            className="bento-cell bento-small bento-stats flex flex-col justify-between border border-dashed border-white/20 bg-white/[0.01] p-4 sm:p-5 md:p-6 rounded"
           >
-            <div className="font-mono text-[9px] text-[var(--text-faint)] tracking-widest">[ COMMUNITY SCOPE ]</div>
-            <div>
-              <div className="font-display text-4xl text-[var(--brand)] leading-none mb-1">50+</div>
-              <div className="font-sans text-[10px] uppercase text-[var(--text-dim)] tracking-wider">Total Hosted Events</div>
-            </div>
-            <div>
-              <div className="font-display text-4xl text-[var(--heading)] leading-none mb-1">10k+</div>
-              <div className="font-sans text-[10px] uppercase text-[var(--text-dim)] tracking-wider">Attendees Connected</div>
+            <div className="font-mono text-[9px] tracking-widest text-[var(--text-faint)]">[ COMMUNITY SCOPE ]</div>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-1 md:gap-0 md:contents">
+              <div>
+                <div className="mb-1 font-display text-3xl leading-none text-[var(--brand)] sm:text-4xl">50+</div>
+                <div className="font-sans text-[10px] uppercase tracking-wider text-[var(--text-dim)]">Total Hosted Events</div>
+              </div>
+              <div>
+                <div className="mb-1 font-display text-3xl leading-none text-[var(--heading)] sm:text-4xl">10k+</div>
+                <div className="font-sans text-[10px] uppercase tracking-wider text-[var(--text-dim)]">Attendees Connected</div>
+              </div>
             </div>
           </motion.div>
 
           <AnimatePresence mode="popLayout">
             {filteredEvents.map((event, idx) => {
-              // Assign layout spans: index 0 (or upcoming) is Featured, index 3/7 is Wide, index 2/6 is Tall
+              // Assign layout spans: index 0 featured, 3/8 wide, 2/7 tall
               let bentoClass = "bento-small";
               if (idx === 0) {
                 bentoClass = "bento-featured";
@@ -499,47 +507,54 @@ export default function WorkSection({ cards = defaultCards }) {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                   onClick={() => setSelectedEvent(event)}
-                  className={`bento-cell ${bentoClass} group relative cursor-pointer overflow-hidden border border-white/10 bg-white/[0.01] backdrop-blur-md flex flex-col justify-between transition-all duration-300 hover:border-[var(--brand)] hover:bg-white/[0.02] rounded p-6`}
+                  className={`bento-cell ${bentoClass} group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded border border-white/10 bg-white/[0.01] p-4 backdrop-blur-md transition-all duration-300 hover:border-[var(--brand)] hover:bg-white/[0.02] sm:p-5 md:p-6`}
                 >
                   {/* Scanner line animation overlay */}
                   <div className="scanner-line" />
                   
                   {/* Background Image for Tall / Featured / Wide cards */}
                   {(isFeatured || isTall || isWide) && (
-                    <div className="absolute inset-0 z-0 overflow-hidden opacity-15 group-hover:opacity-25 transition-opacity duration-500">
-                      <img src={event.img} alt={event.title} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+                    <div className="absolute inset-0 z-0 overflow-hidden opacity-15 transition-opacity duration-500 group-hover:opacity-25">
+                      <img src={event.img} alt="" className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0443] via-[#0a0443]/50 to-transparent" />
                     </div>
                   )}
 
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-mono text-[9px] text-[var(--text-faint)]">#{event.id}</span>
-                      <span className="text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/10 rounded text-[var(--brand)] bg-black/40">
+                  <div className="relative z-10 min-w-0">
+                    <div className="mb-2 flex items-center justify-between gap-2 sm:mb-3">
+                      <span className="shrink-0 font-mono text-[9px] text-[var(--text-faint)]">#{event.id}</span>
+                      <span className="max-w-[60%] truncate text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/10 rounded text-[var(--brand)] bg-black/40">
                         {event.category}
                       </span>
                     </div>
 
-                    <h3 className={`font-display tracking-tight text-white mb-2 leading-tight uppercase ${
-                      isFeatured ? "text-3xl md:text-4xl text-[var(--heading)]" : "text-lg md:text-xl group-hover:text-[var(--heading)] transition-colors"
+                    <h3 className={`mb-2 font-display uppercase leading-tight tracking-tight text-white ${
+                      isFeatured
+                        ? "text-[clamp(1.35rem,4vw,2.25rem)] text-[var(--heading)]"
+                        : "text-base transition-colors group-hover:text-[var(--heading)] sm:text-lg md:text-xl"
                     }`}>
                       {event.title}
                     </h3>
 
-                    {/* Show description in wide and featured cards */}
-                    {(isFeatured || isWide) && (
-                      <p className="font-sans text-xs text-[var(--text-dim)] max-w-xl leading-relaxed mb-4 line-clamp-2 md:line-clamp-3">
+                    {/* Description: featured always; wide from sm up */}
+                    {isFeatured && (
+                      <p className="mb-3 line-clamp-2 max-w-xl font-sans text-xs leading-relaxed text-[var(--text-dim)] sm:mb-4 md:line-clamp-3">
+                        A dynamic gathering focusing on collaboration, code, and design innovation. Explore the next-generation developer sandbox.
+                      </p>
+                    )}
+                    {isWide && (
+                      <p className="mb-3 hidden max-w-xl font-sans text-xs leading-relaxed text-[var(--text-dim)] line-clamp-2 sm:mb-4 sm:block md:line-clamp-3">
                         A dynamic gathering focusing on collaboration, code, and design innovation. Explore the next-generation developer sandbox.
                       </p>
                     )}
                   </div>
 
-                  <div className="relative z-10 border-t border-white/5 pt-4 flex items-end justify-between font-mono text-[9px] text-[var(--text-faint)]">
-                    <div>
+                  <div className="relative z-10 flex items-end justify-between gap-3 border-t border-white/5 pt-3 font-mono text-[9px] text-[var(--text-faint)] sm:pt-4">
+                    <div className="min-w-0">
                       <span className="block uppercase tracking-wider">{event.date}</span>
-                      <span className="font-sans text-[10px] text-[var(--text-dim)] block">{event.location}</span>
+                      <span className="block truncate font-sans text-[10px] text-[var(--text-dim)]">{event.location}</span>
                     </div>
-                    <span className="text-[10px] text-[var(--brand)] group-hover:translate-x-1 transition-transform">
+                    <span className="shrink-0 text-[10px] text-[var(--brand)] transition-transform group-hover:translate-x-1">
                       DETAILS →
                     </span>
                   </div>
@@ -552,9 +567,9 @@ export default function WorkSection({ cards = defaultCards }) {
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="col-span-full py-20 text-center border border-dashed border-white/10 rounded bg-white/[0.01]"
+              className="col-span-full rounded border border-dashed border-white/10 bg-white/[0.01] px-4 py-14 text-center sm:py-20"
             >
-              <p className="font-mono text-xs text-[var(--text-faint)] uppercase tracking-widest">
+              <p className="font-mono text-xs uppercase tracking-widest text-[var(--text-faint)]">
                 No records found matching query.
               </p>
             </motion.div>
@@ -821,36 +836,66 @@ const cssContent = `
 }
 
 .work-section-wrapper .bento-section {
-  min-height: 100vh;
-  height: auto;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: auto;
+  height: auto !important;
   position: relative;
   z-index: 20;
+  overflow: visible;
+  box-sizing: border-box;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 
-/* Bento Grid System */
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1.5rem;
+/* Category chips: horizontal scroll on narrow viewports */
+.bento-category-hud {
+  width: 100%;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .bento-category-hud {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.bento-category-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+}
+
+.bento-category-track::-webkit-scrollbar {
+  display: none;
 }
 
 @media (min-width: 768px) {
-  .bento-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 240px;
+  .bento-category-track {
+    flex-wrap: wrap;
+    overflow: visible;
+    padding-bottom: 0;
   }
 }
 
-@media (min-width: 1024px) {
-  .bento-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1280px) {
-  .bento-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
+/* Bento Grid System — mobile first */
+.bento-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.875rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .bento-cell {
@@ -859,17 +904,93 @@ const cssContent = `
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  height: 240px; /* Fallback for mobile/flex */
+  min-width: 0;
+  width: 100%;
+  min-height: 11.5rem;
+  height: auto;
+  grid-column: span 1;
+  grid-row: span 1;
 }
 
-@media (min-width: 768px) {
-  .bento-cell {
-    height: auto; /* Allow grid rows to dictate height */
+.bento-featured {
+  min-height: 16.5rem;
+}
+
+.bento-wide,
+.bento-tall {
+  min-height: 13rem;
+}
+
+.bento-stats {
+  min-height: 10.5rem;
+}
+
+/* Small tablets: 2 equal columns, no multi-span (avoids broken layouts) */
+@media (min-width: 640px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
   }
 
-  .bento-small {
+  .bento-cell {
+    min-height: 12.5rem;
+  }
+
+  .bento-featured {
+    grid-column: span 2;
+    min-height: 18rem;
+  }
+
+  .bento-wide {
+    grid-column: span 2;
+    min-height: 13.5rem;
+  }
+}
+
+/* Tablets+: true bento spans + fixed row rhythm */
+@media (min-width: 768px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: minmax(220px, auto);
+    grid-auto-flow: dense;
+    gap: 1.25rem;
+  }
+
+  .bento-cell {
+    min-height: 0;
+    height: auto;
+  }
+
+  .bento-small,
+  .bento-stats {
     grid-column: span 1;
     grid-row: span 1;
+  }
+
+  .bento-featured {
+    grid-column: span 2;
+    grid-row: span 2;
+    min-height: 0;
+  }
+
+  .bento-wide {
+    grid-column: span 2;
+    grid-row: span 1;
+    min-height: 0;
+  }
+
+  .bento-tall {
+    grid-column: span 1;
+    grid-row: span 2;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(230px, auto);
+    gap: 1.35rem;
   }
 
   .bento-featured {
@@ -885,6 +1006,25 @@ const cssContent = `
   .bento-tall {
     grid-column: span 1;
     grid-row: span 2;
+  }
+}
+
+@media (min-width: 1280px) {
+  .bento-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: minmax(240px, auto);
+    gap: 1.5rem;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 379px) {
+  .bento-cell {
+    min-height: 10.5rem;
+  }
+
+  .bento-featured {
+    min-height: 14.5rem;
   }
 }
 
