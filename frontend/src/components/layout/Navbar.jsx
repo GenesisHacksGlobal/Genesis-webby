@@ -9,7 +9,7 @@ const LOGO_URL =
 const links = [
     { id: "about", label: "About", testid: LANDING.navAbout },
     { id: "loop", label: "The Loop", testid: LANDING.navLoop },
-    { id: "events", label: "Events", testid: LANDING.navEvents },
+    { path: "/events", label: "Events", testid: LANDING.navEvents },
     { path: "/gallery", label: "Gallery", testid: LANDING.navGallery },
     { id: "contact", label: "Contact", testid: LANDING.navContact },
 ];

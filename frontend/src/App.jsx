@@ -19,6 +19,7 @@ import { TheLoop } from "@/components/sections/TheLoop";
 import { Events } from "@/components/sections/Events";
 import { Contact } from "@/components/sections/Contact";
 import GalleryPage from "@/pages/GalleryPage";
+import EventPage from "@/pages/EventPage";
 import useLenis from "@/hooks/useLenis";
 
 const Landing = () => {
@@ -74,6 +75,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/events" element={<EventPage />} />
             </Routes>
         </BrowserRouter>
     );
