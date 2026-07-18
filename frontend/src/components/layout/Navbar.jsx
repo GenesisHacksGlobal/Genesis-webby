@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { LANDING } from "@/constants/testIds";
 
@@ -16,11 +16,30 @@ const links = [
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [navHidden, setNavHidden] = useState(false);
+    const lastScrollY = useRef(0);
     const { scrollYProgress } = useScroll();
     const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 24);
+        const onScroll = () => {
+            const currentY = Math.max(window.scrollY, 0);
+            const delta = currentY - lastScrollY.current;
+
+            setScrolled(currentY > 24);
+
+            if (currentY < 80) {
+                setNavHidden(false);
+            } else if (delta > 6) {
+                setNavHidden(true);
+                setOpen(false);
+            } else if (delta < -6) {
+                setNavHidden(false);
+            }
+
+            lastScrollY.current = currentY;
+        };
+
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
@@ -39,55 +58,58 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-                scrolled ? "backdrop-blur-xl bg-background/70 border-b border-border" : "bg-transparent"
+            className={`fixed top-0 left-0 right-0 z-40 transform-gpu transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                navHidden ? "-translate-y-full" : "translate-y-0"
+            } ${
+                scrolled ? "backdrop-blur-xl bg-white/[0.04] border-b border-white/10" : "bg-transparent border-b border-border/20"
             }`}
         >
-            <div className="max-w-[1400px] mx-auto px-6 md:px-10 h-[72px] flex items-center justify-between">
+            <div className="w-full h-[72px] flex items-stretch justify-between">
                 <button
                     data-testid={LANDING.navLogo}
                     onClick={() => scrollTo("hero")}
-                    className="flex items-center gap-3 group"
+                    className="flex items-center gap-3 px-6 md:px-10 border-r border-border/30 hover:bg-white/5 transition-colors group shrink-0"
                     aria-label="Genesis India"
                 >
-                    <span className="block w-9 h-9 border border-border bg-card overflow-hidden">
+                    <span className="block w-8 h-8 border border-border/40 overflow-hidden">
                         <img src={LOGO_URL} alt="Genesis" className="w-full h-full object-cover" />
                     </span>
-                    <span className="hidden sm:flex flex-col leading-none">
-                        <span className="font-display text-[19px] tracking-tight text-[var(--heading)]">Genesis</span>
-                        <span className="overline mt-1">India</span>
+                    <span className="flex flex-col text-left leading-none">
+                        <span className="font-display text-[17px] tracking-tight text-[var(--heading)]">Genesis</span>
+                        <span className="overline mt-0.5 text-[var(--text-dim)]">India</span>
                     </span>
                 </button>
 
-                <nav className="hidden md:flex items-center gap-9">
+                <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10 px-6">
                     {links.map((l) => (
                         <button
                             key={l.id}
                             data-testid={l.testid}
                             onClick={() => scrollTo(l.id)}
-                            className="text-[13px] tracking-wide text-[var(--text-dim)] hover:text-[var(--text)] link-draw transition-colors"
+                            className="text-[12px] uppercase tracking-[0.16em] text-[var(--text-dim)] hover:text-[var(--text)] transition-colors relative"
                         >
                             {l.label}
                         </button>
                     ))}
                 </nav>
 
-                <div className="hidden md:block">
-                    <button
-                        data-testid={LANDING.navRsvpBtn}
-                        data-cursor
-                        data-cursor-label="RSVP"
-                        onClick={() => scrollTo("upcoming")}
-                        className="btn-cinema"
-                    >
-                        Reserve seat
-                        <span aria-hidden>→</span>
-                    </button>
+                <div className="hidden md:flex items-center justify-center px-6 border-l border-border/30 text-[11px] font-mono tracking-widest text-[var(--text-dim)] shrink-0 select-none">
+                    EN
                 </div>
 
                 <button
+                    data-testid={LANDING.navRsvpBtn}
+                    data-cursor
+                    data-cursor-label="RSVP"
+                    onClick={() => scrollTo("upcoming")}
+                    className="hidden md:flex items-center justify-center px-8 border-l border-border/30 bg-[#161618] hover:bg-black text-[#fafafa] hover:text-white transition-colors text-[11px] uppercase tracking-[0.2em] shrink-0 font-sans font-medium"
+                >
+                    Reserve seat
+                </button>
+
+                <button
                     onClick={() => setOpen((s) => !s)}
-                    className="md:hidden w-10 h-10 flex items-center justify-center text-[var(--text)]"
+                    className="md:hidden px-6 border-l border-border/30 flex items-center justify-center text-[var(--text)] hover:bg-white/5 transition-colors"
                     aria-label="Menu"
                     data-testid="nav-mobile-toggle"
                 >
@@ -126,4 +148,5 @@ export default function Navbar() {
             )}
         </header>
     );
+
 }

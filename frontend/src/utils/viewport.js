@@ -6,6 +6,8 @@
 export function lockStableViewportHeight() {
     if (typeof window === "undefined") return () => {};
 
+    const WIDTH_CHANGE_THRESHOLD = 120;
+
     const apply = () => {
         document.documentElement.style.setProperty(
             "--app-height",
@@ -17,7 +19,16 @@ export function lockStableViewportHeight() {
     apply();
 
     const onResize = () => {
-        if (window.innerWidth === lastWidth) return;
+        // F11 and browser chrome toggles can change the reported width by a
+        // few pixels. Ignore those changes so full-height sections do not
+        // reflow. Only recalculate for a meaningful window/device resize.
+        if (
+            Math.abs(window.innerWidth - lastWidth) <
+            WIDTH_CHANGE_THRESHOLD
+        ) {
+            return;
+        }
+
         lastWidth = window.innerWidth;
         apply();
     };

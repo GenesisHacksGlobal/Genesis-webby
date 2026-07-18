@@ -64,6 +64,49 @@ function Step({ step, progress, index, total }) {
     );
 }
 
+function MobileStep({ step }) {
+    return (
+        <article className="py-10 border-t border-black/15 first:border-t-0">
+            <div className="relative aspect-[4/3] overflow-hidden frame">
+                <img
+                    src={step.img}
+                    alt={step.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{
+                        filter: "grayscale(20%) contrast(1.05) brightness(0.85)",
+                    }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-black/60 via-transparent to-black/30" />
+                <span className="absolute top-4 left-4 overline !text-white/80">
+                    Phase {step.n}
+                </span>
+                <span className="absolute bottom-3 right-4 font-display text-7xl leading-none !text-white/25">
+                    {step.n}
+                </span>
+            </div>
+
+            <h3 className="mt-6 font-display text-6xl leading-[0.9] !text-black">
+                {step.title}<span className="text-black/35">.</span>
+            </h3>
+            <p className="mt-4 text-base leading-relaxed text-black/60">
+                {step.body}
+            </p>
+            <div className="mt-5 flex flex-wrap gap-2">
+                {step.tags.map((tag) => (
+                    <span
+                        key={tag}
+                        className="px-2.5 py-1 border border-black/20 text-[10px] font-mono uppercase tracking-[0.16em] text-black/50"
+                    >
+                        {tag}
+                    </span>
+                ))}
+            </div>
+        </article>
+    );
+}
+
 export default function TheLoop() {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
@@ -74,8 +117,31 @@ export default function TheLoop() {
     const chip2 = useTransform(scrollYProgress, [0.55, 0.85], [0.3, 1]);
 
     return (
-        <section id="loop" ref={containerRef} className="relative z-[3] border-t border-black/10 bg-white text-black" style={{ height: "320vh" }}>
-            <div className="sticky top-0 h-screen flex flex-col overflow-hidden bg-white">
+        <section
+            id="loop"
+            ref={containerRef}
+            className="relative z-[3] h-auto md:h-[320vh] border-t border-black/10 bg-white text-black"
+        >
+            <div className="md:hidden px-5 sm:px-6 py-20">
+                <div className="flex items-center gap-3 mb-4">
+                    <span className="block w-10 h-px bg-black/40" />
+                    <span className="overline !text-black/50">
+                        Chapter 02 · The Loop
+                    </span>
+                </div>
+                <h2 className="font-display text-4xl sm:text-5xl tracking-tighter leading-[1.02] !text-black">
+                    Learn <span className="text-black/35">/</span> Earn{" "}
+                    <span className="text-black/35">/</span> Grow.
+                </h2>
+
+                <div className="mt-8">
+                    {loop.map((step) => (
+                        <MobileStep key={step.n} step={step} />
+                    ))}
+                </div>
+            </div>
+
+            <div className="hidden md:flex sticky top-0 h-[var(--app-height)] flex-col overflow-hidden bg-white">
                 <div className="max-w-[1400px] w-full mx-auto px-6 md:px-10 pt-24 md:pt-28 shrink-0">
                     <div className="flex items-center gap-3 mb-4">
                         <span className="block w-10 h-px bg-black/40" />

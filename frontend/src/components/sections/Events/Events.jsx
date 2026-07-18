@@ -123,12 +123,12 @@ function UpcomingPanel() {
             transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="relative mt-20 md:mt-28 border border-[var(--border)] bg-[var(--surface)] overflow-hidden"
         >
-            <div className="flex items-center justify-between gap-3 px-6 md:px-10 py-4 border-b border-[var(--border)] bg-[var(--bg)]">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 px-5 sm:px-6 md:px-10 py-4 border-b border-[var(--border)] bg-[var(--bg)]">
                 <div className="flex items-center gap-3">
                     <span className="block w-2 h-2 bg-[var(--text)] rounded-full animate-pulse" />
                     <span className="overline text-[var(--text)]">Registrations open</span>
                 </div>
-                <span className="overline">Upcoming · Headline event · 02</span>
+                <span className="overline text-left sm:text-right">Upcoming · Headline event · 02</span>
             </div>
 
             <div className="grid md:grid-cols-12">
@@ -138,9 +138,9 @@ function UpcomingPanel() {
                     </motion.div>
                 </div>
 
-                <div className="md:col-span-7 p-8 md:p-12 bg-[var(--bg)] flex flex-col">
+                <div className="md:col-span-7 p-6 sm:p-8 md:p-12 bg-[var(--bg)] flex flex-col">
                     <motion.div style={{ y: titleY }}>
-                        <h3 className="font-display text-6xl sm:text-7xl md:text-7xl lg:text-8xl leading-[0.88] tracking-tight text-[var(--heading)]">
+                        <h3 className="font-display text-5xl sm:text-7xl md:text-7xl lg:text-8xl leading-[0.9] md:leading-[0.88] tracking-tight text-[var(--heading)]">
                             No Agenda <br />Meetup <span className="text-[var(--text-dim)]">2.0</span>
                         </h3>
                         <p className="mt-3 text-sm text-[var(--text-dim)] italic">Hosted by Genesis Community</p>
@@ -148,7 +148,7 @@ function UpcomingPanel() {
                             <span className="text-[var(--text)]">Opportunities don't come to the best. They come to those who stand out.</span> Six hours, one room, real briefs — no slides.
                         </p>
 
-                        <div className="mt-8 grid grid-cols-3 gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
+                        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
                             <div><div className="overline">Date</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">Jul 25</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">Saturday · 2026</div></div>
                             <div><div className="overline">Time</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">10–4</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">10 AM – 4 PM</div></div>
                             <div><div className="overline">Venue</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">TBA</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">India · Offline</div></div>

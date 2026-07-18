@@ -87,8 +87,8 @@ export default function Gallery() {
                                 decoding="async"
                                 className="w-full h-auto object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
                             />
-                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
-                            <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent md:bg-black/0 md:group-hover:bg-black/30 transition-colors duration-500" />
+                            <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3 translate-y-0 md:translate-y-full md:group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
                                 <span className="font-display text-lg md:text-xl text-white leading-tight block">{p.caption}</span>
                                 <span className="font-mono text-[10px] text-white/60 mt-0.5 block">{p.meta}</span>
                             </div>

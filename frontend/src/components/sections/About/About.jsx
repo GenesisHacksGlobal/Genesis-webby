@@ -57,7 +57,7 @@ export default function About() {
         <section
             id="about"
             ref={ref}
-            className="relative py-28 md:py-44 z-[3] bg-white text-black"
+            className="relative py-20 sm:py-28 md:py-44 z-[3] bg-white text-black"
             style={{ position: "relative" }}
         >
             <div className="max-w-[1400px] mx-auto px-6 md:px-10">
@@ -76,8 +76,8 @@ export default function About() {
                     A hybrid space to start, ship and scale.
                 </motion.h2>
 
-                <div className="mt-16 grid md:grid-cols-12 gap-10">
-                    <div className="md:col-span-7 md:col-start-2 font-sans text-3xl md:text-4xl lg:text-5xl leading-[1.05] tracking-tight !text-black">
+                <div className="mt-12 md:mt-16 grid md:grid-cols-12 gap-10">
+                    <div className="md:col-span-7 md:col-start-2 font-sans text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-[1.08] md:leading-[1.05] tracking-tight !text-black">
                         <ScrubLines lines={lines} progress={scrollYProgress} />
                     </div>
                     <motion.p
@@ -85,7 +85,7 @@ export default function About() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="md:col-span-4 md:col-start-9 text-base text-black/55 leading-relaxed border-l border-black/15 pl-6 self-end"
+                        className="md:col-span-4 md:col-start-9 text-base text-black/55 leading-relaxed md:border-l md:border-black/15 md:pl-6 self-end"
                     >
                         A community-led initiative building a structured freelance ecosystem.
                         From design and dev to content, marketing and ops — we connect skilled
@@ -93,7 +93,7 @@ export default function About() {
                     </motion.p>
                 </div>
 
-                <div className="mt-20 flex flex-wrap gap-3">
+                <div className="mt-12 md:mt-20 flex flex-wrap gap-2 sm:gap-3">
                     {[
                         "Hybrid · online + offline",
                         "Freelance-first",

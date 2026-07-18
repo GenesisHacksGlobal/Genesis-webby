@@ -5,10 +5,10 @@ export default function Footer() {
 
     return (
         <footer
+            className="site-footer"
             style={{
                 backgroundColor: "transparent",
                 color: "var(--text)",
-                minHeight: "var(--app-height)",
                 display: "flex",
                 flexDirection: "column",
                 position: "relative",
@@ -17,6 +17,9 @@ export default function Footer() {
             }}
         >
             <style>{`
+                .site-footer {
+                    min-height: var(--app-height);
+                }
                 .footer-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
@@ -72,19 +75,22 @@ export default function Footer() {
                 @media (max-width: 640px) {
                     .footer-grid {
                         grid-template-columns: 1fr;
-                        padding: 2rem 1.5rem 0;
+                        gap: 2.5rem;
+                        padding: 3.5rem 1.5rem 0;
                     }
                     .footer-email-input {
                         width: 100%;
                         flex: 1 1 100%;
                     }
                     .footer-bottom-bar {
-                        padding: 0.9rem 1.5rem;
+                        padding: 1.1rem 1.5rem;
                         flex-direction: column;
                         align-items: flex-start;
+                        gap: 0.75rem;
                     }
                     .footer-wordmark {
                         font-size: clamp(44px, 19vw, 300px);
+                        margin-top: 2.5rem;
                     }
                 }
                 @media (min-width: 641px) and (max-width: 900px) {
