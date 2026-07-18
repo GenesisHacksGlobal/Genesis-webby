@@ -17,7 +17,9 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "optimize:models": "node scripts/optimize-hero-models.mjs",
+    "optimize:models:ktx2": "node scripts/optimize-hero-models.mjs --ktx2"
   },
   "browserslist": {
     "production": [
