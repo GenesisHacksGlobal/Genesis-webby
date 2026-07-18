@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { LANDING } from "@/constants/testIds";
 import Tilt from "@/components/ui/Tilt";
@@ -8,35 +9,145 @@ import EventMap from "./EventMap";
 
 const pastEvents = [
     {
-        slug: "samvedna",
-        title: "Samvedna",
-        subtitle: "A hands-on UX research workshop",
-        kicker: "Edition · Sep 2025",
-        date: "Sep 27, 2025",
-        city: "Microsoft IDC · Noida, UP",
-        blurb:
-            "A hands-on UX research workshop with the Genesis community. A full day of methods, real-world exercises and frameworks — from problem framing to synthesis — with Umesh and Sachin Verma.",
-        hosts: "Genesis · Umesh & Sachin Verma",
-        time: "9:30 AM – 4:00 PM",
-        image: SAMVEDNA_HERO,
-        luma: "https://luma.com/8dqnhrif?tk=94waKT",
+        slug: "beyond-the-code",
+        title: "Beyond the Code",
+        subtitle: "Genesis Chennai Meetup",
+        kicker: "Edition · Sep 2024",
+        date: "Sep 19, 2024",
+        city: "SRM-IST · Chennai, TN",
+        blurb: "A massive design & developer meetup at SRM-IST. Over 700 creators came together for panels on freelancing, tech stacks, and building in public.",
+        hosts: "Genesis Community",
+        time: "10:00 AM – 5:00 PM IST",
+        image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
         testid: LANDING.eventCardSamvedna,
     },
     {
-        slug: "no-agenda-1",
-        title: "No Agenda Meetup",
-        subtitle: "Genesis × Genesis",
-        kicker: "Edition I · Aug 2025",
-        date: "Aug 22, 2025",
-        city: "Microsoft · Gurugram, HR",
-        blurb:
-            "Genesis. No slides. No boring talks. Just honest conversations, collabs and ideas — five hours of live teardown sessions, gig swaps and impromptu collabs.",
-        hosts: "Genesis · Sachin Verma & Umesh",
-        time: "10:00 AM – 3:00 PM IST",
-        image: NO_AGENDA_1_HERO,
-        luma: "https://luma.com/fvn3pg6m?tk=QxoVik",
+        slug: "supernova",
+        title: "Supernova",
+        subtitle: "36-Hour National Hackathon",
+        kicker: "Edition · May 2025",
+        date: "May 2-3, 2025",
+        city: "GL Bajaj · Greater Noida, UP",
+        blurb: "A 36-hour hackathon challenging developers to build production-grade projects. Staged with high-energy workshops and mentorship loops.",
+        hosts: "Genesis Community",
+        time: "9:00 AM – 9:00 PM IST",
+        image: "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
         testid: LANDING.eventCardNoAgenda1,
     },
+    {
+        slug: "hackamania",
+        title: "Hackamania",
+        subtitle: "Cross-Chain Web3 Hackathon",
+        kicker: "Edition · May 2025",
+        date: "May 23, 2025",
+        city: "Microsoft Office · Gurugram, HR",
+        blurb: "An intense builder marathon hosted at the Microsoft office. Focused on web3 scalability, cross-chain applications, and decentralized networks.",
+        hosts: "Genesis Community",
+        time: "10:00 AM – 8:00 PM IST",
+        image: "https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardHackamania",
+    },
+    {
+        slug: "escape-da-vinci",
+        title: "escape da vinci",
+        subtitle: "Design-Tech Collaboration Meetup",
+        kicker: "Edition · Feb 2026",
+        date: "Feb 10-27, 2026",
+        city: "Chandigarh University · Punjab",
+        blurb: "An interactive design-tech meetup hosted at Chandigarh University, encouraging students to bridge design, code, and creative logic.",
+        hosts: "Genesis Community",
+        time: "11:00 AM – 4:00 PM IST",
+        image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardEscapeDaVinci",
+    },
+    {
+        slug: "hackarena-2025",
+        title: "HackArena 2025",
+        subtitle: "Cloud Architecture Sprint",
+        kicker: "Edition · Jun 2025",
+        date: "Jun 28-29, 2025",
+        city: "IIIT Delhi · New Delhi",
+        blurb: "A flagship hackathon hosted at IIIT Delhi. Students built cloud-native tools using Microsoft Azure and modern web technologies under expert mentorship.",
+        hosts: "Genesis Community",
+        time: "9:00 AM – 6:00 PM IST",
+        image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardHackArena",
+    },
+    {
+        slug: "0xgenignite-mumbai",
+        title: "0xgenignite Bootcamp",
+        subtitle: "Stellar Dev Bootcamp Mumbai",
+        kicker: "Edition · Sep 2025",
+        date: "Sep 13, 2025",
+        city: "Microsoft Office · Mumbai, MH",
+        blurb: "An intensive builder bootcamp in Mumbai focused on smart contracts, asset tokenization, and integrating payment systems using Stellar.",
+        hosts: "Stellar Foundation & Genesis",
+        time: "10:00 AM – 6:00 PM IST",
+        image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardStellarMumbai",
+    },
+    {
+        slug: "0xgenignite-bangalore",
+        title: "0xgenignite Bootcamp",
+        subtitle: "Stellar Dev Bootcamp Bangalore",
+        kicker: "Edition · Oct 2025",
+        date: "Oct 5, 2025",
+        city: "Polaris School · Bangalore, KA",
+        blurb: "The Bangalore chapter of the developer bootcamp series. Focused on building high-performance dApps and decentralized finance applications.",
+        hosts: "Stellar Foundation & Genesis",
+        time: "10:00 AM – 6:00 PM IST",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardStellarBangalore",
+    },
+    {
+        slug: "0xgenignite-goa",
+        title: "0xgenignite NIT Goa",
+        subtitle: "Stellar Goa Hackathon",
+        kicker: "Edition · Oct 2025",
+        date: "Oct 11-12, 2025",
+        city: "NIT Goa · Goa",
+        blurb: "A coastal builder hackathon inside NIT Goa. Developers worked round-the-clock on consumer products and web3 payment channels.",
+        hosts: "Stellar Foundation & Genesis",
+        time: "10:00 AM – 5:00 PM IST",
+        image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardStellarGoa",
+    },
+    {
+        slug: "design-a-thon",
+        title: "Design-A-Thon",
+        subtitle: "Jaipur Design Marathon",
+        kicker: "Edition · Oct 2025",
+        date: "Oct 27 – Nov 1, 2025",
+        city: "Manipal University · Jaipur, RJ",
+        blurb: "A premium design marathon. Focused on brand identity, interaction design systems, and rapid prototyping for early stage startups.",
+        hosts: "Genesis Community",
+        time: "9:00 AM – 6:00 PM IST",
+        image: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardDesignathon",
+    },
+    {
+        slug: "ranchi-hacks",
+        title: "Ranchi Hacks",
+        subtitle: "Jharkhand Developer Hackathon",
+        kicker: "Edition · Jan 2026",
+        date: "Jan 17, 2026",
+        city: "Sarla Birla University · Ranchi, JH",
+        blurb: "A regional hackathon in Ranchi focused on localized problem solving. Empowering students in Jharkhand to solve local challenges via tech.",
+        hosts: "Genesis Community",
+        time: "9:30 AM – 7:30 PM IST",
+        image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
+        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        testid: "LANDING.eventCardRanchiHacks",
+    }
 ];
 
 const UPCOMING_LUMA_URL = "https://luma.com/6nxec8uw?tk=Cw5Fsi";
@@ -171,6 +282,9 @@ function UpcomingPanel() {
 }
 
 export default function Events() {
+    const [showAll, setShowAll] = useState(false);
+    const visibleEvents = showAll ? pastEvents : pastEvents.slice(0, 4);
+
     return (
         <section id="events" className="relative py-28 md:py-40 z-[3] border-t border-border">
             <div className="max-w-[1400px] mx-auto px-6 md:px-10">
@@ -190,10 +304,37 @@ export default function Events() {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6 md:gap-10">
-                    {pastEvents.map((e, i) => (<PastEventCard key={e.slug} event={e} index={i} />))}
+                    {visibleEvents.map((e, i) => (<PastEventCard key={e.slug} event={e} index={i} />))}
+                </div>
+
+                <div className="mt-12 flex justify-center">
+                    <button
+                        onClick={() => setShowAll(!showAll)}
+                        className="btn-cinema"
+                        data-cursor
+                        data-cursor-label={showAll ? "Collapse" : "Expand"}
+                    >
+                        {showAll ? "Show Less" : "Show More Events"}
+                    </button>
                 </div>
 
                 <UpcomingPanel />
+                
+                {/* Show More Events CTA */}
+                <div className="mt-20 flex flex-col items-center justify-center text-center border border-dashed border-[var(--border)] p-12 bg-white/[0.01] backdrop-blur-md rounded-lg">
+                    <p className="overline text-[var(--brand)] mb-3">Archive & Gallery</p>
+                    <h3 className="font-display text-3xl md:text-5xl text-[var(--heading)] tracking-tight mb-4">
+                        Want to see the full list of events?
+                    </h3>
+                    <p className="text-[var(--text-dim)] max-w-md mb-8 leading-relaxed">
+                        Step into our interactive Event Page to search, filter, and explore all past workshops, meetups, and creative hackathons with high-fidelity media.
+                    </p>
+                    <Link to="/events" className="btn-cinema flex items-center gap-2 group">
+                        <span>Explore Full Events Gallery</span>
+                        <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+                    </Link>
+                </div>
+
                 <EventMap />
             </div>
         </section>

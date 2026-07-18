@@ -8,10 +8,10 @@ const eventLocations = [
         x: 344.1,
         y: 320.0,
         event: {
-            title: "Genesis Hack NCR",
-            venue: "Microsoft Gurugram / Delhi",
-            date: "Aug 2025",
-            description: "Six hours, real briefs, live teardowns, no slides.",
+            title: "HackArena 2025",
+            venue: "IIIT Delhi",
+            date: "June 2025",
+            description: "A cloud-native developer sprint with Azure and modern web tech.",
         }
     },
     {
@@ -20,10 +20,10 @@ const eventLocations = [
         x: 305.7,
         y: 597.9,
         event: {
-            title: "Mumbai Creator Meetup",
-            venue: "WeWork Labs, Mumbai",
-            date: "Nov 2024",
-            description: "Staged like a chapter — moody, intimate, and collaborative.",
+            title: "0xgenignite Bootcamp",
+            venue: "Microsoft Office, Mumbai",
+            date: "Sep 2025",
+            description: "Intensive Stellar smart contract development and tokenization bootcamp.",
         }
     },
     {
@@ -32,10 +32,10 @@ const eventLocations = [
         x: 302.1,
         y: 728.1,
         event: {
-            title: "Genesis Bangalore Chapter",
-            venue: "Indiranagar Social, Bangalore",
-            date: "Mar 2025",
-            description: "Connecting 100+ designers and builders in a day of design teardowns.",
+            title: "0xgenignite Bootcamp",
+            venue: "Polaris School, Bangalore",
+            date: "Oct 2025",
+            description: "The Bangalore builder chapter for building scalable DeFi architectures.",
         }
     },
     {
@@ -44,58 +44,10 @@ const eventLocations = [
         x: 379.6,
         y: 835.6,
         event: {
-            title: "Chennai DevFest",
-            venue: "IIT Madras Research Park",
-            date: "Jan 2025",
-            description: "Deep dive workshops into frontend architectures and UI design.",
-        }
-    },
-    {
-        id: "INTG",
-        stateName: "Telangana",
-        x: 396.7,
-        y: 641.9,
-        event: {
-            title: "Hyderabad Web3 Meetup",
-            venue: "T-Hub, Hyderabad",
-            date: "Dec 2024",
-            description: "Hands-on product building and pitch session with investors.",
-        }
-    },
-    {
-        id: "INWB",
-        stateName: "West Bengal",
-        x: 637.1,
-        y: 485.8,
-        event: {
-            title: "Kolkata Hacking Arena",
-            venue: "Salt Lake Sector V, Kolkata",
-            date: "Oct 2024",
-            description: "Freestyle code sprint and networking event for freelancers.",
-        }
-    },
-    {
-        id: "INRJ",
-        stateName: "Rajasthan",
-        x: 256.7,
-        y: 375.8,
-        event: {
-            title: "Jaipur Design Summit",
-            venue: "Jaipur Club, Jaipur",
-            date: "Feb 2025",
-            description: "Staged event focusing on branding and creative strategy.",
-        }
-    },
-    {
-        id: "INGJ",
-        stateName: "Gujarat",
-        x: 199.2,
-        y: 481.0,
-        event: {
-            title: "Ahmedabad Tech Carnival",
-            venue: "DevX, Ahmedabad",
-            date: "May 2025",
-            description: "Genesis roundtable on the future of design tools.",
+            title: "Beyond the Code",
+            venue: "SRM-IST, Chennai",
+            date: "Sep 2024",
+            description: "Massive community meetup with 700+ creators, designers, and developers.",
         }
     },
     {
@@ -104,22 +56,70 @@ const eventLocations = [
         x: 438.7,
         y: 375.5,
         event: {
-            title: "Samvedna UX Workshop",
-            venue: "Microsoft IDC, Noida",
-            date: "Sep 2025",
-            description: "Hands-on UX research workshop with Sachin Verma and Umesh.",
+            title: "Supernova",
+            venue: "GL Bajaj, Greater Noida",
+            date: "May 2025",
+            description: "36-hour hackathon for building real-world software products.",
         }
     },
     {
-        id: "INKL",
-        stateName: "Kerala",
-        x: 325.5,
-        y: 848.9,
+        id: "INRJ",
+        stateName: "Rajasthan",
+        x: 256.7,
+        y: 375.8,
         event: {
-            title: "Kochi Dev Hack",
-            venue: "Maker Village, Kochi",
-            date: "Jun 2025",
-            description: "Freelancer portfolio review and live collaboration sprints.",
+            title: "Design-A-Thon",
+            venue: "Manipal University, Jaipur",
+            date: "Oct 2025",
+            description: "Week-long UI/UX design marathon for startup rapid prototyping.",
+        }
+    },
+    {
+        id: "INGA",
+        stateName: "Goa",
+        x: 250.0,
+        y: 670.0,
+        event: {
+            title: "0xgenignite NIT Goa",
+            venue: "NIT Goa",
+            date: "Oct 2025",
+            description: "Coastal builder sprint powered by Stellar and Squareboat.",
+        }
+    },
+    {
+        id: "INJH",
+        stateName: "Jharkhand",
+        x: 550.0,
+        y: 440.0,
+        event: {
+            title: "Ranchi Hacks",
+            venue: "Sarla Birla University, Ranchi",
+            date: "Jan 2026",
+            description: "A dynamic hackathon challenging student builders to solve local community issues.",
+        }
+    },
+    {
+        id: "INHR",
+        stateName: "Haryana",
+        x: 320.0,
+        y: 285.0,
+        event: {
+            title: "Hackamania",
+            venue: "Microsoft Office, Gurugram",
+            date: "May 2025",
+            description: "Elite hackathon focused on cross-chain apps and Web3 consumer products.",
+        }
+    },
+    {
+        id: "INPB",
+        stateName: "Punjab",
+        x: 300.5,
+        y: 254.4,
+        event: {
+            title: "escape da vinci",
+            venue: "Chandigarh University",
+            date: "Feb 2026",
+            description: "Creative design-tech meetup bridging code and visual interfaces.",
         }
     }
 ];
