@@ -3,9 +3,18 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { LANDING } from "@/constants/testIds";
 import HeroCanvas from "./HeroCanvas";
 
-const words = ["Learn.", "Earn.", "Grow."];
+// One letter per word is rendered in Gridular (pixel font),
+// the rest in Aeonik — mirroring the "Frontend" reference.
+const words = [
+  { text: "BUILD.", gridularIndex: 1 }, // U
+  { text: "HACK.", gridularIndex: 1 }, // A
+  { text: "SCALE.", gridularIndex: 4 }, // E
+];
 
-function MaskWord({ word, delay }) {
+const AEONIK = '"Aeonik", sans-serif';
+const GRIDULAR = '"Gridular", sans-serif';
+
+function MaskWord({ word, gridularIndex, delay }) {
   return (
     <span className="inline-block overflow-hidden align-top mr-3 pb-2">
       <motion.span
@@ -14,7 +23,17 @@ function MaskWord({ word, delay }) {
         animate={{ y: "0%" }}
         transition={{ duration: 1.2, delay, ease: [0.16, 1, 0.3, 1] }}
       >
-        {word}
+        {word.split("").map((letter, i) => (
+          <span
+            key={i}
+            style={{
+              fontFamily: i === gridularIndex ? GRIDULAR : AEONIK,
+              verticalAlign: "baseline",
+            }}
+          >
+            {letter}
+          </span>
+        ))}
       </motion.span>
     </span>
   );
@@ -72,18 +91,22 @@ export default function Hero() {
       <div className="w-full max-w-[1400px] mx-auto px-5 sm:px-6 md:px-10 pb-10 md:pb-24 mt-2 md:mt-10">
         <motion.h1
           style={{ y: titleY, opacity: titleOpacity }}
-          className="relative z-[1] md:-translate-y-16 font-display leading-[0.88] md:leading-[0.86] tracking-[0.005em] text-[var(--heading)] text-[17vw] sm:text-[15vw] md:text-[13vw] lg:text-[190px] w-full"
+          className="relative z-[1] md:-translate-y-24 font-display leading-[0.88] md:leading-[0.86] tracking-[0.005em] text-[var(--heading)] text-[17vw] sm:text-[15vw] md:text-[13vw] lg:text-[190px] w-full"
         >
           {words.map((w, i) => {
             let className = "block";
-            if (i === 0) className = "block md:-translate-x-[120px]";
+            if (i === 0) className = "block md:-translate-x-[200px]";
             if (i === 1) {
               className = "block text-right md:translate-x-[240px]";
             }
-            if (i === 2) className = "block md:-translate-x-[120px]";
+            if (i === 2) className = "block md:-translate-x-[200px]";
             return (
-              <span key={w} className={className}>
-                <MaskWord word={w} delay={0.4 + i * 0.18} />
+              <span key={w.text} className={className}>
+                <MaskWord
+                  word={w.text}
+                  gridularIndex={w.gridularIndex}
+                  delay={0.4 + i * 0.18}
+                />
               </span>
             );
           })}
@@ -93,16 +116,15 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-[10] md:-translate-y-16 mt-8 md:mt-12 grid md:grid-cols-12 gap-7 md:gap-10 items-end"
+          className="relative z-[10] md:-translate-y-24 mt-8 md:mt-12 grid md:grid-cols-12 gap-7 md:gap-10 items-end"
         >
-          <p className="md:col-span-6 text-base sm:text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
-            A community-led initiative building a structured freelance
-            ecosystem. From design and dev to content, marketing and ops — we
-            connect skilled people with real opportunities through events,
-            cohorts and collabs.
+          <p className="md:col-span-6 md:-translate-x-[120px] text-base sm:text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
+            Empowering the next generation of builders through hackathons,
+            speaker sessions, hands-on workshops, and community-driven
+            experiences across India.
           </p>
 
-          <div className="md:col-span-6 flex flex-col sm:flex-row gap-4 md:justify-end">
+          <div className="md:col-span-6 flex flex-col sm:flex-row gap-4 md:justify-end md:translate-x-[120px]">
             <button
               data-testid={LANDING.heroCtaPrimary}
               data-cursor

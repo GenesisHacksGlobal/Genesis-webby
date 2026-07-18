@@ -245,7 +245,7 @@ export default function HeroCanvas() {
   return (
     <div
       ref={mountRef}
-      className="absolute bottom-[-60px] left-1/2 -translate-x-1/2 w-full max-w-[1150px] h-[850px] md:h-[1000px] z-[5] pointer-events-none"
+      className="absolute bottom-[-20px] left-1/2 -translate-x-1/2 w-full max-w-[1150px] h-[850px] md:h-[1000px] z-[5] pointer-events-none"
     />
   );
 }
