@@ -61,6 +61,13 @@ let webpackConfig = {
 };
 
 webpackConfig.devServer = (devServerConfig) => {
+  // BrowserRouter routes (e.g. /gallery) must resolve to index.html
+  // when opened directly or refreshed in development.
+  devServerConfig.historyApiFallback = {
+    disableDotRule: true,
+    index: "/index.html",
+  };
+
   // Add health check endpoints if enabled
   if (config.enableHealthCheck && setupHealthEndpoints && healthPluginInstance) {
     const originalSetupMiddlewares = devServerConfig.setupMiddlewares;

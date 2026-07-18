@@ -6,8 +6,7 @@ const chapters = [
     { id: "about", n: "01", label: "About" },
     { id: "loop", n: "02", label: "The Loop" },
     { id: "events", n: "03", label: "Programme" },
-    { id: "gallery", n: "04", label: "Stills" },
-    { id: "contact", n: "05", label: "Contact" },
+    { id: "contact", n: "04", label: "Contact" },
 ];
 
 // Right-edge vertical chapter rail (designer feel — like film reel timecodes)

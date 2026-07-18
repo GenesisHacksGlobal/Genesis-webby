@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LANDING } from "@/constants/testIds";
 
 const LOGO_URL =
@@ -9,7 +10,7 @@ const links = [
     { id: "about", label: "About", testid: LANDING.navAbout },
     { id: "loop", label: "The Loop", testid: LANDING.navLoop },
     { id: "events", label: "Events", testid: LANDING.navEvents },
-    { id: "gallery", label: "Gallery", testid: LANDING.navGallery },
+    { path: "/gallery", label: "Gallery", testid: LANDING.navGallery },
     { id: "contact", label: "Contact", testid: LANDING.navContact },
 ];
 
@@ -18,6 +19,8 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [navHidden, setNavHidden] = useState(false);
     const lastScrollY = useRef(0);
+    const navigate = useNavigate();
+    const location = useLocation();
     const { scrollYProgress } = useScroll();
     const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
@@ -47,6 +50,12 @@ export default function Navbar() {
 
     const scrollTo = (id) => {
         setOpen(false);
+
+        if (location.pathname !== "/") {
+            navigate(`/#${id}`);
+            return;
+        }
+
         const el = document.getElementById(id);
         if (!el) return;
         if (window.__lenis) {
@@ -54,6 +63,15 @@ export default function Navbar() {
         } else {
             el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
+    };
+
+    const activateLink = (link) => {
+        setOpen(false);
+        if (link.path) {
+            navigate(link.path);
+            return;
+        }
+        scrollTo(link.id);
     };
 
     return (
@@ -67,7 +85,10 @@ export default function Navbar() {
             <div className="w-full h-[72px] flex items-stretch justify-between">
                 <button
                     data-testid={LANDING.navLogo}
-                    onClick={() => scrollTo("hero")}
+                    onClick={() => {
+                        if (location.pathname === "/") scrollTo("hero");
+                        else navigate("/");
+                    }}
                     className="flex items-center gap-3 px-6 md:px-10 border-r border-border/30 hover:bg-white/5 transition-colors group shrink-0"
                     aria-label="Genesis India"
                 >
@@ -83,9 +104,9 @@ export default function Navbar() {
                 <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10 px-6">
                     {links.map((l) => (
                         <button
-                            key={l.id}
+                            key={l.id || l.path}
                             data-testid={l.testid}
-                            onClick={() => scrollTo(l.id)}
+                            onClick={() => activateLink(l)}
                             className="text-[12px] uppercase tracking-[0.16em] text-[var(--text-dim)] hover:text-[var(--text)] transition-colors relative"
                         >
                             {l.label}
@@ -128,9 +149,9 @@ export default function Navbar() {
                     <div className="px-6 py-6 flex flex-col gap-5">
                         {links.map((l) => (
                             <button
-                                key={l.id}
+                                key={l.id || l.path}
                                 data-testid={`mobile-${l.testid}`}
-                                onClick={() => scrollTo(l.id)}
+                                onClick={() => activateLink(l)}
                                 className="text-left font-display text-2xl text-[var(--heading)]"
                             >
                                 {l.label}
