@@ -1,5 +1,6 @@
 /**
  * Production asset pipeline — generates Hero-{Ultra,High,Medium,Low}.glb
+ * from the current landing hero source (genesis-model.glb).
  *
  * Usage (from frontend/):
  *   node scripts/optimize-hero-models.mjs
@@ -8,8 +9,9 @@
  * Requires: npx @gltf-transform/cli (downloaded on demand)
  *
  * Source priority:
- *   1) public/model/genesis-original.bak  (highest fidelity)
- *   2) public/model/genesis-compressed.glb
+ *   1) public/model/genesis-model.glb          (current hero)
+ *   2) public/model/genesis-original.bak
+ *   3) public/model/genesis-compressed.glb
  */
 
 import { spawnSync } from "node:child_process";
@@ -27,6 +29,7 @@ const root = path.resolve(__dirname, "..");
 const modelDir = path.join(root, "public", "model");
 
 const sourceCandidates = [
+  path.join(modelDir, "genesis-model.glb"),
   path.join(modelDir, "genesis-original.bak"),
   path.join(modelDir, "genesis-compressed.glb"),
   path.join(modelDir, "genesis"),
@@ -43,6 +46,24 @@ mkdirSync(modelDir, { recursive: true });
 const withKtx2 = process.argv.includes("--ktx2");
 const CLI = ["--yes", "@gltf-transform/cli@4.1.2"];
 
+/** Ensure KTX-Software `ktx`/`toktx` are on PATH (common Windows install location). */
+function ensureKtxOnPath() {
+  const sep = path.delimiter;
+  const candidates = [
+    process.env.KTX_SOFTWARE_BIN,
+    "C:\\Program Files\\KTX-Software\\bin",
+    "C:\\Program Files (x86)\\KTX-Software\\bin",
+  ].filter(Boolean);
+
+  for (const dir of candidates) {
+    if (existsSync(path.join(dir, "ktx.exe")) || existsSync(path.join(dir, "ktx"))) {
+      process.env.Path = `${dir}${sep}${process.env.Path || process.env.PATH || ""}`;
+      return dir;
+    }
+  }
+  return null;
+}
+
 function run(args) {
   // Quote paths that may contain spaces (Windows usernames).
   const quoted = args.map((arg) =>
@@ -53,6 +74,7 @@ function run(args) {
     cwd: root,
     stdio: "inherit",
     shell: true,
+    env: process.env,
   });
   if (result.status !== 0) {
     throw new Error(`gltf-transform failed: ${quoted.join(" ")}`);
@@ -154,6 +176,14 @@ if (existsSync(low)) {
 }
 
 if (withKtx2) {
+  const ktxBin = ensureKtxOnPath();
+  if (ktxBin) {
+    console.log(`\nUsing KTX-Software from: ${ktxBin}`);
+  } else {
+    console.warn(
+      "\nWarning: ktx CLI not found on PATH. Install KTX-Software 4.3+ or set KTX_SOFTWARE_BIN.",
+    );
+  }
   console.log("\n=== Building KTX2 GPU-texture variants ===");
   const ktx2Tiers = [
     {

@@ -187,7 +187,7 @@ export const KTX2_TRANSCODER_PATH = "";
 
 /**
  * When true, prefer KTX2-compressed GLB paths if present in ASSET_PATHS_KTX2.
- * Current hero assets are WebP+Draco; keep false until you run optimize with ktx2.
+ * Generated from genesis-model.glb via: npm run optimize:models:ktx2
  */
 export const PREFER_KTX2_ASSETS = true;
 

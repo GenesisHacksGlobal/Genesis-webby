@@ -29,7 +29,7 @@ export default function HeroCanvas() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.28;
+    renderer.toneMappingExposure = 1.35;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setClearColor(0x000000, 0);
     renderer.domElement.style.width = "100%";
@@ -37,37 +37,39 @@ export default function HeroCanvas() {
     renderer.domElement.style.display = "block";
     container.appendChild(renderer.domElement);
 
-    // Cinematic cool key/fill/rim — no warm/yellow lights
-    const ambientLight = new THREE.AmbientLight(0x1a1248, 0.35);
+    // Studio-dark setup tuned for the neutral #181818 background:
+    // clean white key, orchid + cyan rims for edge pop, low neutral ambient.
+    const ambientLight = new THREE.AmbientLight(0x26262e, 0.55);
     scene.add(ambientLight);
 
-    // Key — icy cool white from upper front-right
-    const keyLight = new THREE.DirectionalLight(0xdce9ff, 3.4);
+    // Key — clean white from upper front-right for crisp speculars
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
     keyLight.position.set(4.5, 6.5, 5.5);
     scene.add(keyLight);
 
-    // Fill — soft violet from left (keeps brand mood, lower contrast side)
-    const fillLight = new THREE.DirectionalLight(0xa78bfa, 1.55);
+    // Fill — soft lavender from left, lifts shadows without flattening
+    const fillLight = new THREE.DirectionalLight(0xb9a8ff, 1.2);
     fillLight.position.set(-5.5, 2.2, 4);
     scene.add(fillLight);
 
-    // Rim / backlight — electric cyan edge separation (replaces orange rim)
-    const rimLight = new THREE.DirectionalLight(0x67e8f9, 4.2);
-    rimLight.position.set(-1.5, 4.5, -6.5);
+    // Rim — orchid backlight (matches the "together" accent) carves the
+    // silhouette out of the dark background
+    const rimLight = new THREE.DirectionalLight(0xd97ef9, 4.6);
+    rimLight.position.set(-3.5, 4.5, -6);
     scene.add(rimLight);
 
-    // Hair kick — magenta from back-left for cinematic color contrast
-    const kickLight = new THREE.DirectionalLight(0xe879f9, 2.1);
-    kickLight.position.set(5.5, 3.5, -4.5);
+    // Counter-rim — electric cyan from back-right for two-tone edges
+    const kickLight = new THREE.DirectionalLight(0x5eead4, 3.4);
+    kickLight.position.set(5.5, 3, -5);
     scene.add(kickLight);
 
     // Soft frontal catch light for face/detail readability
-    const catchLight = new THREE.PointLight(0xb8c9ff, 1.15, 18, 2);
+    const catchLight = new THREE.PointLight(0xe6ecff, 1.3, 18, 2);
     catchLight.position.set(0.4, 1.8, 5.5);
     scene.add(catchLight);
 
-    // Subtle under-bounce (deep indigo) — grounds the silhouette
-    const underLight = new THREE.PointLight(0x4c1d95, 0.85, 14, 2);
+    // Subtle under-bounce — muted violet, grounds the silhouette
+    const underLight = new THREE.PointLight(0x6d51c9, 0.7, 14, 2);
     underLight.position.set(0, -3.2, 2.5);
     scene.add(underLight);
 
@@ -78,7 +80,7 @@ export default function HeroCanvas() {
     const pageStartTime = performance.now();
     const ENTRY_DELAY_MS = 2100;
     const ENTRY_DURATION_MS = 1200;
-    const REST_Y = 0.2;
+    const REST_Y = -0.15;
 
     const qualityManager = new QualityManager();
     const fpsMonitor = new FPSMonitor();
@@ -100,7 +102,7 @@ export default function HeroCanvas() {
       startY = -visibleHalfHeight - scaledModelHalfHeight - 0.5;
 
       group.rotation.x = 0.0;
-      group.rotation.y = Math.PI;
+      group.rotation.y = -Math.PI / 2;
       group.position.y = startY;
 
       entryStartTime = Math.max(
@@ -115,7 +117,7 @@ export default function HeroCanvas() {
       scene,
       renderer,
       qualityManager,
-      targetSize: 5.7,
+      targetSize: 6.3,
       onModelReady: ({ group, size, scale, isInitial }) => {
         if (cancelled) return;
         placeModelForEntry(group, size, scale, {
@@ -128,20 +130,38 @@ export default function HeroCanvas() {
       console.error("Error loading adaptive genesis model:", error);
     });
 
-    let mouseX = 0;
-    let mouseY = 0;
+    // Pointer look — keep it subtle so the mascot feels attentive, not toy-like.
+    const BASE_ROT_Y = -Math.PI / 2;
+    const LOOK = {
+      yawMax: THREE.MathUtils.degToRad(9),
+      pitchMax: THREE.MathUtils.degToRad(4.5),
+      rollMax: THREE.MathUtils.degToRad(1.4),
+      // Spring: target → velocity → rotation (weight / inertia)
+      stiffness: 28,
+      damping: 7.5,
+      // Soften raw pointer so flicks don't yank the model
+      pointerEase: 6,
+    };
+
+    let pointerX = 0;
+    let pointerY = 0;
+    let smoothX = 0;
+    let smoothY = 0;
+    let velX = 0;
+    let velY = 0;
+    let velZ = 0;
 
     const onMouseMove = (event) => {
       if (window.scrollY < window.innerHeight) {
-        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        pointerX = (event.clientX / window.innerWidth) * 2 - 1;
+        pointerY = -(event.clientY / window.innerHeight) * 2 + 1;
       }
     };
 
     const onScroll = () => {
       if (window.scrollY >= window.innerHeight) {
-        mouseX = 0;
-        mouseY = 0;
+        pointerX = 0;
+        pointerY = 0;
       }
     };
 
@@ -210,17 +230,41 @@ export default function HeroCanvas() {
         }
 
         if (entryComplete) {
-          const targetRotationX = -mouseY * 0.2;
-          const targetRotationY = Math.PI + mouseX * 0.4;
-          const rotationFactor = 1 - Math.exp(-3 * dt);
+          // Ease pointer → spring target (never map mouse 1:1 onto rotation)
+          const pointerFactor = 1 - Math.exp(-LOOK.pointerEase * dt);
+          smoothX += (pointerX - smoothX) * pointerFactor;
+          smoothY += (pointerY - smoothY) * pointerFactor;
 
-          model.rotation.x +=
-            (targetRotationX - model.rotation.x) * rotationFactor;
-          model.rotation.y +=
-            (targetRotationY - model.rotation.y) * rotationFactor;
+          const targetX = -smoothY * LOOK.pitchMax;
+          const targetY = BASE_ROT_Y + smoothX * LOOK.yawMax;
+          const targetZ = -smoothX * LOOK.rollMax;
+
+          const spring = (current, target, vel) => {
+            const force = (target - current) * LOOK.stiffness;
+            const nextVel =
+              (vel + force * dt) * Math.exp(-LOOK.damping * dt);
+            return {
+              value: current + nextVel * dt,
+              vel: nextVel,
+            };
+          };
+
+          const sx = spring(model.rotation.x, targetX, velX);
+          const sy = spring(model.rotation.y, targetY, velY);
+          const sz = spring(model.rotation.z, targetZ, velZ);
+          model.rotation.x = sx.value;
+          model.rotation.y = sy.value;
+          model.rotation.z = sz.value;
+          velX = sx.vel;
+          velY = sy.vel;
+          velZ = sz.vel;
         } else {
           model.rotation.x = 0;
-          model.rotation.y = Math.PI;
+          model.rotation.y = BASE_ROT_Y;
+          model.rotation.z = 0;
+          velX = 0;
+          velY = 0;
+          velZ = 0;
         }
       }
 

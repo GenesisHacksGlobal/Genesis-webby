@@ -1,15 +1,18 @@
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
+import { MeshoptDecoder } from "meshoptimizer/decoder";
 import {
   DRACO_DECODER_PATH,
   KTX2_TRANSCODER_PATH,
 } from "../config/quality.config";
 
 /**
- * Shared GLTF + DRACO + KTX2 loader factory.
+ * Shared GLTF + DRACO + KTX2 + Meshopt loader factory.
  * - DRACO: existing Google-hosted decoder path (unchanged).
  * - KTX2: Basis transcoder via three.js defaults (bundler) or optional CDN path.
+ * - Meshopt: required for gltfpack / EXT_meshopt_compression assets
+ *   (e.g. /model/genesis-model.glb).
  * WebP/JPEG textures continue to work without KTX2 present in the GLB.
  */
 export function createGLTFLoader({
@@ -31,6 +34,7 @@ export function createGLTFLoader({
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);
   loader.setKTX2Loader(ktx2Loader);
+  loader.setMeshoptDecoder(MeshoptDecoder);
 
   return {
     loader,
