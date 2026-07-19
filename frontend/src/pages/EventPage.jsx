@@ -5,9 +5,10 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SAMVEDNA_PHOTOS, NO_AGENDA_1_PHOTOS } from "@/data/mediaAssets";
+import { SAMVEDNA_PHOTOS, NO_AGENDA_1_PHOTOS, GALLERY_PHOTOS } from "@/data/mediaAssets";
 import { eventDatabase } from "@/data/eventDatabase";
 import { createPlayGate } from "@/performance/utils/createPlayGate";
+import { SpiralImages } from "@/components/ui";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -385,7 +386,12 @@ export default function WorkSection({ cards = defaultCards }) {
       <style dangerouslySetInnerHTML={{ __html: cssContent }} />
       
       {/* Intro Header */}
-      <section className="intro flex flex-col items-center justify-center relative min-h-screen text-center px-4">
+      <section className="intro flex flex-col items-center justify-center relative min-h-screen text-center px-4 overflow-hidden">
+        <div className="intro-spiral-container">
+          <SpiralImages images={GALLERY_PHOTOS} />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080212]/30 via-transparent to-[#080212] pointer-events-none z-[1]" />
+        
         <div className="absolute top-8 left-8 z-50">
           <Link
             to="/"
@@ -395,7 +401,7 @@ export default function WorkSection({ cards = defaultCards }) {
           </Link>
         </div>
         
-        <div className="max-w-4xl mx-auto flex flex-col items-center gap-4">
+        <div className="max-w-4xl mx-auto flex flex-col items-center gap-4 relative z-10">
           <span className="overline tracking-[0.3em] text-[var(--brand)]">Genesis Community</span>
           <h1 className="font-display text-6xl md:text-8xl tracking-tighter text-[var(--heading)] animate-pulse">
             EVENTS
@@ -803,6 +809,17 @@ const cssContent = `
   align-items: center;
   background-color: var(--bg);
   color: var(--text);
+}
+
+.work-section-wrapper .intro-spiral-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .work-section-wrapper .intro h1,
