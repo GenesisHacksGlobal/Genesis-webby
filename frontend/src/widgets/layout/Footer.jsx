@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BlackHole from "@shared/ui/BlackHole";
 import { prefersReducedMotion } from "@shared/hooks/useAnimationLifecycle";
 
 export default function Footer() {
+    const footerRef = useRef(null);
+    const blackHoleTiltRef = useRef(158);
     const [email, setEmail] = useState("");
     const [particleCount, setParticleCount] = useState(520);
     const [enableBlackHole, setEnableBlackHole] = useState(false);
@@ -25,8 +27,23 @@ export default function Footer() {
         };
     }, []);
 
+    const handlePointerMove = (event) => {
+        if (event.pointerType !== "mouse" || !footerRef.current) return;
+
+        const rect = footerRef.current.getBoundingClientRect();
+        const normalizedX = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        blackHoleTiltRef.current = 158 + normalizedX * 7;
+    };
+
+    const resetPointerTilt = () => {
+        blackHoleTiltRef.current = 158;
+    };
+
     return (
         <footer
+            ref={footerRef}
+            onPointerMove={handlePointerMove}
+            onPointerLeave={resetPointerTilt}
             className="site-footer"
             style={{
                 backgroundColor: "transparent",
@@ -195,7 +212,7 @@ export default function Footer() {
                             style={{
                                 padding: "0.7rem 1.4rem",
                                 background: "var(--text)",
-                                color: "#0a0443",
+                                color: "#181818",
                                 border: "none",
                                 borderRadius: "5px",
                                 fontSize: "0.82rem",
@@ -274,10 +291,11 @@ export default function Footer() {
                             outerRadius={78}
                             tilt={18}
                             tiltSideway={158}
+                            tiltSidewayRef={blackHoleTiltRef}
                             trail={48}
                             orbitSpeed={3.6}
                             pullSpeed={0}
-                            voidColor="#0a0443"
+                            voidColor="#181818"
                             background="transparent"
                             centre={{ voidRadius: 74, voidX: 50, voidY: 34 }}
                         />

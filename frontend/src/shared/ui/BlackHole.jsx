@@ -26,7 +26,7 @@ const DEFAULTS = {
   trail: 50,
   orbitSpeed: 4,
   pullSpeed: 0,
-  voidColor: "#0a0443",
+  voidColor: "#181818",
   background: "transparent",
 };
 
@@ -85,6 +85,7 @@ export default function BlackHole(incomingProps) {
     outerRadius = DEFAULTS.outerRadius,
     tilt = DEFAULTS.tilt,
     tiltSideway = DEFAULTS.tiltSideway,
+    tiltSidewayRef,
     trail: trailRaw = DEFAULTS.trail,
     orbitSpeed = DEFAULTS.orbitSpeed,
     pullSpeed: pullSpeedRaw = DEFAULTS.pullSpeed,
@@ -208,6 +209,7 @@ export default function BlackHole(incomingProps) {
     let alive = true;
     let playing = true;
     let draw = () => {};
+    let currentTiltSideway = tiltSideway;
 
     const gate = createPlayGate(containerRef.current, {
       rootMargin: "200px 0px",
@@ -253,7 +255,11 @@ export default function BlackHole(incomingProps) {
       const voidCy = (voidY / 100) * h;
       const pts = particlesRef.current;
       const tiltRad = (tilt * Math.PI) / 180;
-      const tiltSidewayRad = (tiltSideway * Math.PI) / 180;
+      const targetTiltSideway = Number.isFinite(tiltSidewayRef?.current)
+        ? tiltSidewayRef.current
+        : tiltSideway;
+      currentTiltSideway += (targetTiltSideway - currentTiltSideway) * 0.08;
+      const tiltSidewayRad = (currentTiltSideway * Math.PI) / 180;
 
       const backgroundParticles = [];
       const foregroundParticles = [];
@@ -414,6 +420,7 @@ export default function BlackHole(incomingProps) {
     outerRadFromSize,
     tilt,
     tiltSideway,
+    tiltSidewayRef,
     trailAlpha,
     orbitSpeed,
     pullSpeed,
