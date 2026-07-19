@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "@/styles/globals.css";
-import App from "@/App";
-import { lockStableViewportHeight } from "@/utils/viewport";
+import "@shared/styles/globals.css";
+import App from "@app/App";
+import { lockStableViewportHeight } from "@shared/lib/viewport";
 
 lockStableViewportHeight();
 
