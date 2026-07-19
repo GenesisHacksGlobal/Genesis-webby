@@ -746,33 +746,6 @@ export default function WorkSection({ cards = defaultCards }) {
         })()}
       </AnimatePresence>
       
-      {/* Footer Outro */}
-      <section className="outro flex flex-col items-center justify-center relative min-h-screen text-center px-4">
-        <div className="max-w-3xl mx-auto flex flex-col items-center gap-4">
-          <h2 className="font-display text-5xl md:text-7xl tracking-tighter text-[var(--heading)] uppercase">
-            Be part of the next chapter.
-          </h2>
-          <p className="font-sans text-[var(--text-dim)] max-w-md mt-4 leading-relaxed">
-            Whether you want to speak, host, or sponsor, there's always space for you.
-          </p>
-          <div className="mt-8 flex gap-4">
-            <Link
-              to="/"
-              className="btn-cinema"
-            >
-              Back to Home
-            </Link>
-            <a
-              href="https://luma.com/6nxec8uw?tk=Cw5Fsi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-ghost"
-            >
-              Join Next Meetup
-            </a>
-          </div>
-        </div>
-      </section>
 
       <Footer />
     </div>
