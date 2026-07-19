@@ -93,14 +93,18 @@
                     }),
                     (e.__SV = 1));
             })(document, window.posthog || []);
-            posthog.init("%REACT_APP_POSTHOG_KEY%", {
-                api_host: "%REACT_APP_POSTHOG_HOST%",
-                person_profiles: "identified_only",
-                session_recording: {
-                    recordCrossOriginIframes: true,
-                    capturePerformance: false,
-                },
-            });
+            var _phKey = "%REACT_APP_POSTHOG_KEY%";
+            var _phHost = "%REACT_APP_POSTHOG_HOST%";
+            if (_phKey && !_phKey.startsWith("%") && _phHost && !_phHost.startsWith("%")) {
+                posthog.init(_phKey, {
+                    api_host: _phHost,
+                    person_profiles: "identified_only",
+                    session_recording: {
+                        recordCrossOriginIframes: true,
+                        capturePerformance: false,
+                    },
+                });
+            }
         </script>
     </body>
 </html>

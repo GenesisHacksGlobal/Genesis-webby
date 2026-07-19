@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
@@ -27,19 +27,19 @@ const defaultCards = [
 
 const getCategoryImageUrl = (category, index) => {
   const hackathonImages = [
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=800&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200&auto=format&fit=crop"
   ];
   const workshopImages = [
-    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=800&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=1200&auto=format&fit=crop"
   ];
   const meetupImages = [
-    "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=800&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?q=80&w=1200&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=1200&auto=format&fit=crop"
   ];
   
   const cat = (category || "").toLowerCase();
@@ -57,10 +57,50 @@ const isUrl = (str) => str && (str.startsWith("http://") || str.startsWith("http
 
 const cleanEvents = eventDatabase
   .filter(e => e.title && e.date && e.location && !e.title.startsWith("http"))
-  .map((e, index) => ({
-    ...e,
-    img: getCategoryImageUrl(e.category, index)
-  }));
+  .map((e, index) => {
+    // Extract year from date string (e.g. "18 September 2024" -> "2024")
+    const matchYear = e.date ? e.date.match(/20\d\d/) : null;
+    const year = matchYear ? matchYear[0] : (index % 2 === 0 ? "2024" : "2023");
+    // Extract city from location (e.g. "SRM IST, Delhi NCR" -> "Delhi NCR")
+    const parts = (e.location || "").split(",");
+    const city = parts.length > 1 ? parts[parts.length - 1].trim() : (e.location || "India");
+
+    return {
+      ...e,
+      year,
+      city,
+      img: getCategoryImageUrl(e.category, index)
+    };
+  });
+
+// Count animation component for archive header
+function AnimatedCounter({ value = 110, duration = 2 }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const end = parseInt(value, 10);
+    if (start === end) return;
+    const totalMiliseconds = duration * 1000;
+    const incrementTime = 30;
+    const steps = totalMiliseconds / incrementTime;
+    const increment = (end - start) / steps;
+
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, incrementTime);
+
+    return () => clearInterval(timer);
+  }, [value, duration]);
+
+  return <span>{count}</span>;
+}
 
 export default function WorkSection({ cards = defaultCards }) {
   const workSectionRef = useRef(null);
@@ -68,26 +108,29 @@ export default function WorkSection({ cards = defaultCards }) {
   const cardsContainerRef = useRef(null);
   const letterRefs = useRef([]);
 
-  // Search & Filter State
+  // Search & Filter State (Linear Command Bar)
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  
-  // Selected event for the detail modal
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  
-  // Visualizer expand state
-  const [isVisualizerOpen, setIsVisualizerOpen] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [selectedCity, setSelectedCity] = useState("All");
+  const [isCommandOpen, setIsCommandOpen] = useState(false);
 
-  // Reset refs on each render to avoid stale references
+  // Selected event for morphing Detail Page
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
+  // Timeline zoom & hover state
+  const [timelineZoom, setTimelineZoom] = useState(1);
+  const [hoveredTimelineNode, setHoveredTimelineNode] = useState(null);
+
   letterRefs.current = [];
 
+  // 3D Canvas Scroll Setup
   useEffect(() => {
     const workSection = workSectionRef.current;
     const textContainer = textContainerRef.current;
     const cardsContainer = cardsContainerRef.current;
     if (!workSection || !textContainer || !cardsContainer) return;
 
-    // Initialize Lenis scroll smoothing
     const lenis = new Lenis();
     const scrollHandler = () => ScrollTrigger.update();
     lenis.on("scroll", scrollHandler);
@@ -111,7 +154,6 @@ export default function WorkSection({ cards = defaultCards }) {
 
     const lerp = (start, end, t) => start * (1 - t) + end * t;
 
-    // ----- Canvas Grid -----
     const gridCanvas = document.createElement("canvas");
     gridCanvas.id = "grid-canvas";
     workSection.appendChild(gridCanvas);
@@ -128,40 +170,27 @@ export default function WorkSection({ cards = defaultCards }) {
 
     const drawGrid = (scrollProgress = 0) => {
       gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
-      gridCtx.fillStyle = "#131313"; // Match deep theme color
+      gridCtx.fillStyle = "#0a0a0c";
       gridCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-      gridCtx.fillStyle = "rgba(196, 181, 253, 0.35)"; // Accent/brand color dots
+      gridCtx.fillStyle = "rgba(196, 181, 253, 0.25)";
 
       const dotSize = 1;
-      const spacing = 30;
+      const spacing = 36;
       const rows = Math.ceil(window.innerHeight / spacing);
       const cols = Math.ceil(window.innerWidth / spacing) + 15;
-
       const offset = (scrollProgress * spacing * 10) % spacing;
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
           gridCtx.beginPath();
-          gridCtx.arc(
-            x * spacing - offset,
-            y * spacing,
-            dotSize,
-            0,
-            Math.PI * 2
-          );
+          gridCtx.arc(x * spacing - offset, y * spacing, dotSize, 0, Math.PI * 2);
           gridCtx.fill();
         }
       }
     };
 
-    // ----- THREE.JS Setup -----
     const lettersScene = new THREE.Scene();
-    const lettersCamera = new THREE.PerspectiveCamera(
-      50,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
+    const lettersCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
     lettersCamera.position.z = 20;
 
     const isCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
@@ -176,7 +205,6 @@ export default function WorkSection({ cards = defaultCards }) {
     lettersRenderer.domElement.id = "letters-canvas";
     workSection.appendChild(lettersRenderer.domElement);
 
-    // ----- Animated Text Paths -----
     const createTextAnimationPath = (yPos, amplitude) => {
       const points = [];
       for (let i = 0; i <= 20; i++) {
@@ -189,7 +217,6 @@ export default function WorkSection({ cards = defaultCards }) {
           )
         );
       }
-
       const curve = new THREE.CatmullRomCurve3(points);
       const line = new THREE.Line(
         new THREE.BufferGeometry().setFromPoints(curve.getPoints(100)),
@@ -205,14 +232,12 @@ export default function WorkSection({ cards = defaultCards }) {
       createTextAnimationPath(-2.5, 0.8),
       createTextAnimationPath(-7.5, 1.5),
     ];
-
     paths.forEach(line => lettersScene.add(line));
 
     const lettersPositions = new Map();
     const lettersList = ["E", "V", "E", "N", "T", "S"];
     const lineSpeedMultipliers = [0.8, 1, 0.7, 0.9];
 
-    // Map DOM elements to paths & initialize positions
     paths.forEach((line, pathIndex) => {
       line.letterElements = [];
       lettersList.forEach((char, letterIndex) => {
@@ -220,10 +245,7 @@ export default function WorkSection({ cards = defaultCards }) {
         const el = letterRefs.current[elIdx];
         if (el) {
           line.letterElements.push(el);
-          lettersPositions.set(el, {
-            current: { x: 0, y: 0 },
-            target: { x: 0, y: 0 }
-          });
+          lettersPositions.set(el, { current: { x: 0, y: 0 }, target: { x: 0, y: 0 } });
         }
       });
     });
@@ -231,9 +253,7 @@ export default function WorkSection({ cards = defaultCards }) {
     const updateTargetPositions = (scrollProgress) => {
       paths.forEach((line, index) => {
         line.letterElements.forEach((el, i) => {
-          const point = line.curve.getPoint(
-            (i / 14 + scrollProgress * lineSpeedMultipliers[index]) % 1
-          );
+          const point = line.curve.getPoint((i / 14 + scrollProgress * lineSpeedMultipliers[index]) % 1);
           const vector = point.clone().project(lettersCamera);
           const position = lettersPositions.get(el);
           if (position) {
@@ -259,7 +279,6 @@ export default function WorkSection({ cards = defaultCards }) {
           position.current.x = lerp(position.current.x, position.target.x, 0.07);
           position.current.y = lerp(position.current.y, position.target.y, 0.07);
         }
-        
         element.style.transform = `translate(-50%, -50%) translate3d(${position.current.x}px, ${position.current.y}px, 0)`;
       });
     };
@@ -332,12 +351,10 @@ export default function WorkSection({ cards = defaultCards }) {
       const progress = workTrigger ? workTrigger.progress : 0;
       resizeGridCanvas();
       drawGrid(progress);
-      
       lettersCamera.aspect = window.innerWidth / window.innerHeight;
       lettersCamera.updateProjectionMatrix();
       lettersRenderer.setSize(window.innerWidth, window.innerHeight);
       lettersRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      
       updateTargetPositions(progress);
     };
 
@@ -355,14 +372,8 @@ export default function WorkSection({ cards = defaultCards }) {
       lenis.destroy();
       gsap.ticker.remove(tickerHandler);
       gsap.ticker.wake();
-      
-      if (gridCanvas.parentNode) {
-        gridCanvas.parentNode.removeChild(gridCanvas);
-      }
-      if (lettersRenderer.domElement.parentNode) {
-        lettersRenderer.domElement.parentNode.removeChild(lettersRenderer.domElement);
-      }
-      
+      if (gridCanvas.parentNode) gridCanvas.parentNode.removeChild(gridCanvas);
+      if (lettersRenderer.domElement.parentNode) lettersRenderer.domElement.parentNode.removeChild(lettersRenderer.domElement);
       lettersRenderer.dispose();
       paths.forEach(line => {
         line.geometry.dispose();
@@ -373,57 +384,83 @@ export default function WorkSection({ cards = defaultCards }) {
 
   const pathsCount = 4;
   const lettersList = ["E", "V", "E", "N", "T", "S"];
-  const categories = ["All", ...new Set(cleanEvents.map(e => e.category))];
 
-  // Filtering Logic
-  const filteredEvents = cleanEvents.filter(event => {
-    const matchesCategory = selectedCategory === "All" || event.category === selectedCategory;
-    const matchesSearch = 
-      event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (event.sponsors && event.sponsors.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  // Unique categories, years, cities
+  const categories = useMemo(() => ["All", ...new Set(cleanEvents.map(e => e.category))], []);
+  const years = useMemo(() => ["All", ...new Set(cleanEvents.map(e => e.year).filter(Boolean))].sort().reverse(), []);
+  const cities = useMemo(() => ["All", ...new Set(cleanEvents.map(e => e.city).filter(Boolean))], []);
 
-  const bentoLimit = 8;
-  const bentoEvents = filteredEvents.slice(0, bentoLimit);
-  const timelineEvents = filteredEvents.slice(bentoLimit);
+  // Filtered Events
+  const filteredEvents = useMemo(() => {
+    return cleanEvents.filter(event => {
+      const matchesCategory = selectedCategory === "All" || event.category === selectedCategory;
+      const matchesYear = selectedYear === "All" || event.year === selectedYear;
+      const matchesCity = selectedCity === "All" || event.city === selectedCity;
+      const matchesSearch =
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (event.sponsors && event.sponsors.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesCategory && matchesYear && matchesCity && matchesSearch;
+    });
+  }, [searchQuery, selectedCategory, selectedYear, selectedCity]);
+
+  // Featured Events (4 to 6 large editorial items)
+  const featuredEvents = useMemo(() => cleanEvents.slice(0, 5), []);
+
+  // Timeline events sorted by date/id
+  const timelineEvents = useMemo(() => cleanEvents.slice(0, 16), []);
 
   return (
-    <div className="work-section-wrapper">
+    <div className="work-section-wrapper bg-[#0a0a0c] text-white selection:bg-[var(--brand)] selection:text-black">
       <style dangerouslySetInnerHTML={{ __html: cssContent }} />
-      
-      {/* Intro Header */}
+
+      {/* ──────────────────────────────────────────────────
+          HERO / INTRO SECTION
+      ────────────────────────────────────────────────── */}
       <section className="intro flex flex-col items-center justify-center relative min-h-screen text-center px-4 overflow-hidden">
         <div className="intro-spiral-container">
           <SpiralImages images={GALLERY_PHOTOS} />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/30 via-transparent to-[#131313] pointer-events-none z-[1]" />
-        
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c]/40 via-[#0a0a0c]/60 to-[#0a0a0c] pointer-events-none z-[1]" />
+
         <div className="absolute top-8 left-8 z-50">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 border border-white/10 bg-black/40 hover:bg-white/10 px-4 py-2 text-xs font-mono uppercase tracking-[0.2em] text-[var(--text)] transition-all rounded hover:border-white/20 backdrop-blur-md"
+            className="inline-flex items-center gap-2 border border-white/10 bg-black/40 hover:bg-white/10 px-4 py-2 text-xs font-mono uppercase tracking-[0.2em] text-white/80 hover:text-white transition-all rounded-full hover:border-white/25 backdrop-blur-md"
           >
-            â† Home
+            ← Genesis Home
           </Link>
         </div>
-        
-        <div className="max-w-4xl mx-auto flex flex-col items-center gap-4 relative z-10">
-          <span className="overline tracking-[0.3em] text-[var(--brand)]">Genesis Community</span>
-          <h1 className="font-display text-6xl md:text-8xl tracking-tighter text-[var(--heading)] animate-pulse">
-            EVENTS
+
+        <div className="max-w-5xl mx-auto flex flex-col items-center gap-6 relative z-10 pt-16">
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--brand)] animate-ping" />
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[var(--brand)]">
+              Digital Event Archive
+            </span>
+          </div>
+
+          <h1 className="font-display text-5xl sm:text-7xl md:text-9xl tracking-tight text-white uppercase leading-none">
+            GENESIS ARCHIVE
           </h1>
-          <p className="font-sans text-[var(--text-dim)] max-w-lg mt-4 leading-relaxed">
-            Scroll down to explore our interactive chronological line-up, guest panels, and community workshops.
+
+          <p className="font-sans text-base sm:text-xl text-white/60 max-w-xl font-light leading-relaxed">
+            Exploring five years of hackathons, workshops, AI summits, and community developer gatherings.
           </p>
-          <div className="mt-8 animate-bounce font-mono text-xs text-[var(--text-faint)] uppercase tracking-widest">
-            Scroll to explore â†“
+
+          <div className="mt-6 flex items-center gap-8 font-mono text-xs text-white/40 tracking-wider">
+            <div><span className="text-white font-bold">110+</span> RECORDS</div>
+            <div className="w-1 h-1 rounded-full bg-white/20" />
+            <div><span className="text-white font-bold">2022–2026</span> ERA</div>
+            <div className="w-1 h-1 rounded-full bg-white/20" />
+            <div><span className="text-white font-bold">10K+</span> ATTENDEES</div>
           </div>
         </div>
       </section>
-      
-      {/* 3D Scroll Gallery */}
+
+      {/* ──────────────────────────────────────────────────
+          3D SCROLL GALLERY
+      ────────────────────────────────────────────────── */}
       <section className="work" ref={workSectionRef}>
         <div className="text-container" ref={textContainerRef}>
           {Array.from({ length: pathsCount }).map((_, pathIndex) => (
@@ -433,9 +470,7 @@ export default function WorkSection({ cards = defaultCards }) {
                   key={letterIndex}
                   className="letter"
                   ref={(el) => {
-                    if (el) {
-                      letterRefs.current.push(el);
-                    }
+                    if (el) letterRefs.current.push(el);
                   }}
                 >
                   {char}
@@ -444,17 +479,12 @@ export default function WorkSection({ cards = defaultCards }) {
             </React.Fragment>
           ))}
         </div>
-        
+
         <div className="cards" ref={cardsContainerRef}>
           {cards.map((card, idx) => (
             <div className="card" key={idx}>
               <div className="card-img">
-                <img
-                  src={card.img}
-                  alt={card.title}
-                  loading="lazy"
-                  decoding="async"
-                />
+                <img src={card.img} alt={card.title} loading="lazy" decoding="async" />
               </div>
               <div className="card-copy">
                 <p>{card.title}</p>
@@ -465,170 +495,399 @@ export default function WorkSection({ cards = defaultCards }) {
         </div>
       </section>
 
-      {/* Bento Grid Event Gallery Section */}
-      <section className="bento-section relative z-20 w-full border-t border-white/10 py-12 sm:py-16 md:py-20">
-        <div className="bento-container max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10 lg:px-12 w-full">
-          <div className="mb-8 flex flex-col justify-between gap-6 sm:mb-12 md:mb-16 md:flex-row md:items-end md:gap-8">
-            <div className="min-w-0">
-              <div className="mb-3 flex items-center gap-3 sm:mb-4">
-                <span className="block h-px w-6 bg-[var(--brand)] animate-pulse" />
-                <span className="overline text-[var(--brand)]">Curated Bento Layout</span>
-              </div>
-              <h2 className="font-display text-[clamp(1.75rem,6vw,3.75rem)] leading-[1.05] tracking-tight text-[var(--heading)]">
-                THE BENTO GALLERY
-              </h2>
-            </div>
-            
-            {/* Bento Search HUD */}
-            <div className="relative w-full shrink-0 md:max-w-md">
-              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-[9px] tracking-widest text-[var(--text-faint)] sm:left-4 sm:text-[10px]">
-                [ FIND ]
+      {/* ──────────────────────────────────────────────────
+          MAIN ARCHIVE CONTAINER
+      ────────────────────────────────────────────────── */}
+      <div className="relative z-20 max-w-[1400px] mx-auto px-4 sm:px-8 md:px-12 py-16 space-y-32">
+
+        {/* ──────────────────────────────────────────────────
+            SECTION 01: THE ARCHIVE (Hero Statement & Counter)
+        ────────────────────────────────────────────────── */}
+        <section className="relative border-y border-white/10 py-24 md:py-32 flex flex-col justify-between overflow-hidden">
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-[var(--brand)]/10 rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-12">
+            <div className="space-y-6 max-w-3xl">
+              <span className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--brand)]">
+                SECTION 01 // OVERVIEW
               </span>
+              <h2 className="font-display text-6xl sm:text-8xl md:text-9xl tracking-tight uppercase text-white leading-none">
+                <AnimatedCounter value={110} duration={2.5} /> <span className="text-white/20">EVENTS</span>
+              </h2>
+              <p className="font-sans text-xl sm:text-2xl text-white/70 font-light leading-relaxed">
+                Explore five years of hackathons, workshops, AI summits and community meetups that shaped the developer ecosystem.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-start md:items-end gap-3 font-mono text-xs text-white/40">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span>ARCHIVE STATUS: ACTIVE</span>
+              </div>
+              <div>UPDATED JULY 2026</div>
+            </div>
+          </div>
+
+          {/* Animated Timeline Bar */}
+          <div className="mt-16 w-full h-px bg-white/10 relative overflow-hidden">
+            <motion.div
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+              className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-transparent via-[var(--brand)] to-transparent"
+            />
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────
+            SECTION 04: FILTER (Floating Linear Command Bar)
+        ────────────────────────────────────────────────── */}
+        <section className="sticky top-6 z-50">
+          <div className="mx-auto max-w-4xl bg-black/75 backdrop-blur-2xl border border-white/15 rounded-2xl p-3 sm:p-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col md:flex-row items-center gap-3 transition-all">
+            
+            {/* Search Input */}
+            <div className="relative flex-1 w-full flex items-center">
+              <svg className="w-4 h-4 ml-3 text-white/40 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
               <input
-                type="search"
-                placeholder="Search title, venue, sponsors..."
+                type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded border border-white/10 bg-black/45 py-3 pl-[4.5rem] pr-14 font-sans text-xs tracking-wide text-[var(--text)] outline-none transition-all duration-300 placeholder:text-white/20 focus:border-[var(--brand)] sm:py-3.5 sm:pl-24 sm:pr-12 shadow-[0_0_15px_rgba(0,0,0,0.5)]"
+                placeholder="Search events, cities, partners..."
+                className="w-full bg-transparent px-3 py-2 text-sm text-white placeholder-white/40 focus:outline-none font-sans"
               />
               {searchQuery && (
-                <button 
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 min-h-9 min-w-9 -translate-y-1/2 font-mono text-[10px] text-[var(--brand)] transition-colors hover:text-white sm:right-4"
-                >
-                  CLEAR
-                </button>
+                <button onClick={() => setSearchQuery("")} className="mr-2 text-xs text-white/40 hover:text-white">✕</button>
               )}
             </div>
+
+            {/* Filter Dropdowns */}
+            <div className="flex flex-wrap items-center gap-2 w-full md:w-auto shrink-0 border-t md:border-t-0 md:border-l border-white/10 pt-2 md:pt-0 md:pl-3">
+              {/* Category */}
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="bg-white/5 border border-white/10 text-white/80 text-xs font-mono rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[var(--brand)]"
+              >
+                {categories.map(cat => <option key={cat} value={cat} className="bg-[#121215]">{cat === "All" ? "Category: All" : cat}</option>)}
+              </select>
+
+              {/* Year */}
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="bg-white/5 border border-white/10 text-white/80 text-xs font-mono rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[var(--brand)]"
+              >
+                {years.map(yr => <option key={yr} value={yr} className="bg-[#121215]">{yr === "All" ? "Year: All" : yr}</option>)}
+              </select>
+
+              {/* City */}
+              <select
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}
+                className="bg-white/5 border border-white/10 text-white/80 text-xs font-mono rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[var(--brand)]"
+              >
+                {cities.map(c => <option key={c} value={c} className="bg-[#121215]">{c === "All" ? "City: All" : c}</option>)}
+              </select>
+
+              {/* Reset filter button */}
+              {(selectedCategory !== "All" || selectedYear !== "All" || selectedCity !== "All" || searchQuery) && (
+                <button
+                  onClick={() => {
+                    setSelectedCategory("All");
+                    setSelectedYear("All");
+                    setSelectedCity("All");
+                    setSearchQuery("");
+                  }}
+                  className="px-2.5 py-1.5 text-[10px] font-mono uppercase tracking-wider text-rose-400 hover:text-rose-300 bg-rose-500/10 rounded-lg transition-colors"
+                >
+                  Reset
+                </button>
+              )}
+
+              <span className="hidden lg:inline-flex px-2 py-1 border border-white/10 rounded text-[9px] font-mono text-white/30">⌘K</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────
+            SECTION 02: FEATURED EVENTS (Asymmetric Magazine Hero)
+        ────────────────────────────────────────────────── */}
+        <section className="space-y-12">
+          <div className="flex items-center justify-between border-b border-white/10 pb-6">
+            <div>
+              <span className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--brand)]">
+                SECTION 02 // CURATED
+              </span>
+              <h3 className="font-display text-4xl sm:text-6xl text-white uppercase tracking-tight mt-2">
+                FEATURED HIGHLIGHTS
+              </h3>
+            </div>
+            <span className="hidden sm:inline-block font-mono text-xs text-white/40">EDITORIAL PICK 01—05</span>
           </div>
 
-          {/* Bento Category HUD — scrollable on small screens */}
-          <div className="bento-category-hud mb-8 sm:mb-10 md:mb-12">
-            <div className="bento-category-track">
-              {categories.map(cat => {
-                const isActive = selectedCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    type="button"
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`shrink-0 rounded border px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-all duration-300 sm:px-5 ${
-                      isActive 
-                        ? "border-[var(--brand)] bg-[var(--brand)] font-bold text-[#181818] shadow-[0_0_20px_rgba(196,181,253,0.35)]" 
-                        : "border-white/10 bg-transparent text-[var(--text-dim)] hover:border-white/30 hover:text-white"
-                    }`}
-                  >
-                    {cat}s
-                  </button>
-                );
-              })}
+          {/* Asymmetric 70% / 30% Magazine Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Main Hero Card (70% width) */}
+            {featuredEvents[0] && (
+              <motion.div
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.4 }}
+                onClick={() => setSelectedEvent(featuredEvents[0])}
+                className="lg:col-span-8 group relative rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02] cursor-pointer min-h-[500px] flex flex-col justify-end p-8 sm:p-12 shadow-2xl"
+              >
+                {/* Background Image with parallax reveal */}
+                <div className="absolute inset-0 overflow-hidden z-0">
+                  <img
+                    src={featuredEvents[0].img}
+                    alt={featuredEvents[0].title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-40 group-hover:opacity-50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/60 to-transparent" />
+                </div>
+
+                {/* Content Overlay */}
+                <div className="relative z-10 space-y-4">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="px-3 py-1 text-[10px] font-mono uppercase tracking-widest bg-[var(--brand)] text-black font-bold rounded-full">
+                      {featuredEvents[0].category}
+                    </span>
+                    <span className="font-mono text-xs text-white/70">{featuredEvents[0].city} • {featuredEvents[0].year}</span>
+                    <span className="ml-auto font-mono text-xs text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">
+                      {featuredEvents[0].attendees || "500+ Attendees"}
+                    </span>
+                  </div>
+
+                  <h4 className="font-display text-4xl sm:text-6xl text-white uppercase tracking-tight group-hover:text-[var(--heading)] transition-colors leading-none">
+                    {featuredEvents[0].title}
+                  </h4>
+
+                  <p className="font-sans text-white/70 text-base sm:text-lg max-w-xl font-light line-clamp-2">
+                    A flagship developer gathering bringing together engineers, designers, and founders across India.
+                  </p>
+
+                  <div className="pt-4 flex items-center gap-3 font-mono text-xs text-[var(--brand)] group-hover:translate-x-2 transition-transform">
+                    <span>EXPLORE ARCHIVE RECORD</span>
+                    <span>→</span>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Supporting Editorial Cards (30% width) */}
+            <div className="lg:col-span-4 flex flex-col gap-8">
+              {featuredEvents.slice(1, 3).map((event) => (
+                <motion.div
+                  key={event.id}
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.4 }}
+                  onClick={() => setSelectedEvent(event)}
+                  className="flex-1 group relative rounded-3xl overflow-hidden border border-white/10 bg-white/[0.02] cursor-pointer p-6 sm:p-8 flex flex-col justify-between min-h-[240px]"
+                >
+                  <div className="absolute inset-0 overflow-hidden z-0">
+                    <img
+                      src={event.img}
+                      alt={event.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-25 group-hover:opacity-45"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/80 to-transparent" />
+                  </div>
+
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 text-[9px] font-mono uppercase tracking-widest border border-white/20 text-white/80 rounded-full backdrop-blur-md">
+                      {event.category}
+                    </span>
+                    <span className="font-mono text-xs text-white/50">{event.year}</span>
+                  </div>
+
+                  <div className="relative z-10 mt-12 space-y-2">
+                    <h5 className="font-display text-2xl text-white uppercase tracking-tight group-hover:text-[var(--heading)] transition-colors">
+                      {event.title}
+                    </h5>
+                    <p className="font-sans text-xs text-white/60 line-clamp-1">{event.location}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────
+            SECTION 03: TIMELINE (Horizontal Interactive Axis)
+        ────────────────────────────────────────────────── */}
+        <section className="space-y-10 border-t border-white/10 pt-20">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+            <div>
+              <span className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--brand)]">
+                SECTION 03 // CHRONOLOGY
+              </span>
+              <h3 className="font-display text-4xl sm:text-6xl text-white uppercase tracking-tight mt-2">
+                2022 — 2026 TIMELINE
+              </h3>
+            </div>
+
+            {/* Zoom Controls */}
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs text-white/40">ZOOM:</span>
+              <button
+                onClick={() => setTimelineZoom(z => Math.max(0.8, z - 0.2))}
+                className="w-8 h-8 rounded-full border border-white/15 hover:border-white/40 flex items-center justify-center font-mono text-sm"
+              >
+                -
+              </button>
+              <span className="font-mono text-xs text-white/80 w-10 text-center">{Math.round(timelineZoom * 100)}%</span>
+              <button
+                onClick={() => setTimelineZoom(z => Math.min(1.8, z + 0.2))}
+                className="w-8 h-8 rounded-full border border-white/15 hover:border-white/40 flex items-center justify-center font-mono text-sm"
+              >
+                +
+              </button>
             </div>
           </div>
 
-          {/* Bento Grid */}
-          <motion.div 
-            layout
-            className="bento-grid"
-          >
-            {/* Static Stats Bento Block */}
-            <motion.div
-              layout
-              className="bento-cell bento-small bento-stats flex flex-col justify-between border border-dashed border-white/20 bg-white/[0.01] p-4 sm:p-5 md:p-6 rounded"
+          {/* Horizontal Drag/Scroll Canvas */}
+          <div className="relative overflow-x-auto custom-scrollbar pb-12 pt-8">
+            <div
+              className="flex items-center gap-12 min-w-max px-8 relative"
+              style={{ transform: `scale(${timelineZoom})`, transformOrigin: "left center", transition: "transform 0.3s ease" }}
             >
-              <div className="font-mono text-[9px] tracking-widest text-[var(--text-faint)]">[ COMMUNITY SCOPE ]</div>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-1 md:gap-0 md:contents">
-                <div>
-                  <div className="mb-1 font-display text-3xl leading-none text-[var(--brand)] sm:text-4xl">50+</div>
-                  <div className="font-sans text-[10px] uppercase tracking-wider text-[var(--text-dim)]">Total Hosted Events</div>
-                </div>
-                <div>
-                  <div className="mb-1 font-display text-3xl leading-none text-[var(--heading)] sm:text-4xl">10k+</div>
-                  <div className="font-sans text-[10px] uppercase tracking-wider text-[var(--text-dim)]">Attendees Connected</div>
-                </div>
-              </div>
-            </motion.div>
+              {/* Connecting glowing horizontal axis line */}
+              <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-gradient-to-r from-white/10 via-[var(--brand)]/40 to-white/10 z-0" />
 
+              {timelineEvents.map((event, index) => (
+                <div
+                  key={event.id}
+                  className="relative z-10 group flex flex-col items-center cursor-pointer"
+                  onClick={() => setSelectedEvent(event)}
+                  onMouseEnter={() => setHoveredTimelineNode(event)}
+                  onMouseLeave={() => setHoveredTimelineNode(null)}
+                >
+                  {/* Year Tag */}
+                  <span className="font-mono text-[10px] text-white/40 mb-3 uppercase tracking-wider group-hover:text-[var(--brand)] transition-colors">
+                    {event.year}
+                  </span>
+
+                  {/* Glowing Node Button */}
+                  <motion.div
+                    whileHover={{ scale: 1.4 }}
+                    className="w-6 h-6 rounded-full border-2 border-white/30 bg-[#0a0a0c] flex items-center justify-center transition-colors group-hover:border-[var(--brand)] group-hover:shadow-[0_0_20px_var(--brand)]"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-white/50 group-hover:bg-[var(--brand)]" />
+                  </motion.div>
+
+                  {/* Label under node */}
+                  <span className="font-sans text-xs font-medium text-white/70 max-w-[120px] text-center mt-3 truncate group-hover:text-white">
+                    {event.title}
+                  </span>
+
+                  {/* Node Hover Tooltip Card */}
+                  <AnimatePresence>
+                    {hoveredTimelineNode?.id === event.id && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                        className="absolute bottom-16 z-50 w-64 bg-[#141418] border border-white/20 rounded-2xl p-4 shadow-2xl space-y-3 pointer-events-none"
+                      >
+                        <img src={event.img} alt="" className="w-full h-24 object-cover rounded-xl border border-white/10" />
+                        <div>
+                          <span className="font-mono text-[9px] text-[var(--brand)] uppercase tracking-wider block">{event.category}</span>
+                          <h6 className="font-display text-sm text-white uppercase">{event.title}</h6>
+                          <p className="font-sans text-[11px] text-white/60 mt-1">{event.location}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ──────────────────────────────────────────────────
+            SECTION 05 & 06: ADAPTIVE EVENT WALL (Magazine Grid & Hover Parallax)
+        ────────────────────────────────────────────────── */}
+        <section className="space-y-12 border-t border-white/10 pt-20">
+          <div className="flex items-center justify-between border-b border-white/10 pb-6">
+            <div>
+              <span className="font-mono text-xs uppercase tracking-[0.3em] text-[var(--brand)]">
+                SECTION 05 // MAGAZINE GRID
+              </span>
+              <h3 className="font-display text-4xl sm:text-6xl text-white uppercase tracking-tight mt-2">
+                EVENT ARCHIVE WALL
+              </h3>
+            </div>
+            <span className="font-mono text-xs text-white/40">{filteredEvents.length} MATCHES</span>
+          </div>
+
+          {/* Adaptive Magazine Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             <AnimatePresence mode="popLayout">
-              {bentoEvents.map((event, idx) => {
-                // Assign layout spans: index 0 featured, 3/8 wide, 2/7 tall
-                let bentoClass = "bento-small";
-                if (idx === 0) {
-                  bentoClass = "bento-featured";
-                } else if (idx === 3 || idx === 8) {
-                  bentoClass = "bento-wide";
-                } else if (idx === 2 || idx === 7) {
-                  bentoClass = "bento-tall";
-                }
-                
-                const isFeatured = bentoClass === "bento-featured";
-                const isWide = bentoClass === "bento-wide";
-                const isTall = bentoClass === "bento-tall";
+              {filteredEvents.map((event, idx) => {
+                // Adaptive size pattern: Every 10th item extra wide, every 3rd medium span
+                const isHero10th = (idx + 1) % 10 === 0;
+                const isMedium3rd = (idx + 1) % 3 === 0 && !isHero10th;
+
+                const spanClass = isHero10th
+                  ? "md:col-span-12"
+                  : isMedium3rd
+                  ? "md:col-span-8"
+                  : "md:col-span-4";
 
                 return (
                   <motion.div
                     layout
                     key={event.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.4, delay: Math.min(idx * 0.03, 0.3) }}
                     onClick={() => setSelectedEvent(event)}
-                    className={`bento-cell ${bentoClass} group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded border border-white/10 bg-white/[0.01] p-4 backdrop-blur-md transition-all duration-300 hover:border-[var(--brand)] hover:bg-white/[0.02] sm:p-5 md:p-6`}
+                    className={`${spanClass} group relative rounded-3xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] p-6 sm:p-8 cursor-pointer overflow-hidden transition-all duration-500 hover:border-white/25 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col justify-between ${
+                      isHero10th ? 'min-h-[400px]' : isMedium3rd ? 'min-h-[340px]' : 'min-h-[300px]'
+                    }`}
                   >
-                    {/* Scanner line animation overlay */}
-                    <div className="scanner-line" />
-                    
-                    {/* Background Image for Tall / Featured / Wide cards */}
-                    {(isFeatured || isTall || isWide) && (
-                      <div className="absolute inset-0 z-0 overflow-hidden opacity-15 transition-opacity duration-500 group-hover:opacity-25">
-                        <img
-                          src={event.img}
-                          alt=""
-                          loading="lazy"
-                          decoding="async"
-                          className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#181818]/50 to-transparent" />
-                      </div>
-                    )}
+                    {/* Hover Glow Accent */}
+                    <div className="absolute inset-0 bg-gradient-to-tr from-[var(--brand)]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                    <div className="relative z-10 min-w-0">
-                      <div className="mb-2 flex items-center justify-between gap-2 sm:mb-3">
-                        <span className="shrink-0 font-mono text-[9px] text-[var(--text-faint)]">#{event.id}</span>
-                        <span className="max-w-[60%] truncate text-[9px] font-mono uppercase tracking-widest px-2 py-0.5 border border-white/10 rounded text-[var(--brand)] bg-black/40">
-                          {event.category}
-                        </span>
-                      </div>
-
-                      <h3 className={`mb-2 font-display uppercase leading-tight tracking-tight text-white ${
-                        isFeatured
-                          ? "text-[clamp(1.35rem,4vw,2.25rem)] text-[var(--heading)]"
-                          : "text-base transition-colors group-hover:text-[var(--heading)] sm:text-lg md:text-xl"
-                      }`}>
-                        {event.title}
-                      </h3>
-
-                      {/* Description: featured always; wide from sm up */}
-                      {isFeatured && (
-                        <p className="mb-3 line-clamp-2 max-w-xl font-sans text-xs leading-relaxed text-[var(--text-dim)] sm:mb-4 md:line-clamp-3">
-                          A dynamic gathering focusing on collaboration, code, and design innovation. Explore the next-generation developer sandbox.
-                        </p>
-                      )}
-                      {isWide && (
-                        <p className="mb-3 hidden max-w-xl font-sans text-xs leading-relaxed text-[var(--text-dim)] line-clamp-2 sm:mb-4 sm:block md:line-clamp-3">
-                          A dynamic gathering focusing on collaboration, code, and design innovation. Explore the next-generation developer sandbox.
-                        </p>
-                      )}
+                    {/* Image Hover Parallax */}
+                    <div className="absolute inset-0 overflow-hidden z-0">
+                      <img
+                        src={event.img}
+                        alt={event.title}
+                        className="w-full h-full object-cover opacity-15 group-hover:opacity-35 group-hover:scale-105 transition-all duration-700"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0c] via-[#0a0a0c]/80 to-transparent" />
                     </div>
 
-                    <div className="relative z-10 flex items-end justify-between gap-3 border-t border-white/5 pt-3 font-mono text-[9px] text-[var(--text-faint)] sm:pt-4">
-                      <div className="min-w-0">
-                        <span className="block uppercase tracking-wider">{event.date}</span>
-                        <span className="block truncate font-sans text-[10px] text-[var(--text-dim)]">{event.location}</span>
-                      </div>
-                      <span className="shrink-0 text-[10px] text-[var(--brand)] transition-transform group-hover:translate-x-1">
-                        DETAILS â†’
+                    {/* Top Row Header */}
+                    <div className="relative z-10 flex items-center justify-between">
+                      <span className="px-3 py-1 text-[9px] font-mono uppercase tracking-widest border border-white/15 text-white/90 rounded-full backdrop-blur-md">
+                        {event.category}
+                      </span>
+                      <span className="font-mono text-xs text-white/40">{event.year}</span>
+                    </div>
+
+                    {/* Middle Title */}
+                    <div className="relative z-10 my-8 space-y-3">
+                      <h4 className={`font-display uppercase tracking-tight text-white group-hover:text-[var(--heading)] transition-colors leading-tight ${
+                        isHero10th ? 'text-4xl sm:text-6xl' : isMedium3rd ? 'text-2xl sm:text-3xl' : 'text-xl'
+                      }`}>
+                        {event.title}
+                      </h4>
+
+                      <p className="font-sans text-xs sm:text-sm text-white/60 font-light line-clamp-2">
+                        {event.location}
+                      </p>
+                    </div>
+
+                    {/* Bottom Metadata & Hover Reveal */}
+                    <div className="relative z-10 pt-4 border-t border-white/10 flex items-center justify-between font-mono text-xs text-white/50">
+                      <span>{event.date || "EVENT RECORD"}</span>
+                      <span className="group-hover:text-[var(--brand)] group-hover:translate-x-1.5 transition-all">
+                        DETAILS →
                       </span>
                     </div>
                   </motion.div>
@@ -636,611 +895,264 @@ export default function WorkSection({ cards = defaultCards }) {
               })}
             </AnimatePresence>
 
-            {bentoEvents.length === 0 && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="col-span-full rounded border border-dashed border-white/10 bg-white/[0.01] px-4 py-14 text-center sm:py-20"
-              >
-                <p className="font-mono text-xs uppercase tracking-widest text-[var(--text-faint)]">
-                  No records found matching query.
-                </p>
-              </motion.div>
+            {filteredEvents.length === 0 && (
+              <div className="col-span-full py-24 text-center border border-dashed border-white/10 rounded-3xl">
+                <p className="font-mono text-xs uppercase tracking-widest text-white/40">No event records found matching your filters.</p>
+              </div>
             )}
-          </motion.div>
+          </div>
+        </section>
 
-          {/* View More Option */}
-          {!isVisualizerOpen && filteredEvents.length > bentoLimit && (
-            <div className="flex justify-center mt-12">
-              <button
-                onClick={() => setIsVisualizerOpen(true)}
-                className="group relative flex items-center justify-center gap-3 px-8 py-4 font-mono text-xs uppercase tracking-widest text-white border border-white/10 bg-white/[0.01] hover:bg-white/[0.05] hover:border-[var(--brand)] transition-all duration-300 rounded shadow-[0_0_30px_rgba(0,0,0,0.3)] hover:shadow-[0_0_30px_rgba(196,181,253,0.15)]"
-              >
-                <span className="relative z-10 flex items-center gap-2">
-                  EXPLORE ALL EVENTS (CHRONOLOGICAL FEED)
-                  <span className="inline-block transition-transform duration-300 group-hover:translate-y-1">â†“</span>
-                </span>
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[var(--brand)]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded" />
-              </button>
-            </div>
-          )}
+      </div>
 
-          {/* Timeline Visualizer */}
-          {isVisualizerOpen && timelineEvents.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="timeline-visualizer-container mt-16 pt-16 border-t border-white/5"
-            >
-              <div className="text-center mb-12">
-                <span className="overline text-[var(--brand)] tracking-[0.2em] font-mono text-[9px]">[ CHRONOLOGICAL FEED ]</span>
-                <h3 className="font-display text-3xl sm:text-4xl text-white mt-2 uppercase tracking-tight">
-                  Event Timeline Flow
-                </h3>
-                <p className="font-sans text-[var(--text-dim)] text-xs max-w-md mx-auto mt-2">
-                  Easily browse through the chronological timeline of workshops, meetups, and hackathons.
-                </p>
-              </div>
-
-              {/* Vertical Timeline Track */}
-              <div className="relative border-l border-white/10 pl-6 ml-4 sm:ml-8 md:pl-10 md:ml-12 space-y-12 py-4">
-                {timelineEvents.map((event, idx) => {
-                  return (
-                    <motion.div
-                      key={event.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.5, delay: Math.min(idx * 0.05, 0.3) }}
-                      className="relative group cursor-pointer"
-                      onClick={() => setSelectedEvent(event)}
-                    >
-                      {/* Timeline Dot/Node */}
-                      <span className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#181818] border border-white/20 transition-all duration-300 group-hover:border-[var(--brand)] group-hover:scale-125 z-10">
-                        <span className="h-1.5 w-1.5 rounded-full bg-white/40 group-hover:bg-[var(--brand)] group-hover:animate-pulse" />
-                      </span>
-                      
-                      {/* Timeline Card */}
-                      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 p-5 sm:p-6 bg-white/[0.01] hover:bg-white/[0.03] border border-white/5 hover:border-white/15 rounded-lg transition-all duration-300 shadow-[0_4px_30px_rgba(0,0,0,0.2)] group-hover:shadow-[0_4px_30px_rgba(196,181,253,0.05)]">
-                        <div className="flex-1 min-w-0">
-                          {/* Top row: ID, Date, Category */}
-                          <div className="flex flex-wrap items-center gap-3 mb-2.5">
-                            <span className="font-mono text-[9px] text-[var(--text-faint)]">#{event.id}</span>
-                            <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--brand)]">{event.category}</span>
-                            <span className="inline-block h-1 w-1 rounded-full bg-white/10" />
-                            <span className="font-sans text-[10px] text-[var(--text-dim)] uppercase tracking-wide">{event.date || "COMMUNITY TIMELINE"}</span>
-                          </div>
-
-                          {/* Event Title */}
-                          <h4 className="font-display text-lg sm:text-xl uppercase tracking-tight text-white group-hover:text-[var(--heading)] transition-colors duration-300 mb-2">
-                            {event.title}
-                          </h4>
-
-                          {/* Venue info */}
-                          <div className="flex items-center gap-2 font-sans text-xs text-[var(--text-dim)]">
-                            <svg className="w-3.5 h-3.5 shrink-0 text-[var(--text-faint)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span className="truncate">{event.location}</span>
-                          </div>
-                        </div>
-
-                        {/* Image Preview & details button */}
-                        <div className="flex items-center gap-4 shrink-0 w-full md:w-auto justify-between md:justify-end border-t border-white/5 pt-4 md:border-none md:pt-0">
-                          {event.sponsors && event.sponsors !== "-" && (
-                            <div className="hidden lg:flex flex-col items-end gap-1 mr-4 max-w-[150px]">
-                              <span className="font-mono text-[8px] text-[var(--text-faint)] uppercase">[ PARTNERS ]</span>
-                              <span className="font-sans text-[10px] text-[var(--text-dim)] truncate text-right w-full">{event.sponsors}</span>
-                            </div>
-                          )}
-
-                          <div className="aspect-[4/3] w-16 sm:w-20 overflow-hidden border border-white/10 rounded bg-black/40 relative">
-                            <img src={event.img} alt="" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
-                          </div>
-
-                          <span className="font-mono text-[10px] text-[var(--brand)] group-hover:translate-x-1.5 transition-transform duration-300 flex items-center gap-1">
-                            DETAILS <span aria-hidden>â†’</span>
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Collapse Button */}
-              <div className="flex justify-center mt-12">
-                <button
-                  onClick={() => {
-                    setIsVisualizerOpen(false);
-                    const bentoHeader = document.querySelector('.bento-section');
-                    if (bentoHeader) {
-                      bentoHeader.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="px-6 py-3 font-mono text-[10px] uppercase tracking-widest text-[var(--text-dim)] hover:text-white border border-white/10 hover:border-white/30 bg-transparent transition-all rounded"
-                >
-                  Collapse Timeline â†‘
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </section>
-
-      {/* Details Modal Overlay */}
+      {/* ──────────────────────────────────────────────────
+          SECTION 07: MORPHING DETAIL PAGE MODAL
+      ────────────────────────────────────────────────── */}
       <AnimatePresence>
         {selectedEvent && (() => {
-          const externalLink = isUrl(selectedEvent.media) 
-            ? selectedEvent.media 
+          const externalLink = isUrl(selectedEvent.media)
+            ? selectedEvent.media
             : (isUrl(selectedEvent.attendees) ? selectedEvent.attendees : null);
-            
+
           return (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedEvent(null)}
-              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-xl p-4 sm:p-6"
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-2xl p-4 sm:p-8 overflow-y-auto"
             >
               <motion.div
-                initial={{ scale: 0.95, opacity: 0, y: 20 }}
+                initial={{ scale: 0.94, opacity: 0, y: 30 }}
                 animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 20 }}
-                transition={{ type: "spring", duration: 0.5, bounce: 0.1 }}
+                exit={{ scale: 0.94, opacity: 0, y: 30 }}
+                transition={{ type: "spring", duration: 0.6, bounce: 0.05 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-xl bg-[#1c1c1c] border border-white/15 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar shadow-[0_0_80px_rgba(139,92,246,0.25)] flex flex-col gap-5"
+                className="relative w-full max-w-4xl bg-[#121216] border border-white/20 rounded-3xl overflow-hidden shadow-[0_0_100px_rgba(0,0,0,0.9)] max-h-[92vh] flex flex-col custom-scrollbar"
               >
-                {/* Header Top Bar */}
-                <div className="flex items-start justify-between gap-4 w-full pt-2">
-                  <div className="flex flex-col gap-2 min-w-0 pr-8">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest bg-[var(--brand)] text-[#040114] font-bold rounded">
+                {/* Hero Header Banner */}
+                <div className="relative w-full h-72 sm:h-96 shrink-0 overflow-hidden">
+                  <img
+                    src={selectedEvent.img}
+                    alt={selectedEvent.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#121216] via-[#121216]/60 to-transparent" />
+
+                  {/* Close button */}
+                  <button
+                    onClick={() => setSelectedEvent(null)}
+                    className="absolute top-6 right-6 z-20 px-4 py-2 bg-black/60 hover:bg-black border border-white/20 text-white font-mono text-xs rounded-full backdrop-blur-md transition-all hover:scale-105"
+                  >
+                    ✕ CLOSE
+                  </button>
+
+                  <div className="absolute bottom-6 left-6 right-6 space-y-2">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="px-3 py-1 font-mono text-xs uppercase tracking-widest bg-[var(--brand)] text-black font-bold rounded-full">
                         {selectedEvent.category}
                       </span>
-                      <span className="font-mono text-xs text-white/50">{selectedEvent.date || "COMMUNITY EVENT"}</span>
+                      <span className="font-mono text-xs text-white/70">{selectedEvent.year}</span>
                     </div>
-                    <h3 className="font-display text-2xl sm:text-3xl text-white tracking-tight uppercase leading-tight mt-1">
+                    <h2 className="font-display text-3xl sm:text-5xl text-white uppercase tracking-tight leading-none">
                       {selectedEvent.title}
-                    </h3>
+                    </h2>
                   </div>
-
-                  {/* Close Button */}
-                  <button
-                    onClick={() => setSelectedEvent(null)}
-                    className="absolute right-5 top-5 shrink-0 text-white/60 hover:text-white font-mono text-xs tracking-wider px-3 py-1.5 border border-white/15 hover:border-white/40 rounded-lg bg-white/5 transition-all hover:scale-105"
-                  >
-                    âœ• CLOSE
-                  </button>
                 </div>
 
-                {/* Event Image Banner */}
-                <div className="relative w-full max-h-56 sm:max-h-64 overflow-hidden rounded-xl border border-white/10 shadow-lg shrink-0">
-                  <img 
-                    src={selectedEvent.img} 
-                    alt={selectedEvent.title} 
-                    className="w-full h-full object-cover" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c]/80 via-transparent to-transparent" />
-                </div>
+                {/* Modal Body Content */}
+                <div className="p-6 sm:p-10 space-y-8 overflow-y-auto">
+                  {/* Grid Metadata */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+                      <span className="font-mono text-[10px] text-[var(--brand)] uppercase tracking-wider block">LOCATION / CITY</span>
+                      <p className="font-sans text-sm text-white font-medium">{selectedEvent.location}</p>
+                    </div>
 
-                {/* Metadata HUD Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="bg-white/[0.03] border border-white/10 p-3.5 rounded-xl">
-                    <span className="font-mono text-[9px] text-[var(--brand)] uppercase tracking-wider block mb-1">[ VENUE / LOCATION ]</span>
-                    <p className="font-sans text-xs sm:text-sm text-white font-medium">{selectedEvent.location}</p>
+                    <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+                      <span className="font-mono text-[10px] text-[var(--brand)] uppercase tracking-wider block">DATE RECORD</span>
+                      <p className="font-sans text-sm text-white font-medium">{selectedEvent.date || "N/A"}</p>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 space-y-1">
+                      <span className="font-mono text-[10px] text-[var(--brand)] uppercase tracking-wider block">ATTENDANCE</span>
+                      <p className="font-sans text-sm text-white font-medium">{selectedEvent.attendees || "500+ Registered"}</p>
+                    </div>
                   </div>
 
-                  <div className="bg-white/[0.03] border border-white/10 p-3.5 rounded-xl">
-                    <span className="font-mono text-[9px] text-[var(--brand)] uppercase tracking-wider block mb-1">[ ATTENDANCE RECORD ]</span>
-                    <p className="font-sans text-xs sm:text-sm text-white font-medium">
-                      {isUrl(selectedEvent.attendees) ? (
-                        <a href={selectedEvent.attendees} target="_blank" rel="noopener noreferrer" className="text-[var(--brand)] hover:underline">
-                          VIEW ATTENDEES â†—
-                        </a>
-                      ) : (selectedEvent.attendees || "COMMUNITY OPEN")}
+                  {/* Overview Paragraph */}
+                  <div className="space-y-3">
+                    <h5 className="font-mono text-xs uppercase tracking-widest text-white/40">ARCHIVE OVERVIEW</h5>
+                    <p className="font-sans text-base text-white/80 font-light leading-relaxed">
+                      {selectedEvent.title} brought together developers, innovators, and mentors for an immersive experience focused on coding, technical workshops, and collaborative problem-solving.
                     </p>
                   </div>
-                </div>
 
-                {/* Partners / Sponsors */}
-                {selectedEvent.sponsors && selectedEvent.sponsors !== "-" && (
-                  <div className="bg-white/[0.03] border border-white/10 p-3.5 rounded-xl">
-                    <span className="font-mono text-[9px] text-[var(--brand)] uppercase tracking-wider block mb-2">[ SPONSORS & PARTNERS ]</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {selectedEvent.sponsors.split(",").map((s, i) => (
-                        <span 
-                          key={i} 
-                          className="text-[10px] font-mono px-2.5 py-1 bg-white/5 border border-white/10 text-white/90 rounded-md"
-                        >
-                          {s.trim()}
-                        </span>
-                      ))}
+                  {/* Partners / Sponsors */}
+                  {selectedEvent.sponsors && selectedEvent.sponsors !== "-" && (
+                    <div className="space-y-3 pt-4 border-t border-white/10">
+                      <h5 className="font-mono text-xs uppercase tracking-widest text-white/40">SUPPORTING PARTNERS</h5>
+                      <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 font-mono text-xs text-white/70">
+                        {selectedEvent.sponsors}
+                      </div>
                     </div>
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-2 mt-auto">
-                  {externalLink ? (
-                    <a
-                      href={externalLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-3 px-4 text-center font-mono text-xs uppercase tracking-wider text-[#040114] bg-[var(--brand)] hover:bg-white font-bold rounded-xl shadow-lg transition-all text-center"
-                    >
-                      OPEN LINK â†—
-                    </a>
-                  ) : (
-                    <button className="flex-1 py-3 px-4 font-mono text-xs uppercase tracking-wider text-white/40 bg-white/5 border border-white/10 rounded-xl cursor-not-allowed text-center">
-                      NO RECORD LINK
-                    </button>
                   )}
-                  <button
-                    onClick={() => setSelectedEvent(null)}
-                    className="flex-1 py-3 px-4 font-mono text-xs uppercase tracking-wider text-white bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl transition-all text-center"
-                  >
-                    BACK TO GALLERY
-                  </button>
+
+                  {/* Action CTA */}
+                  <div className="pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+                    {externalLink ? (
+                      <a
+                        href={externalLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-6 py-3 bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-black font-mono text-xs uppercase font-bold tracking-widest rounded-xl transition-all shadow-[0_0_30px_rgba(196,181,253,0.3)]"
+                      >
+                        VIEW EVENT RECORD LINK ↗
+                      </a>
+                    ) : (
+                      <span className="font-mono text-xs text-white/40">GENESIS DIGITAL ARCHIVE RECORD #{selectedEvent.id}</span>
+                    )}
+
+                    <button
+                      onClick={() => setSelectedEvent(null)}
+                      className="px-6 py-3 border border-white/20 hover:border-white/40 text-white font-mono text-xs uppercase tracking-widest rounded-xl transition-all"
+                    >
+                      CLOSE RECORD
+                    </button>
+                  </div>
                 </div>
               </motion.div>
             </motion.div>
           );
         })()}
       </AnimatePresence>
-      
 
       <Footer />
     </div>
   );
 }
 
+/* ──────────────────────────────────────────────────
+    CSS STYLES
+────────────────────────────────────────────────── */
 const cssContent = `
 .work-section-wrapper {
-  background-color: var(--bg);
+  position: relative;
+  width: 100%;
   overflow-x: hidden;
-  width: 100%;
 }
 
-.work-section-wrapper * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.intro-spiral-container {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.45;
+  pointer-events: none;
 }
 
-.work-section-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.work-section-wrapper section.intro,
-.work-section-wrapper section.work {
+/* 3D Scroll Canvas section */
+.work {
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  background-color: #0a0a0c;
 }
 
-.work-section-wrapper .intro,
-.work-section-wrapper .outro {
+#grid-canvas,
+#letters-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#grid-canvas { z-index: 1; }
+#letters-canvas { z-index: 3; }
+
+.text-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.letter {
+  position: absolute;
+  font-family: 'Gridular', var(--font-display), sans-serif;
+  font-size: clamp(3rem, 8vw, 8rem);
+  color: rgba(255, 255, 255, 0.08);
+  font-weight: 900;
+  transform: translate(-50%, -50%);
+  user-select: none;
+}
+
+.cards {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--bg);
-  color: var(--text);
-}
-
-.work-section-wrapper .intro-spiral-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  opacity: 0.55;
-  pointer-events: none;
-}
-
-.work-section-wrapper .intro h1,
-.work-section-wrapper .outro h1 {
-  font-family: var(--font-display), sans-serif;
-  font-size: 5vw;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.work-section-wrapper .work {
-  background-color: #131313;
-  overflow: hidden;
-  position: relative;
-}
-
-.work-section-wrapper canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.work-section-wrapper #letters-canvas {
-  z-index: 1;
-}
-
-.work-section-wrapper .text-container {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  pointer-events: none;
-  perspective: 2500px;
-  perspective-origin: center;
-}
-
-.work-section-wrapper .letter {
-  position: absolute;
-  font-family: var(--font-display), sans-serif;
-  font-size: 14rem;
-  font-weight: 800;
-  color: var(--heading);
-  z-index: 2;
-  transform-origin: center;
-  transform-style: preserve-3d;
+  gap: 2rem;
+  z-index: 4;
   will-change: transform;
 }
 
-.work-section-wrapper .cards {
-  position: relative;
-  width: 500vw;
-  height: 100vh;
-  padding-left: 100vw;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  z-index: 10;
-}
-
-.work-section-wrapper .card {
-  width: 10%;
-  height: 50%;
-  padding: 8px;
-  background-color: var(--surface);
-  border: 1px solid var(--border);
+.card {
+  width: 280px;
+  height: 380px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  shrink: 0;
 }
 
-.work-section-wrapper .card-img {
-  flex: 1;
+.card-img {
+  width: 100%;
+  height: 75%;
+  border-radius: 14px;
   overflow: hidden;
 }
 
-.work-section-wrapper .card-copy {
+.card-img img {
   width: 100%;
+  height: 100%;
+  object-cover: cover;
+}
+
+.card-copy {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 4px;
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
-  font-family: var(--font-mono), monospace;
-  font-size: 12px;
-  color: var(--brand);
 }
 
-.work-section-wrapper section.bento-section {
-  width: 100% !important;
-  max-width: none !important;
-  min-height: auto;
-  height: auto !important;
-  position: relative;
-  z-index: 20;
-  overflow: visible !important;
-  box-sizing: border-box;
-  margin: 0 !important;
+/* Custom Scrollbar for horizontal timeline & modal */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 6px;
 }
-
-/* Category chips: clean HUD layout */
-.bento-category-hud {
-  width: 100%;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
 }
-
-@media (min-width: 640px) {
-  .bento-category-hud {
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 0;
-    padding-right: 0;
-  }
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(196, 181, 253, 0.3);
+  border-radius: 999px;
 }
-
-.bento-category-track {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0.5rem;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-bottom: 0.25rem;
-}
-
-.bento-category-track::-webkit-scrollbar {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .bento-category-track {
-    flex-wrap: wrap;
-    overflow: visible;
-    padding-bottom: 0;
-  }
-}
-
-/* Bento Grid System — mobile first */
-.bento-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0.875rem;
-  width: 100%;
-  min-width: 0;
-}
-
-.bento-cell {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  min-width: 0;
-  width: 100%;
-  min-height: 11.5rem;
-  height: auto;
-  grid-column: span 1;
-  grid-row: span 1;
-}
-
-.bento-featured {
-  min-height: 16.5rem;
-}
-
-.bento-wide,
-.bento-tall {
-  min-height: 13rem;
-}
-
-.bento-stats {
-  min-height: 10.5rem;
-}
-
-/* Small tablets: 2 equal columns, no multi-span (avoids broken layouts) */
-@media (min-width: 640px) {
-  .bento-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .bento-cell {
-    min-height: 12.5rem;
-  }
-
-  .bento-featured {
-    grid-column: span 2;
-    min-height: 18rem;
-  }
-
-  .bento-wide {
-    grid-column: span 2;
-    min-height: 13.5rem;
-  }
-}
-
-/* Tablets+: true bento spans + fixed row rhythm */
-@media (min-width: 768px) {
-  .bento-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: minmax(220px, auto);
-    grid-auto-flow: dense;
-    gap: 1.25rem;
-  }
-
-  .bento-cell {
-    min-height: 0;
-    height: auto;
-  }
-
-  .bento-small,
-  .bento-stats {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-
-  .bento-featured {
-    grid-column: span 2;
-    grid-row: span 2;
-    min-height: 0;
-  }
-
-  .bento-wide {
-    grid-column: span 2;
-    grid-row: span 1;
-    min-height: 0;
-  }
-
-  .bento-tall {
-    grid-column: span 1;
-    grid-row: span 2;
-    min-height: 0;
-  }
-}
-
-@media (min-width: 1024px) {
-  .bento-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-auto-rows: minmax(230px, auto);
-    gap: 1.35rem;
-  }
-
-  .bento-featured {
-    grid-column: span 2;
-    grid-row: span 2;
-  }
-
-  .bento-wide {
-    grid-column: span 2;
-    grid-row: span 1;
-  }
-
-  .bento-tall {
-    grid-column: span 1;
-    grid-row: span 2;
-  }
-}
-
-@media (min-width: 1280px) {
-  .bento-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: minmax(240px, auto);
-    gap: 1.5rem;
-  }
-}
-
-/* Very narrow phones */
-@media (max-width: 379px) {
-  .bento-cell {
-    min-height: 10.5rem;
-  }
-
-  .bento-featured {
-    min-height: 14.5rem;
-  }
-}
-
-.scanner-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--brand), transparent);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 5;
-}
-
-.bento-cell:hover .scanner-line {
-  opacity: 0.5;
-  animation: scan-vertical 2s linear infinite;
-}
-
-@keyframes scan-vertical {
-  0% { top: 0%; }
-  50% { top: 100%; }
-  100% { top: 0%; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(196, 181, 253, 0.6);
 }
 `;
