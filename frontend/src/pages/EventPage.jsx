@@ -9,6 +9,7 @@ import { SAMVEDNA_PHOTOS, NO_AGENDA_1_PHOTOS, GALLERY_PHOTOS } from "@/data/medi
 import { eventDatabase } from "@/data/eventDatabase";
 import { createPlayGate } from "@/performance/utils/createPlayGate";
 import { SpiralImages } from "@/components/ui";
+import { Footer } from "@/components/layout";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -772,6 +773,8 @@ export default function WorkSection({ cards = defaultCards }) {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
