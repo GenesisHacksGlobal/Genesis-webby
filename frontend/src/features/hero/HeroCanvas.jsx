@@ -136,11 +136,10 @@ export default function HeroCanvas() {
       yawMax: THREE.MathUtils.degToRad(9),
       pitchMax: THREE.MathUtils.degToRad(4.5),
       rollMax: THREE.MathUtils.degToRad(1.4),
-      // Spring: target → velocity → rotation (weight / inertia)
-      stiffness: 28,
-      damping: 7.5,
-      // Soften raw pointer so flicks don't yank the model
-      pointerEase: 6,
+      // Soft spring, but quicker follow so look keeps up with the pointer
+      stiffness: 22,
+      damping: 4.6,
+      pointerEase: 5.5,
     };
 
     let pointerX = 0;
