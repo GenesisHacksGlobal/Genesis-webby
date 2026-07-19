@@ -33,7 +33,7 @@ export default function GalleryPage() {
   }, []);
 
   return (
-    <div className="fixed inset-0 z-[60] overscroll-none bg-[#07060f] text-white touch-none">
+    <div className="fixed inset-0 z-[60] overscroll-none bg-[#141414] text-white touch-none">
       <InfiniteGallery />
 
       <header

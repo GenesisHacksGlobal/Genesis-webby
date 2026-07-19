@@ -128,7 +128,7 @@ export default function WorkSection({ cards = defaultCards }) {
 
     const drawGrid = (scrollProgress = 0) => {
       gridCtx.clearRect(0, 0, gridCanvas.width, gridCanvas.height);
-      gridCtx.fillStyle = "#080212"; // Match deep theme color
+      gridCtx.fillStyle = "#131313"; // Match deep theme color
       gridCtx.fillRect(0, 0, window.innerWidth, window.innerHeight);
       gridCtx.fillStyle = "rgba(196, 181, 253, 0.35)"; // Accent/brand color dots
 
@@ -398,7 +398,7 @@ export default function WorkSection({ cards = defaultCards }) {
         <div className="intro-spiral-container">
           <SpiralImages images={GALLERY_PHOTOS} />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080212]/30 via-transparent to-[#080212] pointer-events-none z-[1]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#131313]/30 via-transparent to-[#131313] pointer-events-none z-[1]" />
         
         <div className="absolute top-8 left-8 z-50">
           <Link
@@ -515,7 +515,7 @@ export default function WorkSection({ cards = defaultCards }) {
                     onClick={() => setSelectedCategory(cat)}
                     className={`shrink-0 rounded border px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-all duration-300 sm:px-5 ${
                       isActive 
-                        ? "border-[var(--brand)] bg-[var(--brand)] font-bold text-[#0a0443] shadow-[0_0_20px_rgba(196,181,253,0.35)]" 
+                        ? "border-[var(--brand)] bg-[var(--brand)] font-bold text-[#181818] shadow-[0_0_20px_rgba(196,181,253,0.35)]" 
                         : "border-white/10 bg-transparent text-[var(--text-dim)] hover:border-white/30 hover:text-white"
                     }`}
                   >
@@ -589,7 +589,7 @@ export default function WorkSection({ cards = defaultCards }) {
                           decoding="async"
                           className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0443] via-[#0a0443]/50 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#181818] via-[#181818]/50 to-transparent" />
                       </div>
                     )}
 
@@ -697,7 +697,7 @@ export default function WorkSection({ cards = defaultCards }) {
                       onClick={() => setSelectedEvent(event)}
                     >
                       {/* Timeline Dot/Node */}
-                      <span className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#0a0443] border border-white/20 transition-all duration-300 group-hover:border-[var(--brand)] group-hover:scale-125 z-10">
+                      <span className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#181818] border border-white/20 transition-all duration-300 group-hover:border-[var(--brand)] group-hover:scale-125 z-10">
                         <span className="h-1.5 w-1.5 rounded-full bg-white/40 group-hover:bg-[var(--brand)] group-hover:animate-pulse" />
                       </span>
                       
@@ -792,7 +792,7 @@ export default function WorkSection({ cards = defaultCards }) {
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 transition={{ type: "spring", duration: 0.5, bounce: 0.1 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-xl bg-[#0b0526] border border-white/15 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar shadow-[0_0_80px_rgba(139,92,246,0.25)] flex flex-col gap-5"
+                className="relative w-full max-w-xl bg-[#1c1c1c] border border-white/15 rounded-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar shadow-[0_0_80px_rgba(139,92,246,0.25)] flex flex-col gap-5"
               >
                 {/* Header Top Bar */}
                 <div className="flex items-start justify-between gap-4 w-full pt-2">
@@ -824,7 +824,7 @@ export default function WorkSection({ cards = defaultCards }) {
                     alt={selectedEvent.title} 
                     className="w-full h-full object-cover" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0526]/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1c1c1c]/80 via-transparent to-transparent" />
                 </div>
 
                 {/* Metadata HUD Cards */}
@@ -954,7 +954,7 @@ const cssContent = `
 }
 
 .work-section-wrapper .work {
-  background-color: #080212;
+  background-color: #131313;
   overflow: hidden;
   position: relative;
 }

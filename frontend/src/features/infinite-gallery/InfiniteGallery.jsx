@@ -192,7 +192,7 @@ export default function InfiniteGallery() {
       },
       uBorderColor: { value: new THREE.Vector4(1, 1, 1, 0.08) },
       uHoverColor: { value: new THREE.Vector4(0.88, 0.94, 0.73, 0.12) },
-      uBackgroundColor: { value: new THREE.Vector4(0.04, 0.035, 0.08, 1) },
+      uBackgroundColor: { value: new THREE.Vector4(0.08, 0.08, 0.08, 1) },
       uMousePos: { value: new THREE.Vector2(-1, -1) },
       uZoom: { value: startZoom },
       uCellSize: { value: CELL_SIZE },
@@ -535,7 +535,7 @@ export default function InfiniteGallery() {
   }, []);
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden overscroll-none bg-[#0a0914] touch-none select-none">
+    <div className="relative h-[100dvh] w-full overflow-hidden overscroll-none bg-[#141414] touch-none select-none">
       <div ref={mountRef} className="absolute inset-0 touch-none" />
 
       {!ready && (

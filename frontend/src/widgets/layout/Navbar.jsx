@@ -81,8 +81,8 @@ export default function Navbar() {
             } ${
                 // Mobile: always solid dark bar for contrast. Desktop: translucent when scrolled.
                 open || scrolled
-                    ? "bg-[#06031f] border-b border-white/20 md:bg-[#0a0443]/92 md:backdrop-blur-xl md:border-white/10"
-                    : "bg-[#06031f]/95 border-b border-white/15 md:bg-transparent md:border-border/20"
+                    ? "bg-[#111111] border-b border-white/20 md:bg-[#181818]/92 md:backdrop-blur-xl md:border-white/10"
+                    : "bg-[#111111]/95 border-b border-white/15 md:bg-transparent md:border-border/20"
             }`}
         >
             <div className="w-full h-[72px] flex items-stretch justify-between">
@@ -149,7 +149,7 @@ export default function Navbar() {
             />
 
             {open && (
-                <div className="md:hidden border-t border-white/15 bg-[#06031f] shadow-[0_24px_48px_rgba(0,0,0,0.65)]">
+                <div className="md:hidden border-t border-white/15 bg-[#111111] shadow-[0_24px_48px_rgba(0,0,0,0.65)]">
                     <div className="px-6 py-7 flex flex-col gap-5">
                         {links.map((l) => (
                             <button
