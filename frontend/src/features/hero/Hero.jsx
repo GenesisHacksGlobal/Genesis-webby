@@ -58,7 +58,9 @@ export default function Hero() {
   }, []);
 
   // minimal parallax — quiet, restrained
-  const titleY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  // Base offset lifts BUILD/HACK/SCALE; scroll adds more upward drift.
+  // (Framer `y` owns transform, so CSS -translate-y would be overwritten.)
+  const titleY = useTransform(scrollYProgress, [0, 1], [-72, -180]);
   const titleOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.1]);
   const gridY = useTransform(scrollYProgress, [0, 1], [0, 120]);
 
@@ -91,15 +93,15 @@ export default function Hero() {
       <div className="w-full max-w-[1400px] mx-auto px-5 sm:px-6 md:px-10 pb-10 md:pb-24 mt-2 md:mt-10">
         <motion.h1
           style={{ y: titleY, opacity: titleOpacity }}
-          className="relative z-[1] md:-translate-y-24 font-display leading-[0.88] md:leading-[0.86] tracking-[0.005em] text-[var(--heading)] text-[17vw] sm:text-[15vw] md:text-[13vw] lg:text-[190px] w-full"
+          className="relative z-[1] font-display leading-[0.88] md:leading-[0.86] tracking-[0.005em] text-[var(--heading)] text-[19vw] sm:text-[17vw] md:text-[15vw] lg:text-[230px] w-full"
         >
           {words.map((w, i) => {
-            let className = "block";
-            if (i === 0) className = "block md:-translate-x-[200px]";
+            let className = "relative block";
+            if (i === 0) className = "relative block md:-translate-x-[200px]";
             if (i === 1) {
-              className = "block text-right md:translate-x-[240px]";
+              className = "relative block text-right md:translate-x-[240px]";
             }
-            if (i === 2) className = "block md:-translate-x-[200px]";
+            if (i === 2) className = "relative block md:-translate-x-[200px]";
             return (
               <span key={w.text} className={className}>
                 <MaskWord
@@ -107,6 +109,28 @@ export default function Hero() {
                   gridularIndex={w.gridularIndex}
                   delay={0.4 + i * 0.18}
                 />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-0 top-1/2 z-10 -translate-y-1/2 overflow-hidden pb-[0.4em] -mb-[0.4em]"
+                >
+                  <motion.span
+                    initial={{ y: "110%" }}
+                    animate={{ y: "0%" }}
+                    transition={{
+                      duration: 1.2,
+                      delay: 0.55 + i * 0.18,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    className="inline-block normal-case tracking-normal text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[148px] leading-none"
+                    style={{
+                      fontFamily: '"Leirtag Aquelli", cursive',
+                      color: "hsl(285 85% 80%)",
+                      textShadow: "0 0 22px rgba(10, 4, 40, 0.9)",
+                    }}
+                  >
+                    together
+                  </motion.span>
+                </span>
               </span>
             );
           })}
@@ -118,7 +142,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-[10] md:-translate-y-24 mt-8 md:mt-12 grid md:grid-cols-12 gap-7 md:gap-10 items-end"
         >
-          <p className="md:col-span-6 md:-translate-x-[120px] text-base sm:text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
+          <p className="md:col-span-6 md:-translate-x-[220px] text-base sm:text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
             Empowering the next generation of builders through hackathons,
             speaker sessions, hands-on workshops, and community-driven
             experiences across India.
