@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Tilt } from '@shared/ui';
+import { GalleryGridBlock } from '@/components/ui/gallery-grid-block-shadcnui';
 
 // Category color accents
 const CAT_COLOR = {
@@ -141,14 +142,20 @@ export function ArchiveGrid({ events, viewMode, onSelect }) {
       </div>
 
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <AnimatePresence mode="popLayout">
-            {events.map((e, i) => (
-              <GridCard key={e.id} event={e} idx={i} onSelect={onSelect} />
-            ))}
-          </AnimatePresence>
-          {events.length === 0 && <EmptyState />}
-        </div>
+        <GalleryGridBlock
+          images={events.map((e) => ({
+            id: e.id,
+            url: e.img,
+            title: e.title,
+            category: e.category,
+            rawEvent: e,
+          }))}
+          onSelectEvent={(imgObj) => {
+            if (imgObj && imgObj.rawEvent) {
+              onSelect(imgObj.rawEvent);
+            }
+          }}
+        />
       ) : (
         <div className="border border-white/8 rounded-2xl overflow-hidden bg-white/[0.01]">
           <table className="w-full text-left border-collapse">
