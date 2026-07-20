@@ -11,13 +11,11 @@ const CAT_COLOR = {
 };
 function catColor(c) { return CAT_COLOR[c] || '#c4b5fd'; }
 
-// ─── Grid View Card ───────────────────────────────────────────────────────────
+// ─── Grid View Card (uniform) ─────────────────────────────────────────────────
 function GridCard({ event, idx, onSelect }) {
-  const isWide  = (idx + 1) % 7 === 0;
-  const isTall  = (idx + 1) % 4 === 0 && !isWide;
-  const col = isWide ? 'md:col-span-8' : isTall ? 'md:col-span-5' : 'md:col-span-4';
-  const minH = isWide ? 'min-h-[380px]' : isTall ? 'min-h-[420px]' : 'min-h-[320px]';
   const accent = catColor(event.category);
+  const col = 'col-span-1';
+  const minH = 'min-h-[300px]';
 
   return (
     <motion.div
@@ -65,7 +63,7 @@ function GridCard({ event, idx, onSelect }) {
 
           {/* Title */}
           <div className="relative z-10 mt-auto space-y-2">
-            <h3 className={`font-display uppercase tracking-tight text-white group-hover:text-[var(--heading)] leading-tight transition-colors ${isWide ? 'text-3xl sm:text-5xl' : isTall ? 'text-2xl sm:text-3xl' : 'text-xl'}`}>
+            <h3 className="font-display text-xl uppercase tracking-tight text-white group-hover:text-[var(--heading)] leading-tight transition-colors">
               {event.title}
             </h3>
             <p className="font-sans text-xs text-white/45 leading-snug line-clamp-2">{event.location}</p>
@@ -143,7 +141,7 @@ export function ArchiveGrid({ events, viewMode, onSelect }) {
       </div>
 
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <AnimatePresence mode="popLayout">
             {events.map((e, i) => (
               <GridCard key={e.id} event={e} idx={i} onSelect={onSelect} />
