@@ -8,6 +8,7 @@ import {
   ScrollTranslateX,
   ScrollTranslateY,
 } from '@/components/ui/team-section';
+import TeamSection from '@/components/ui/team';
 
 // ─── Team Data ────────────────────────────────────────────────────────────────
 const TEAM = [
@@ -497,15 +498,26 @@ export default function TeamPage() {
         </motion.div>
       </div>
 
-      {/* ── GRID ─────────────────────────────────────────── */}
-      <main className="max-w-[1300px] mx-auto px-4 sm:px-8 pb-32">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((m, i) => (
-              <MemberCard key={m.id} member={m} idx={i} onClick={setSelected} />
-            ))}
-          </AnimatePresence>
-        </div>
+      {/* ── TEAM SECTION DIRECTORY ─────────────────────── */}
+      <main className="max-w-[1300px] mx-auto px-4 sm:px-8 pb-16">
+        <TeamSection
+          title=""
+          members={filtered.map((m, idx) => ({
+            name: m.name,
+            role: m.role,
+            dept: m.dept,
+            avatar: [
+              'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1522556189639-b150ed9c4330?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80',
+              'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&auto=format&fit=crop&q=80',
+            ][idx % 8],
+          }))}
+        />
       </main>
 
       {/* ── BOTTOM CTA ───────────────────────────────────── */}
