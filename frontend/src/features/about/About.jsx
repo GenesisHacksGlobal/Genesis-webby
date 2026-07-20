@@ -4,7 +4,8 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
+import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 
 /**
  * Adapted from inspo-animation `component--gridnumbers.vertical`
@@ -62,19 +63,19 @@ function MagnetCard({ title, label, isLast = false }) {
       viewport={{ once: true, amount: 0 }}
       transition={{ duration: 2, delay: entranceDelay, ease: expoOut }}
       className={[
-        "relative flex h-[55vw] w-full flex-col justify-between border border-[#d5d5d5] p-[6.667vw]",
-        "md:h-[25vw] md:w-[20vw] md:border-y-0 md:border-l md:border-r md:border-[#d5d5d5] md:p-[1.667vw]",
+        "relative flex h-[55vw] w-full flex-col justify-between border border-white bg-[#181818] p-[6.667vw]",
+        "md:h-[25vw] md:w-[20vw] md:border-y-0 md:border-l md:border-r md:border-white md:bg-[#181818] md:p-[1.667vw]",
         "md:border-t",
         isLast ? "md:border-b" : "",
       ].join(" ")}
     >
       <h3
         style={{ fontFamily: '"Aeonik", sans-serif' }}
-        className="text-[12vw] leading-[0.82] tracking-[-0.05em] text-black md:text-[clamp(3.5rem,5.2vw,6.25rem)]"
+        className="text-[12vw] leading-[0.82] tracking-[-0.05em] text-[var(--heading)] md:text-[clamp(3.5rem,5.2vw,6.25rem)]"
       >
         {title}
       </h3>
-      <p className="max-w-[18ch] text-[3.6vw] leading-snug text-black/70 md:w-[80%] md:max-w-none md:text-base">
+      <p className="max-w-[18ch] text-[3.6vw] leading-snug text-[var(--heading)] md:w-[80%] md:max-w-none md:text-base">
         {label}
       </p>
     </motion.article>
@@ -94,7 +95,7 @@ export default function About() {
   }, []);
 
   // inspo: content-1 parallax scrubbed against content-0 scroll range
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress } = useSectionScroll({
     target: leftColRef,
     offset: ["start end", "end start"],
   });
@@ -104,7 +105,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative z-[3] bg-white py-[10vw] text-black md:pb-[3.333vw] md:pt-[10vw]"
+      className="relative z-[3] bg-[#181818] py-[10vw] text-[var(--heading)] md:pb-[3.333vw] md:pt-[10vw]"
     >
       <div className="mx-auto w-full px-5 md:w-[70vw] md:px-0">
         <div className="flex flex-col gap-[20vw] md:flex-row md:gap-0 md:justify-between">
@@ -117,11 +118,11 @@ export default function About() {
             className="w-full md:sticky md:top-[11.667vw] md:h-fit md:w-[20vw]"
           >
             <div className="flex items-center gap-3">
-              <span className="block h-px w-10 bg-black/30" />
-              <span className="overline !text-black/45">Chapter 01 · About</span>
+              <span className="block h-px w-10 bg-[var(--heading)]/40" />
+              <span className="overline !text-[var(--heading)]/70">Chapter 01 · About</span>
             </div>
 
-            <p className="mt-8 text-[5.2vw] leading-[1.25] tracking-[-0.02em] text-black/65 md:mt-[1.667vw] md:text-[1.15vw] md:leading-[1.35]">
+            <p className="mt-8 text-[6.2vw] leading-[1.25] tracking-[-0.02em] text-[var(--heading)] md:mt-[1.667vw] md:text-[1.45vw] md:leading-[1.35]">
               Genesis empowers the next generation of builders by creating space
               to learn, experiment, collaborate, and ship meaningful work across
               India.
@@ -129,7 +130,7 @@ export default function About() {
 
             <a
               href="#upcoming"
-              className="mt-6 inline-block border-b border-black/50 pb-1 text-sm text-black/70 transition-colors hover:text-black md:mt-[1.667vw]"
+              className="mt-6 inline-block border-b border-[var(--heading)]/50 pb-1 text-base text-[var(--heading)] transition-colors hover:border-[var(--heading)] md:mt-[1.667vw] md:text-[1.05vw]"
             >
               Discover our experiences
             </a>
@@ -138,7 +139,7 @@ export default function About() {
           {/* Right metric columns — inspo item:last-child */}
           <div className="flex w-full flex-col md:w-[40vw] md:flex-row md:justify-center">
             {/* content-0 */}
-            <div ref={leftColRef} className="flex w-full flex-col md:w-[20vw]">
+            <div ref={leftColRef} className="relative flex w-full flex-col md:w-[20vw]">
               {columns[0].map((card, i) => (
                 <MagnetCard
                   key={card.title}
