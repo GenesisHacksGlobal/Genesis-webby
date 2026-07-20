@@ -1,10 +1,17 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@shared/ui/ErrorBoundary";
+import ConsentBanner from "@shared/consent/ConsentBanner";
 
 const HomePage = lazy(() => import("@pages/home/HomePage"));
 const GalleryPage = lazy(() => import("@pages/gallery/GalleryPage"));
 const EventsPage = lazy(() => import("@pages/events/EventsPage"));
+const AboutPage = lazy(() => import("@pages/about/AboutPage"));
+const ValuesPage = lazy(() => import("@pages/values/ValuesPage"));
+const ContactPage = lazy(() => import("@pages/contact/ContactPage"));
+const CareersPage = lazy(() => import("@pages/careers/CareersPage"));
+const PrivacyPage = lazy(() => import("@pages/privacy/PrivacyPage"));
+const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
 const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 
 function RouteFallback() {
@@ -58,6 +65,54 @@ export default function AppRouter() {
               </PageBoundary>
             }
           />
+          <Route
+            path="/about"
+            element={
+              <PageBoundary title="About failed to load.">
+                <AboutPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/values"
+            element={
+              <PageBoundary title="Values failed to load.">
+                <ValuesPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <PageBoundary title="Contact failed to load.">
+                <ContactPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/careers"
+            element={
+              <PageBoundary title="Careers failed to load.">
+                <CareersPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <PageBoundary title="Privacy failed to load.">
+                <PrivacyPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <PageBoundary title="Terms failed to load.">
+                <TermsPage />
+              </PageBoundary>
+            }
+          />
           {/* Catch-all — never blank-screen unknown URLs */}
           <Route
             path="*"
@@ -69,6 +124,7 @@ export default function AppRouter() {
           />
         </Routes>
       </Suspense>
+      <ConsentBanner />
     </BrowserRouter>
   );
 }

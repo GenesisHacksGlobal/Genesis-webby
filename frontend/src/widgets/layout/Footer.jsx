@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import BlackHole from "@shared/ui/BlackHole";
 import { prefersReducedMotion } from "@shared/hooks/useAnimationLifecycle";
 
@@ -137,7 +138,6 @@ export default function Footer() {
                     text-align: center;
                     width: 100%;
                     text-transform: uppercase;
-                    text-shadow: 0 2px 28px rgba(10, 4, 67, 0.65);
                     padding-bottom: 0.06em;
                 }
                 @media (max-width: 640px) {
@@ -247,10 +247,26 @@ export default function Footer() {
                     </p>
 
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-                        {["EMAIL", "INSTAGRAM", "FACEBOOK", "LINKEDIN", "AWWWARDS", "BEHANCE"].map((link) => (
+                        {[
+                            { label: "EMAIL", href: "#" },
+                            {
+                                label: "INSTAGRAM",
+                                href: "https://www.instagram.com/genesishacks/?hl=en",
+                            },
+                            { label: "FACEBOOK", href: "#" },
+                            {
+                                label: "LINKEDIN",
+                                href: "https://www.linkedin.com/company/genesishacks/posts/?feedView=all",
+                            },
+                            { label: "AWWWARDS", href: "#" },
+                            { label: "BEHANCE", href: "#" },
+                        ].map(({ label, href }) => (
                             <a
-                                key={link}
-                                href="#"
+                                key={label}
+                                href={href}
+                                {...(href.startsWith("http")
+                                    ? { target: "_blank", rel: "noopener noreferrer" }
+                                    : {})}
                                 style={{
                                     fontFamily: "var(--font-mono)",
                                     fontSize: "0.68rem",
@@ -270,7 +286,7 @@ export default function Footer() {
                                     e.currentTarget.style.borderColor = "var(--border)";
                                 }}
                             >
-                                [ {link} ]
+                                [ {label} ]
                             </a>
                         ))}
                     </div>
@@ -287,7 +303,7 @@ export default function Footer() {
                         <BlackHole
                             particleCount={particleCount}
                             particleSize={5}
-                            colors={["#ffffff", "#e9e4ff", "#c4b5fd"]}
+                            colors={["#ffffff", "#f0f0f0", "#d4d4d4"]}
                             outerRadius={78}
                             tilt={18}
                             tiltSideway={158}
@@ -308,8 +324,8 @@ export default function Footer() {
             <div className="footer-bottom-bar">
                 <span>©{new Date().getFullYear()}, All rights reserved</span>
                 <div style={{ display: "flex", gap: "1.5rem" }}>
-                    <a href="#" style={{ color: "inherit", textDecoration: "none" }}>Terms of Service</a>
-                    <a href="#" style={{ color: "inherit", textDecoration: "none" }}>Privacy Policy</a>
+                    <Link to="/terms" style={{ color: "inherit", textDecoration: "none" }}>Terms of Service</Link>
+                    <Link to="/privacy" style={{ color: "inherit", textDecoration: "none" }}>Privacy Policy</Link>
                 </div>
             </div>
         </footer>

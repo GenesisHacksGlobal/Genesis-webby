@@ -1,6 +1,7 @@
 export {
   QUALITY_LEVELS,
   QUALITY_PRESETS,
+  LIGHT_RIGS,
   ASSET_PATHS,
   ASSET_PATHS_KTX2,
   PREFER_KTX2_ASSETS,
@@ -22,6 +23,7 @@ export { FPSMonitor } from "./monitor/FPSMonitor";
 export { createGLTFLoader, loadGLTF } from "./loaders/createGLTFLoader";
 export { AdaptiveModelLoader } from "./loaders/AdaptiveModelLoader";
 export { disposeObject3D, applyRendererQuality } from "./utils/disposeObject3D";
+export { applyLightRig } from "./utils/applyLightRig";
 export { createPlayGate } from "./utils/createPlayGate";
 export {
   prepareModelGroup,

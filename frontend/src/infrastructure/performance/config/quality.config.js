@@ -174,6 +174,125 @@ export const QUALITY_PRESETS = Object.freeze({
   },
 });
 
+/**
+ * Per-tier light budgets for the hero scene.
+ * low/medium: ambient + key only (cheapest fragment lighting).
+ * high/ultra: full cinematic rig (fill, rims, catch, under-bounce).
+ */
+export const LIGHT_RIGS = Object.freeze({
+  low: {
+    ambient: { enabled: true, color: 0x26262e, intensity: 0.75 },
+    key: {
+      enabled: true,
+      color: 0xffffff,
+      intensity: 2.6,
+      position: [4.5, 6.5, 5.5],
+    },
+    fill: { enabled: false },
+    rim: { enabled: false },
+    kick: { enabled: false },
+    catch: { enabled: false },
+    under: { enabled: false },
+  },
+  medium: {
+    ambient: { enabled: true, color: 0x26262e, intensity: 0.65 },
+    key: {
+      enabled: true,
+      color: 0xffffff,
+      intensity: 2.9,
+      position: [4.5, 6.5, 5.5],
+    },
+    fill: {
+      enabled: true,
+      color: 0xb9a8ff,
+      intensity: 0.85,
+      position: [-5.5, 2.2, 4],
+    },
+    rim: { enabled: false },
+    kick: { enabled: false },
+    catch: { enabled: false },
+    under: { enabled: false },
+  },
+  high: {
+    ambient: { enabled: true, color: 0x26262e, intensity: 0.55 },
+    key: {
+      enabled: true,
+      color: 0xffffff,
+      intensity: 3.0,
+      position: [4.5, 6.5, 5.5],
+    },
+    fill: {
+      enabled: true,
+      color: 0xb9a8ff,
+      intensity: 1.2,
+      position: [-5.5, 2.2, 4],
+    },
+    rim: {
+      enabled: true,
+      color: 0xd97ef9,
+      intensity: 4.2,
+      position: [-3.5, 4.5, -6],
+    },
+    kick: {
+      enabled: true,
+      color: 0x5eead4,
+      intensity: 3.0,
+      position: [5.5, 3, -5],
+    },
+    catch: {
+      enabled: true,
+      color: 0xe6ecff,
+      intensity: 1.1,
+      position: [0.4, 1.8, 5.5],
+    },
+    under: {
+      enabled: true,
+      color: 0x6d51c9,
+      intensity: 0.55,
+      position: [0, -3.2, 2.5],
+    },
+  },
+  ultra: {
+    ambient: { enabled: true, color: 0x26262e, intensity: 0.55 },
+    key: {
+      enabled: true,
+      color: 0xffffff,
+      intensity: 3.0,
+      position: [4.5, 6.5, 5.5],
+    },
+    fill: {
+      enabled: true,
+      color: 0xb9a8ff,
+      intensity: 1.2,
+      position: [-5.5, 2.2, 4],
+    },
+    rim: {
+      enabled: true,
+      color: 0xd97ef9,
+      intensity: 4.6,
+      position: [-3.5, 4.5, -6],
+    },
+    kick: {
+      enabled: true,
+      color: 0x5eead4,
+      intensity: 3.4,
+      position: [5.5, 3, -5],
+    },
+    catch: {
+      enabled: true,
+      color: 0xe6ecff,
+      intensity: 1.3,
+      position: [0.4, 1.8, 5.5],
+    },
+    under: {
+      enabled: true,
+      color: 0x6d51c9,
+      intensity: 0.7,
+      position: [0, -3.2, 2.5],
+    },
+  },
+});
+
 export const DRACO_DECODER_PATH =
   "https://www.gstatic.com/draco/versioned/decoders/1.5.7/";
 

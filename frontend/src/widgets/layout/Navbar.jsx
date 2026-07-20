@@ -1,177 +1,501 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useTransform } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LANDING } from "@shared/constants/testIds";
 import { usePageScroll } from "@shared/hooks/useSectionScroll";
+import { NAV_MENUS } from "./navMegaData";
+import { useScrambleText } from "./useScrambleText";
 
 const LOGO_URL = "/images/logo.png";
+/** Sui primary blue — matches inspo open/+ CTA chrome */
+const SUI_BLUE = "#298dff";
 
-const links = [
-    { id: "about", label: "About", testid: LANDING.navAbout },
-    { id: "loop", label: "The Loop", testid: LANDING.navLoop },
-    { path: "/events", label: "Events", testid: LANDING.navEvents },
-    { path: "/gallery", label: "Gallery", testid: LANDING.navGallery },
-    { id: "contact", label: "Contact", testid: LANDING.navContact },
-];
+function PlusIcon({ open }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 10 10"
+      fill="none"
+      aria-hidden
+      className={`h-full w-full transition-transform duration-300 ease-[cubic-bezier(0.215,0.61,0.355,1)] ${
+        open ? "rotate-45" : "rotate-0"
+      }`}
+    >
+      <path
+        d="M5.49609 10.001H4.49609V5.91895H5.49609V10.001ZM10 4.49512V5.49512H5.91797V4.49512H10ZM4.08203 5.49512H0V4.49512H4.08203V5.49512ZM5.49609 4.08301H4.49609V0.000976562L5.49609 0V4.08301Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function ExternalArrow() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 7 7"
+      fill="none"
+      aria-hidden
+      className="mt-0.5 h-2.5 w-2.5 shrink-0 opacity-70"
+    >
+      <path
+        d="M0.0193998 1.17602L1.1814 1.52588e-05L6.04145 0V4.89969L4.86545 6.06169V2.058L0.868 6.06017L0 5.19217L3.99745 1.176L0.0193998 1.17602Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function ItemIcon() {
+  return (
+    <span className="mt-0.5 flex h-[18px] w-[18px] shrink-0 items-center justify-center text-white/90">
+      <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-full w-full">
+        <rect x="1" y="1" width="6" height="6" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="9" y="1" width="6" height="6" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="1" y="9" width="6" height="6" stroke="currentColor" strokeWidth="1.2" />
+        <rect x="9" y="9" width="6" height="6" stroke="currentColor" strokeWidth="1.2" />
+      </svg>
+    </span>
+  );
+}
+
+function ScrambleLabel({ text, active }) {
+  const display = useScrambleText(text, { active });
+  return (
+    <span className="pointer-events-none whitespace-nowrap text-[1.05rem] font-normal leading-none tracking-[-0.01em] text-white">
+      {display}
+    </span>
+  );
+}
+
+function MegaItem({ item, onActivate, equal }) {
+  return (
+    <button
+      type="button"
+      data-testid={item.testid}
+      onClick={() => onActivate(item)}
+      className={`group flex w-full items-start gap-2 px-2 py-3 text-left transition-colors duration-300 hover:bg-white/[0.04] ${
+        equal ? "min-h-0 flex-1 justify-center" : ""
+      }`}
+    >
+      <ItemIcon />
+      <span className="flex min-w-0 flex-col gap-1">
+        <span className="flex items-center gap-1.5 text-[0.875rem] leading-none tracking-[-0.01em] text-white">
+          {item.title}
+          {item.external ? <ExternalArrow /> : null}
+        </span>
+        <span className="text-[0.75rem] leading-[1.4] tracking-[-0.01em] text-[#89919f] transition-colors duration-150 group-hover:text-white/80">
+          {item.desc}
+        </span>
+      </span>
+    </button>
+  );
+}
+
+function MegaMajorItem({ item, onActivate, equal }) {
+  return (
+    <button
+      type="button"
+      data-testid={item.testid}
+      onClick={() => onActivate(item)}
+      className={`group flex w-full flex-col justify-between gap-4 border border-[#343940] bg-[#181818] px-4 py-4 text-left transition-colors duration-300 hover:border-white/25 hover:bg-[#1c1c1c] ${
+        equal ? "min-h-0 flex-1" : "min-h-[7.5rem]"
+      }`}
+    >
+      <span className="flex items-start justify-between gap-3">
+        <ItemIcon />
+        {item.external ? <ExternalArrow /> : null}
+      </span>
+      <span className="flex min-w-0 flex-col gap-2">
+        <span className="font-display text-[1.35rem] leading-none tracking-tight text-white">
+          {item.title}
+        </span>
+        <span className="text-[0.8rem] leading-[1.4] tracking-[-0.01em] text-[#89919f] transition-colors duration-150 group-hover:text-white/80">
+          {item.desc}
+        </span>
+      </span>
+    </button>
+  );
+}
+
+function MegaColumn({ col, colIdx, onActivate, equalFill }) {
+  return (
+    <div
+      className={`flex h-full min-h-[16rem] flex-col px-1 pt-0 ${
+        equalFill ? "pb-4" : "pb-10"
+      } ${colIdx > 0 ? "border-l border-dashed border-[#343940]" : ""}`}
+    >
+      <div className="mb-2 w-full shrink-0 bg-[#222529] px-3 py-2 font-mono text-[0.625rem] uppercase leading-tight tracking-[-0.02em] text-[#a1a7b2]">
+        {col.category}
+      </div>
+      <div
+        className={`flex min-h-0 flex-1 flex-col ${
+          col.major ? "gap-3" : equalFill ? "gap-0 divide-y divide-dashed divide-[#343940]" : "gap-1"
+        }`}
+      >
+        {col.items.map((item) =>
+          col.major ? (
+            <MegaMajorItem
+              key={item.title}
+              item={item}
+              onActivate={onActivate}
+              equal={equalFill}
+            />
+          ) : (
+            <MegaItem
+              key={item.title}
+              item={item}
+              onActivate={onActivate}
+              equal={equalFill}
+            />
+          ),
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MegaPanel({ menu, onActivate }) {
+  if (!menu) return null;
+  const split = menu.layout === "split-3-2";
+  const cols = menu.columns.length;
+
+  return (
+    <motion.div
+      key={menu.id}
+      initial={{ opacity: 0, y: -12, clipPath: "inset(0 0 100% 0)" }}
+      animate={{ opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)" }}
+      exit={{ opacity: 0, y: -8, clipPath: "inset(0 0 100% 0)" }}
+      transition={{ duration: 0.32, ease: [0.215, 0.61, 0.355, 1] }}
+      className="relative z-40 px-3 pb-3 pt-1 md:px-6"
+    >
+      <div
+        className="mx-auto grid w-full max-w-[72.5em] overflow-hidden border-2 border-[#222529] bg-[#131518]"
+        style={{
+          gridTemplateColumns: split
+            ? "minmax(0, 1fr) minmax(0, 1.15fr)"
+            : `repeat(${Math.min(cols, 4)}, minmax(0, 1fr))`,
+          minHeight: split ? "18rem" : undefined,
+        }}
+      >
+        {menu.columns.map((col, colIdx) => (
+          <MegaColumn
+            key={col.category}
+            col={col}
+            colIdx={colIdx}
+            onActivate={onActivate}
+            equalFill={split}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+function NavToggle({ menu, open, hovering, onOpen, onClose, onHoverLabel }) {
+  const scramble = hovering || open;
+
+  return (
+    <div
+      className="relative flex items-stretch"
+      onMouseEnter={() => {
+        onHoverLabel(menu.id);
+        onOpen(menu.id);
+      }}
+      onMouseLeave={() => onHoverLabel(null)}
+    >
+      <button
+        type="button"
+        data-testid={menu.testid}
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => (open ? onClose() : onOpen(menu.id))}
+        className="flex items-center gap-2 px-[1.125em] py-[0.375em]"
+      >
+        <ScrambleLabel text={menu.label} active={scramble} />
+        <span
+          className="flex h-8 w-8 shrink-0 items-center justify-center p-[0.65em] text-white transition-colors duration-300"
+          style={{ backgroundColor: open ? SUI_BLUE : "#131518" }}
+        >
+          <PlusIcon open={open} />
+        </span>
+      </button>
+    </div>
+  );
+}
 
 export default function Navbar() {
-    const [open, setOpen] = useState(false);
-    const [scrolled, setScrolled] = useState(false);
-    const [navHidden, setNavHidden] = useState(false);
-    const lastScrollY = useRef(0);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { scrollYProgress } = usePageScroll();
-    const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileSection, setMobileSection] = useState(null);
+  const [scrolled, setScrolled] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
+  const [activeId, setActiveId] = useState(null);
+  const [hoverLabelId, setHoverLabelId] = useState(null);
+  const closeTimer = useRef(null);
+  const headerRef = useRef(null);
+  const lastScrollY = useRef(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { scrollYProgress } = usePageScroll();
+  const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
-    useEffect(() => {
-        const onScroll = () => {
-            const currentY = Math.max(window.scrollY, 0);
-            const delta = currentY - lastScrollY.current;
+  const activeMenu = NAV_MENUS.find((m) => m.id === activeId) || null;
 
-            setScrolled(currentY > 24);
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
 
-            if (currentY < 80) {
-                setNavHidden(false);
-            } else if (delta > 6) {
-                setNavHidden(true);
-                setOpen(false);
-            } else if (delta < -6) {
-                setNavHidden(false);
-            }
+  const openMenu = (id) => {
+    clearCloseTimer();
+    setActiveId(id);
+  };
 
-            lastScrollY.current = currentY;
-        };
+  const scheduleClose = () => {
+    clearCloseTimer();
+    closeTimer.current = setTimeout(() => setActiveId(null), 120);
+  };
 
-        onScroll();
-        window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+  const closeMenu = () => {
+    clearCloseTimer();
+    setActiveId(null);
+  };
 
-    const scrollTo = (id) => {
-        setOpen(false);
+  useEffect(() => {
+    const onScroll = () => {
+      const currentY = Math.max(window.scrollY, 0);
+      const delta = currentY - lastScrollY.current;
 
-        if (location.pathname !== "/") {
-            navigate(`/#${id}`);
-            return;
-        }
+      setScrolled(currentY > 24);
 
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (window.__lenis) {
-            window.__lenis.scrollTo(el, { offset: -60, duration: 1.6 });
-        } else {
-            el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+      if (currentY < 80) {
+        setNavHidden(false);
+      } else if (delta > 6) {
+        setNavHidden(true);
+        setMobileOpen(false);
+        clearCloseTimer();
+        setActiveId(null);
+      } else if (delta < -6) {
+        setNavHidden(false);
+      }
+
+      lastScrollY.current = currentY;
     };
 
-    const activateLink = (link) => {
-        setOpen(false);
-        if (link.path) {
-            navigate(link.path);
-            return;
-        }
-        scrollTo(link.id);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        clearCloseTimer();
+        setActiveId(null);
+        setMobileOpen(false);
+      }
     };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
-    return (
-        <header
-            className={`fixed top-0 left-0 right-0 z-50 transform-gpu transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                navHidden ? "-translate-y-full" : "translate-y-0"
-            } ${
-                // Mobile: always solid dark bar for contrast. Desktop: translucent when scrolled.
-                open || scrolled
-                    ? "bg-[#111111] border-b border-white/20 md:bg-[#181818]/92 md:backdrop-blur-xl md:border-white/10"
-                    : "bg-[#111111]/95 border-b border-white/15 md:bg-transparent md:border-border/20"
-            }`}
-        >
-            <div className="w-full h-[72px] flex items-stretch justify-between">
-                <button
-                    data-testid={LANDING.navLogo}
-                    onClick={() => {
-                        if (location.pathname === "/") scrollTo("hero");
-                        else navigate("/");
-                    }}
-                    className="flex items-center gap-3 px-6 md:px-10 border-r border-border/30 hover:bg-white/5 transition-colors group shrink-0"
-                    aria-label="Genesis India"
-                >
-                    <span className="block w-8 h-8 border border-border/40 overflow-hidden">
-                        <img src={LOGO_URL} alt="Genesis" className="w-full h-full object-cover" />
-                    </span>
-                    <span className="flex flex-col text-left leading-none">
-                        <span className="font-display text-[17px] tracking-tight text-[var(--heading)]">Genesis</span>
-                        <span className="overline mt-0.5 text-[var(--text-dim)]">India</span>
-                    </span>
-                </button>
+  useEffect(() => {
+    const onPointerDown = (e) => {
+      if (!headerRef.current?.contains(e.target)) {
+        clearCloseTimer();
+        setActiveId(null);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, []);
 
-                <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10 px-6">
-                    {links.map((l) => (
-                        <button
-                            key={l.id || l.path}
-                            data-testid={l.testid}
-                            onClick={() => activateLink(l)}
-                            className="text-[12px] uppercase tracking-[0.16em] text-[var(--text-dim)] hover:text-[var(--text)] transition-colors relative"
+  const goHome = () => {
+    setMobileOpen(false);
+    closeMenu();
+    if (location.pathname !== "/") navigate("/");
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const activateItem = (item) => {
+    closeMenu();
+    setMobileOpen(false);
+    if (item?.target) navigate(item.target);
+  };
+
+  return (
+    <header
+      ref={headerRef}
+      onMouseLeave={scheduleClose}
+      onMouseEnter={clearCloseTimer}
+      className={`fixed left-0 right-0 top-0 z-50 transform-gpu transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        navHidden ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
+      <div
+        className={`relative border-b transition-colors duration-300 ${
+          mobileOpen || scrolled || activeId
+            ? "border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl"
+            : "border-transparent bg-transparent"
+        }`}
+      >
+        <div className="relative mx-auto flex h-[72px] max-w-[90rem] items-stretch justify-between px-3 md:px-6">
+          <button
+            type="button"
+            data-testid={LANDING.navLogo}
+            onClick={goHome}
+            className="flex shrink-0 items-center gap-3 px-2 transition-opacity hover:opacity-80 md:px-3"
+            aria-label="Genesis India"
+          >
+            <span className="block h-8 w-8 overflow-hidden border border-white/20">
+              <img src={LOGO_URL} alt="Genesis" className="h-full w-full object-cover" />
+            </span>
+            <span className="flex flex-col text-left leading-none">
+              <span className="font-display text-[17px] tracking-tight text-white">Genesis</span>
+              <span className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-white/45">
+                India
+              </span>
+            </span>
+          </button>
+
+          <nav className="absolute left-1/2 top-0 hidden h-[72px] -translate-x-1/2 items-center justify-center gap-0 lg:flex">
+            {NAV_MENUS.map((menu) => (
+              <NavToggle
+                key={menu.id}
+                menu={menu}
+                open={activeId === menu.id}
+                hovering={hoverLabelId === menu.id}
+                onOpen={openMenu}
+                onClose={closeMenu}
+                onHoverLabel={setHoverLabelId}
+              />
+            ))}
+          </nav>
+
+          <button
+            type="button"
+            data-testid={LANDING.navRsvpBtn}
+            data-cursor
+            data-cursor-label="RSVP"
+            onClick={() => {
+              closeMenu();
+              setMobileOpen(false);
+              navigate("/events");
+            }}
+            className="hidden shrink-0 items-center justify-center px-5 text-[0.875rem] font-normal leading-none text-white transition-opacity hover:opacity-90 md:flex"
+            style={{ backgroundColor: SUI_BLUE }}
+          >
+            Reserve seat
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              closeMenu();
+              setMobileOpen((s) => !s);
+            }}
+            className="flex items-center justify-center px-4 text-white transition-colors hover:bg-white/10 md:hidden"
+            aria-label="Menu"
+            aria-expanded={mobileOpen}
+            data-testid="nav-mobile-toggle"
+          >
+            <span
+              className="flex h-8 w-8 items-center justify-center p-2"
+              style={{ backgroundColor: mobileOpen ? SUI_BLUE : "#131518" }}
+            >
+              <PlusIcon open={mobileOpen} />
+            </span>
+          </button>
+        </div>
+
+        <motion.div style={{ width: barWidth }} className="h-px origin-left bg-white/40" />
+
+        {/* Desktop mega panel — emerges from under the bar */}
+        <div className="pointer-events-none absolute inset-x-0 top-full hidden lg:block">
+          <div className="pointer-events-auto">
+            <AnimatePresence mode="wait">
+              {activeMenu ? (
+                <MegaPanel menu={activeMenu} onActivate={activateItem} />
+              ) : null}
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile accordion */}
+      <AnimatePresence>
+        {mobileOpen ? (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.28 }}
+            className="overflow-hidden border-b border-white/10 bg-[#0a0a0a] lg:hidden"
+          >
+            <div className="flex max-h-[min(70vh,640px)] flex-col gap-1 overflow-y-auto px-4 py-4">
+              {NAV_MENUS.map((menu) => {
+                const open = mobileSection === menu.id;
+                return (
+                  <div key={menu.id} className="border-b border-white/10 last:border-0">
+                    <button
+                      type="button"
+                      onClick={() => setMobileSection(open ? null : menu.id)}
+                      className="flex w-full items-center justify-between py-3"
+                    >
+                      <span className="text-[1.05rem] text-white">{menu.label}</span>
+                      <span
+                        className="flex h-7 w-7 items-center justify-center p-1.5 text-white"
+                        style={{ backgroundColor: open ? SUI_BLUE : "#131518" }}
+                      >
+                        <PlusIcon open={open} />
+                      </span>
+                    </button>
+                    <AnimatePresence>
+                      {open ? (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="overflow-hidden pb-3"
                         >
-                            {l.label}
-                        </button>
-                    ))}
-                </nav>
-
-                <div className="hidden md:flex items-center justify-center px-6 border-l border-border/30 text-[11px] font-mono tracking-widest text-[var(--text-dim)] shrink-0 select-none">
-                    EN
-                </div>
-
-                <button
-                    data-testid={LANDING.navRsvpBtn}
-                    data-cursor
-                    data-cursor-label="RSVP"
-                    onClick={() => scrollTo("upcoming")}
-                    className="hidden md:flex items-center justify-center px-8 border-l border-border/30 bg-[#161618] hover:bg-black text-[#fafafa] hover:text-white transition-colors text-[11px] uppercase tracking-[0.2em] shrink-0 font-sans font-medium"
-                >
-                    Reserve seat
-                </button>
-
-                <button
-                    onClick={() => setOpen((s) => !s)}
-                    className="md:hidden px-6 border-l border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-                    aria-label="Menu"
-                    aria-expanded={open}
-                    data-testid="nav-mobile-toggle"
-                >
-                    <span className="block w-5 h-0.5 bg-current relative before:content-[''] before:absolute before:left-0 before:right-0 before:-top-2 before:h-0.5 before:bg-current after:content-[''] after:absolute after:left-0 after:right-0 after:top-2 after:h-0.5 after:bg-current" />
-                </button>
+                          {menu.columns.map((col) => (
+                            <div key={col.category} className="mb-3">
+                              <div className="mb-1 bg-[#222529] px-2 py-1.5 font-mono text-[10px] uppercase text-[#a1a7b2]">
+                                {col.category}
+                              </div>
+                              {col.items.map((item) => (
+                                <MegaItem
+                                  key={item.title}
+                                  item={item}
+                                  onActivate={activateItem}
+                                />
+                              ))}
+                            </div>
+                          ))}
+                        </motion.div>
+                      ) : null}
+                    </AnimatePresence>
+                  </div>
+                );
+              })}
+              <button
+                type="button"
+                data-testid="mobile-nav-rsvp-btn"
+                onClick={() => {
+                  setMobileOpen(false);
+                  navigate("/events");
+                }}
+                className="mt-3 py-3 text-center text-sm text-white"
+                style={{ backgroundColor: SUI_BLUE }}
+              >
+                Reserve seat
+              </button>
             </div>
-
-            {/* progress bar */}
-            <motion.div
-                style={{ width: barWidth }}
-                className="h-px bg-[var(--text)] origin-left"
-            />
-
-            {open && (
-                <div className="md:hidden border-t border-white/15 bg-[#111111] shadow-[0_24px_48px_rgba(0,0,0,0.65)]">
-                    <div className="px-6 py-7 flex flex-col gap-5">
-                        {links.map((l) => (
-                            <button
-                                key={l.id || l.path}
-                                data-testid={`mobile-${l.testid}`}
-                                onClick={() => activateLink(l)}
-                                className="text-left font-display text-2xl text-[var(--heading)]"
-                            >
-                                {l.label}
-                            </button>
-                        ))}
-                        <button
-                            data-testid="mobile-nav-rsvp-btn"
-                            onClick={() => scrollTo("upcoming")}
-                            className="btn-cinema mt-3"
-                        >
-                            Reserve seat →
-                        </button>
-                    </div>
-                </div>
-            )}
-        </header>
-    );
-
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </header>
+  );
 }

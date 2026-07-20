@@ -5,7 +5,7 @@ import ErrorBoundary from "@shared/ui/ErrorBoundary";
 
 /**
  * Global providers for the Genesis web app.
- * App-level ErrorBoundary is the last line of defence for render crashes.
+ * ConsentBanner lives inside BrowserRouter (AppRouter) — Link needs that context.
  */
 export default function AppProviders({ children }) {
   return (

@@ -82,15 +82,13 @@ Confirmed live:
 
 ### 3. Contact form does not capture leads
 
-**Where:** `frontend/src/features/contact/Contact.jsx` uses `window.location.href = mailto:...`.
+**Status: FIXED (Jul 2026)**
 
-**Impact:** `REACT_APP_BACKEND_URL` exists in `.env` but is unused. Users without a desktop mail client get a silent no-op. Leads are lost.
-
-**What to do:**
-- [ ] Wire a real submit path (backend route, Formspree, Resend, or serverless).
-- [ ] Show success / failure UI from the API response.
-- [ ] Keep `mailto:` only as a fallback link, not the primary submit.
-- [ ] Do not commit secrets; use env vars for API keys.
+**What was done:**
+- [x] Primary submit: `POST /api/contact` (Vercel serverless) → Formspree or Resend when env configured.
+- [x] Client also tries `REACT_APP_BACKEND_URL/api/contact` and `REACT_APP_FORMSPREE_ID`.
+- [x] Success / error UI with mailto **fallback link** (not primary).
+- [x] Secrets stay in env (`FORMSPREE_ID`, `RESEND_API_KEY`, `CONTACT_TO_EMAIL`).
 
 ---
 
@@ -164,37 +162,33 @@ Confirmed live:
 
 ### 8. “Adaptive” quality does not scale lights
 
-**Where:** `HeroCanvas.jsx` — 6 dynamic lights hardcoded on every tier. `quality.config.js` has no light-count field.
+**Status: FIXED (Jul 2026)**
 
-**What to do:**
-- [ ] low/medium: ambient + key only.
-- [ ] high/ultra: full rig.
-- [ ] Document the mapping in `quality.config.js`.
+**What was done:**
+- [x] `LIGHT_RIGS` in `quality.config.js` — low: ambient+key; medium: +fill; high/ultra: full rig.
+- [x] `applyLightRig()` toggles visibility/intensity on quality evaluate and FPS swaps.
 
 ### 9. Wasted WebGL renderer on Events page
 
-**Where:** `EventsPage.jsx` creates a WebGLRenderer and calls `.render()` every frame only to support `Vector3.project()` math for DOM positioning. Lines are invisible.
+**Status: FIXED (Jul 2026)**
 
-**What to do:**
-- [ ] Remove the renderer / scene / render loop.
-- [ ] Keep curve math + `.project()` (or pure matrix math) without a GPU context.
+**What was done:**
+- [x] Removed `WebGLRenderer` / scene / `#letters-canvas` / per-frame `.render()`.
+- [x] Kept `PerspectiveCamera` + `CatmullRomCurve3` + `.project()` for DOM letter placement only.
 
 ### 10. Extreme scroll-jacking (`+=700%`)
 
-**Where:** `EventsPage.jsx` ScrollTrigger `end: "+=700%"`, `pin: true`.
+**Status: FIXED (Jul 2026)**
 
-**What to do:**
-- [ ] Reduce to roughly `+=250–300%`, or replace with normal scroll / lighter scrub.
-- [ ] Re-test on mobile touch and trackpad.
+**What was done:**
+- [x] Pin distance ≈ `2.75×` viewport (`2.2×` on coarse pointers), derived via `end: () => …`.
 
 ### 11. Stale-closure after resize
 
-**Where:** `moveDistance = window.innerWidth * 5` captured once; resize does not recompute.
+**Status: FIXED (Jul 2026)**
 
-**What to do:**
-- [ ] Store `moveDistance` in a ref.
-- [ ] Recompute in `handleResize`.
-- [ ] Verify after orientation change / window resize.
+**What was done:**
+- [x] `moveDistance` is mutable; recomputed in `handleResize` with `updateCardsTarget` + `ScrollTrigger.refresh()`.
 
 ### 12. Hard dependency on Unsplash for core content
 
@@ -215,22 +209,20 @@ Event cards + OG/Twitter images use hardcoded Unsplash URLs, no local fallback, 
 
 ### 14. Dead legal links + no consent
 
-Footer Terms/Privacy are `href="#"`. PostHog loads; contact collects PII; no cookie/consent UX.
+**Status: FIXED (Jul 2026)**
 
-**What to do:**
-- [ ] Ship real Privacy + Terms pages (or hosted policy URLs).
-- [ ] Add consent banner / gate analytics until accepted (esp. EU).
-- [ ] Do not load PostHog before consent if required by policy.
+**What was done:**
+- [x] `/privacy` + `/terms` pages; footer links wired.
+- [x] `ConsentBanner` — PostHog loads only after Accept (`shared/consent`).
+- [x] Inline PostHog bootstrap removed from `index.html`.
 
 ### 15. Global `HTMLCanvasElement.prototype.getContext` monkey-patch
 
-**Where:** `public/index.html` — patches every 2D context for `willReadFrequently`.
+**Status: FIXED (Jul 2026)**
 
-**Note:** Session recording may already be disabled (`disable_session_recording: true`). The prototype patch is then redundant and risky.
-
-**What to do:**
-- [ ] Prefer per-canvas `{ willReadFrequently: false }` on draw-only canvases (already started in several UI files).
-- [ ] Remove the global prototype patch once recording stays off / canvases are fixed locally.
+**What was done:**
+- [x] Removed prototype patch from `public/index.html`.
+- [x] Draw-only canvases keep explicit `{ willReadFrequently: false }` where needed.
 
 ---
 
@@ -269,11 +261,11 @@ Do these in sequence for maximum launch risk reduction:
 3. ~~Add catch-all 404 route~~ ✅
 4. ~~Fix encoding mojibake (7+ files)~~ ✅
 5. ~~Add ErrorBoundaries (app + Hero + routes)~~ ✅
-6. Wire real contact / lead capture — still open
+6. ~~Wire real contact / lead capture~~ ✅ (`/api/contact` + Formspree/Resend + mailto fallback)
 7. ~~Delete/move dead public model/backup assets~~ ✅ (sources in `assets/model-source/`)
-8. Events page: reduce scroll-jack, fix resize stale closure, remove wasted WebGL pass
-9. Nav `<Link>`s, legal pages, consent, Unsplash → first-party media
-10. Cache headers (partially done), robots/sitemap, remove canvas prototype patch, CRA→Vite plan (clears remaining toolchain Highs)
+8. ~~Events page: reduce scroll-jack, fix resize stale closure, remove wasted WebGL pass~~ ✅
+9. Nav `<Link>`s, Unsplash → first-party media (legal/consent done ✅)
+10. Cache headers (partially done), robots/sitemap, CRA→Vite plan (clears remaining toolchain Highs)
 
 ### Automated checks for fixed items
 

@@ -6,6 +6,8 @@ import {
   FPSMonitor,
   QualityManager,
   DEBUG_PERFORMANCE,
+  LIGHT_RIGS,
+  applyLightRig,
 } from "@infra/performance";
 import { createPlayGate } from "@infra/performance/utils/createPlayGate";
 
@@ -64,41 +66,48 @@ export default function HeroCanvas() {
     if ("environmentIntensity" in scene) scene.environmentIntensity = 0.22;
     roomEnv.dispose?.();
 
-    // Studio-dark setup tuned for the neutral #181818 background:
-    // clean white key, orchid + cyan rims for edge pop, low neutral ambient.
+    // Studio-dark setup — intensities/visibility scaled by LIGHT_RIGS[tier].
     const ambientLight = new THREE.AmbientLight(0x26262e, 0.55);
     scene.add(ambientLight);
 
-    // Key — clean white from upper front-right for crisp speculars
     const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
     keyLight.position.set(4.5, 6.5, 5.5);
     scene.add(keyLight);
 
-    // Fill — soft lavender from left, lifts shadows without flattening
     const fillLight = new THREE.DirectionalLight(0xb9a8ff, 1.2);
     fillLight.position.set(-5.5, 2.2, 4);
     scene.add(fillLight);
 
-    // Rim — orchid backlight (matches the "together" accent) carves the
-    // silhouette out of the dark background
     const rimLight = new THREE.DirectionalLight(0xd97ef9, 4.6);
     rimLight.position.set(-3.5, 4.5, -6);
     scene.add(rimLight);
 
-    // Counter-rim — electric cyan from back-right for two-tone edges
     const kickLight = new THREE.DirectionalLight(0x5eead4, 3.4);
     kickLight.position.set(5.5, 3, -5);
     scene.add(kickLight);
 
-    // Soft frontal catch light for face/detail readability
     const catchLight = new THREE.PointLight(0xe6ecff, 1.3, 18, 2);
     catchLight.position.set(0.4, 1.8, 5.5);
     scene.add(catchLight);
 
-    // Subtle under-bounce — muted violet, grounds the silhouette
     const underLight = new THREE.PointLight(0x6d51c9, 0.7, 14, 2);
     underLight.position.set(0, -3.2, 2.5);
     scene.add(underLight);
+
+    const lights = {
+      ambient: ambientLight,
+      key: keyLight,
+      fill: fillLight,
+      rim: rimLight,
+      kick: kickLight,
+      catch: catchLight,
+      under: underLight,
+    };
+
+    const syncLightsToQuality = (tier) => {
+      const rig = LIGHT_RIGS[tier] || LIGHT_RIGS.medium;
+      applyLightRig(lights, rig);
+    };
 
     let model = null;
     let cancelled = false;
@@ -111,6 +120,8 @@ export default function HeroCanvas() {
 
     const qualityManager = new QualityManager();
     const fpsMonitor = new FPSMonitor();
+    // Start conservative; refreshed after evaluate() / FPS swaps.
+    syncLightsToQuality(qualityManager.currentQuality);
 
     const placeModelForEntry = (group, size, scale, { preserveTransform }) => {
       if (preserveTransform && model) {
@@ -147,6 +158,7 @@ export default function HeroCanvas() {
       targetSize: 6.3,
       onModelReady: ({ group, size, scale, isInitial }) => {
         if (cancelled) return;
+        syncLightsToQuality(qualityManager.currentQuality);
         placeModelForEntry(group, size, scale, {
           preserveTransform: !isInitial && Boolean(model),
         });
@@ -163,10 +175,10 @@ export default function HeroCanvas() {
       yawMax: THREE.MathUtils.degToRad(9),
       pitchMax: THREE.MathUtils.degToRad(4.5),
       rollMax: THREE.MathUtils.degToRad(1.4),
-      // Soft spring, but quicker follow so look keeps up with the pointer
-      stiffness: 22,
-      damping: 4.6,
-      pointerEase: 5.5,
+      // Snappier follow so the mascot keeps up with the pointer
+      stiffness: 42,
+      damping: 6.2,
+      pointerEase: 14,
     };
 
     let pointerX = 0;
@@ -226,6 +238,7 @@ export default function HeroCanvas() {
         );
         if (decision.changed) {
           swapInFlight = true;
+          syncLightsToQuality(decision.quality);
           adaptiveLoader
             .swapToQuality(decision.quality, { reason: decision.reason })
             .catch((err) => {

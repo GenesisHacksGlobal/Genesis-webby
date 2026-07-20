@@ -148,7 +148,7 @@ export default function WorkSection({ cards = defaultCards }) {
     };
     document.addEventListener("visibilitychange", onDocVisibility);
 
-    const moveDistance = window.innerWidth * 5;
+    let moveDistance = window.innerWidth * 2.75;
     let currentXPosition = 0;
     let targetXPosition = 0;
 
@@ -189,21 +189,14 @@ export default function WorkSection({ cards = defaultCards }) {
       }
     };
 
-    const lettersScene = new THREE.Scene();
-    const lettersCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // Camera-only projection math — no WebGLRenderer (DOM letters + CSS transforms).
+    const lettersCamera = new THREE.PerspectiveCamera(
+      50,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000,
+    );
     lettersCamera.position.z = 20;
-
-    const isCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
-    const lettersRenderer = new THREE.WebGLRenderer({
-      antialias: !isCoarse,
-      alpha: true,
-      powerPreference: isCoarse ? "default" : "high-performance",
-    });
-    lettersRenderer.setSize(window.innerWidth, window.innerHeight);
-    lettersRenderer.setClearColor(0x000000, 0);
-    lettersRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-    lettersRenderer.domElement.id = "letters-canvas";
-    workSection.appendChild(lettersRenderer.domElement);
 
     const createTextAnimationPath = (yPos, amplitude) => {
       const points = [];
@@ -213,17 +206,11 @@ export default function WorkSection({ cards = defaultCards }) {
           new THREE.Vector3(
             -25 + 50 * t,
             yPos + Math.sin(t * Math.PI) * -amplitude,
-            (1 - Math.pow(Math.abs(t - 0.5) * 2, 2)) * -5
-          )
+            (1 - Math.pow(Math.abs(t - 0.5) * 2, 2)) * -5,
+          ),
         );
       }
-      const curve = new THREE.CatmullRomCurve3(points);
-      const line = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(curve.getPoints(100)),
-        new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 1 })
-      );
-      line.curve = curve;
-      return line;
+      return { curve: new THREE.CatmullRomCurve3(points), letterElements: [] };
     };
 
     const paths = [
@@ -232,20 +219,21 @@ export default function WorkSection({ cards = defaultCards }) {
       createTextAnimationPath(-2.5, 0.8),
       createTextAnimationPath(-7.5, 1.5),
     ];
-    paths.forEach(line => lettersScene.add(line));
 
     const lettersPositions = new Map();
     const lettersList = ["E", "V", "E", "N", "T", "S"];
     const lineSpeedMultipliers = [0.8, 1, 0.7, 0.9];
 
     paths.forEach((line, pathIndex) => {
-      line.letterElements = [];
-      lettersList.forEach((char, letterIndex) => {
+      lettersList.forEach((_char, letterIndex) => {
         const elIdx = pathIndex * lettersList.length + letterIndex;
         const el = letterRefs.current[elIdx];
         if (el) {
           line.letterElements.push(el);
-          lettersPositions.set(el, { current: { x: 0, y: 0 }, target: { x: 0, y: 0 } });
+          lettersPositions.set(el, {
+            current: { x: 0, y: 0 },
+            target: { x: 0, y: 0 },
+          });
         }
       });
     });
@@ -253,13 +241,15 @@ export default function WorkSection({ cards = defaultCards }) {
     const updateTargetPositions = (scrollProgress) => {
       paths.forEach((line, index) => {
         line.letterElements.forEach((el, i) => {
-          const point = line.curve.getPoint((i / 14 + scrollProgress * lineSpeedMultipliers[index]) % 1);
+          const point = line.curve.getPoint(
+            (i / 14 + scrollProgress * lineSpeedMultipliers[index]) % 1,
+          );
           const vector = point.clone().project(lettersCamera);
           const position = lettersPositions.get(el);
           if (position) {
             position.target = {
               x: (vector.x * 0.5 + 0.5) * window.innerWidth,
-              y: (vector.y * -0.5 + 0.5) * window.innerHeight
+              y: (vector.y * -0.5 + 0.5) * window.innerHeight,
             };
           }
         });
@@ -322,19 +312,23 @@ export default function WorkSection({ cards = defaultCards }) {
       }
       updateLetterPositions();
       updateCardsPosition();
-      lettersRenderer.render(lettersScene, lettersCamera);
       animationFrameId = requestAnimationFrame(animate);
     };
 
     resizeGridCanvas();
     drawGrid(0);
 
+    const isCoarse = window.matchMedia?.("(pointer: coarse)")?.matches;
+    const pinDistance = () =>
+      Math.round(window.innerHeight * (isCoarse ? 2.2 : 2.75));
+
     const workTrigger = ScrollTrigger.create({
       trigger: workSection,
       start: "top top",
-      end: "+=700%",
+      end: () => `+=${pinDistance()}`,
       pin: true,
       scrub: 1,
+      anticipatePin: 1,
       onUpdate: (self) => {
         updateTargetPositions(self.progress);
         updateCardsTarget(self.progress);
@@ -349,13 +343,14 @@ export default function WorkSection({ cards = defaultCards }) {
 
     const handleResize = () => {
       const progress = workTrigger ? workTrigger.progress : 0;
+      moveDistance = window.innerWidth * (isCoarse ? 2.2 : 2.75);
       resizeGridCanvas();
       drawGrid(progress);
       lettersCamera.aspect = window.innerWidth / window.innerHeight;
       lettersCamera.updateProjectionMatrix();
-      lettersRenderer.setSize(window.innerWidth, window.innerHeight);
-      lettersRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
       updateTargetPositions(progress);
+      updateCardsTarget(progress);
+      ScrollTrigger.refresh();
     };
 
     window.addEventListener("resize", handleResize);
@@ -373,12 +368,6 @@ export default function WorkSection({ cards = defaultCards }) {
       gsap.ticker.remove(tickerHandler);
       gsap.ticker.wake();
       if (gridCanvas.parentNode) gridCanvas.parentNode.removeChild(gridCanvas);
-      if (lettersRenderer.domElement.parentNode) lettersRenderer.domElement.parentNode.removeChild(lettersRenderer.domElement);
-      lettersRenderer.dispose();
-      paths.forEach(line => {
-        line.geometry.dispose();
-        line.material.dispose();
-      });
     };
   }, [cards]);
 
