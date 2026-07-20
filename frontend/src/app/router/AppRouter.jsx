@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "@shared/ui/ErrorBoundary";
 import ConsentBanner from "@shared/consent/ConsentBanner";
+import Loader from "@/components/ui/loader-15";
 
 const HomePage = lazy(() => import("@pages/home/HomePage"));
 const GalleryPage = lazy(() => import("@pages/gallery/GalleryPage"));
@@ -18,13 +19,11 @@ const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 function RouteFallback() {
   return (
     <div
-      className="fixed inset-0 z-[80] flex items-center justify-center bg-[var(--bg)] text-[var(--text-faint)]"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#0c0c0f] text-white"
       role="status"
       aria-live="polite"
     >
-      <p className="font-mono text-[11px] uppercase tracking-[0.22em]">
-        Loading…
-      </p>
+      <Loader />
     </div>
   );
 }
