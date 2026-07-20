@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
+import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 
 // Animated SVG line that "draws" itself as the section scrolls into view
 export default function ScribbleDivider({ variant = "wave" }) {
     const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
+    const { scrollYProgress } = useSectionScroll({
         target: ref,
         offset: ["start 90%", "end 30%"],
     });

@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LANDING } from "@shared/constants/testIds";
+import { usePageScroll } from "@shared/hooks/useSectionScroll";
 
-const LOGO_URL =
-    "https://customer-assets.emergentagent.com/job_31a4271f-8bfb-44ef-a6c3-4b205b8fb50d/artifacts/iud9zkn6_logo.png";
+const LOGO_URL = "/images/logo.png";
 
 const links = [
     { id: "about", label: "About", testid: LANDING.navAbout },
@@ -21,7 +21,7 @@ export default function Navbar() {
     const lastScrollY = useRef(0);
     const navigate = useNavigate();
     const location = useLocation();
-    const { scrollYProgress } = useScroll();
+    const { scrollYProgress } = usePageScroll();
     const barWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
     useEffect(() => {

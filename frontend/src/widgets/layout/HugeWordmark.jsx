@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
+import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 
 function Letter({ ch, i, dir, progress }) {
     const x = useTransform(progress, [0, 0.6], [dir * 240, 0]);
@@ -21,7 +22,7 @@ function Letter({ ch, i, dir, progress }) {
 // Massive scroll-reactive wordmark — letters slide in from different directions
 export default function HugeWordmark() {
     const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
+    const { scrollYProgress } = useSectionScroll({
         target: ref,
         offset: ["start end", "end start"],
     });

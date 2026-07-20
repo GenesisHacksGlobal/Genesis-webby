@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { LANDING } from "@shared/constants/testIds";
+import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 import HeroCanvas from "./HeroCanvas";
 
 // One letter per word is rendered in Gridular (pixel font),
@@ -42,7 +43,7 @@ function MaskWord({ word, gridularIndex, delay }) {
 export default function Hero() {
   const ref = useRef(null);
   const [showModel, setShowModel] = useState(false);
-  const { scrollYProgress } = useScroll({
+  const { scrollYProgress } = useSectionScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
