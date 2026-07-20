@@ -226,7 +226,7 @@ export default function Footer() {
                                 textTransform: "uppercase",
                             }}
                         >
-                            Contact â†’
+                            Contact →
                         </button>
                     </div>
                 </div>
@@ -306,7 +306,7 @@ export default function Footer() {
 
             {/* â”€â”€ BOTTOM BAR â”€â”€ */}
             <div className="footer-bottom-bar">
-                <span>Â©{new Date().getFullYear()}, All rights reserved</span>
+                <span>©{new Date().getFullYear()}, All rights reserved</span>
                 <div style={{ display: "flex", gap: "1.5rem" }}>
                     <a href="#" style={{ color: "inherit", textDecoration: "none" }}>Terms of Service</a>
                     <a href="#" style={{ color: "inherit", textDecoration: "none" }}>Privacy Policy</a>

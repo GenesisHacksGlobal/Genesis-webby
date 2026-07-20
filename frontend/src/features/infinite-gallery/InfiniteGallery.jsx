@@ -341,7 +341,7 @@ export default function InfiniteGallery() {
         const mid = pointerMidpoint(a, b);
         uniforms.uMousePos.value.set(mid.x - rect.left, mid.y - rect.top);
 
-        // Match trackpad: pinch out â†’ zoom in (lower uZoom = larger cells)
+        // Match trackpad: pinch out → zoom in (lower uZoom = larger cells)
         const ratio = dist / pinchStartDist;
         targetZoom = THREE.MathUtils.clamp(
           pinchStartZoom / ratio,
@@ -382,7 +382,7 @@ export default function InfiniteGallery() {
       }
 
       if (activePointers.size === 1) {
-        // Drop from pinch â†’ continue single-finger drag
+        // Drop from pinch → continue single-finger drag
         isPinching = false;
         dragActive = true;
         const remaining = [...activePointers.values()][0];
@@ -566,8 +566,8 @@ export default function InfiniteGallery() {
               ? "Moving"
               : "Dragging"
             : touchUi
-              ? "Drag Â· Pinch to zoom"
-              : "Drag Â· Scroll Â· Ctrl+Scroll zoom"}
+              ? "Drag · Pinch to zoom"
+              : "Drag · Scroll · Ctrl+Scroll zoom"}
         </p>
       </div>
     </div>

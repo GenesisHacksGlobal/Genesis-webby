@@ -58,7 +58,7 @@ export default function Gallery() {
             <div className="max-w-[1400px] mx-auto px-6 md:px-10">
                 <div className="flex items-center gap-3 mb-14">
                     <span className="block w-10 h-px bg-[var(--text-dim)]" />
-                    <span className="overline">Chapter 04 Â· Stills</span>
+                    <span className="overline">Chapter 04 · Stills</span>
                 </div>
                 <h2 className="font-display text-5xl sm:text-6xl md:text-7xl tracking-tight leading-[0.95] text-[var(--heading)] max-w-[22ch] mb-16">
                     Frames from the floor.

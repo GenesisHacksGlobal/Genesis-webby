@@ -13,9 +13,9 @@ const pastEvents = [
         slug: "beyond-the-code",
         title: "Beyond the Code",
         subtitle: "Genesis Chennai Meetup",
-        kicker: "Edition Â· Sep 2024",
+        kicker: "Edition · Sep 2024",
         date: "Sep 19, 2024",
-        city: "SRM-IST Â· Chennai, TN",
+        city: "SRM-IST · Chennai, TN",
         blurb: "A massive design & developer meetup at SRM-IST. Over 700 creators came together for panels on freelancing, tech stacks, and building in public.",
         hosts: "Genesis Community",
         time: "10:00 AM – 5:00 PM IST",
@@ -27,9 +27,9 @@ const pastEvents = [
         slug: "supernova",
         title: "Supernova",
         subtitle: "36-Hour National Hackathon",
-        kicker: "Edition Â· May 2025",
+        kicker: "Edition · May 2025",
         date: "May 2-3, 2025",
-        city: "GL Bajaj Â· Greater Noida, UP",
+        city: "GL Bajaj · Greater Noida, UP",
         blurb: "A 36-hour hackathon challenging developers to build production-grade projects. Staged with high-energy workshops and mentorship loops.",
         hosts: "Genesis Community",
         time: "9:00 AM – 9:00 PM IST",
@@ -41,9 +41,9 @@ const pastEvents = [
         slug: "hackamania",
         title: "Hackamania",
         subtitle: "Cross-Chain Web3 Hackathon",
-        kicker: "Edition Â· May 2025",
+        kicker: "Edition · May 2025",
         date: "May 23, 2025",
-        city: "Microsoft Office Â· Gurugram, HR",
+        city: "Microsoft Office · Gurugram, HR",
         blurb: "An intense builder marathon hosted at the Microsoft office. Focused on web3 scalability, cross-chain applications, and decentralized networks.",
         hosts: "Genesis Community",
         time: "10:00 AM – 8:00 PM IST",
@@ -55,9 +55,9 @@ const pastEvents = [
         slug: "escape-da-vinci",
         title: "escape da vinci",
         subtitle: "Design-Tech Collaboration Meetup",
-        kicker: "Edition Â· Feb 2026",
+        kicker: "Edition · Feb 2026",
         date: "Feb 10-27, 2026",
-        city: "Chandigarh University Â· Punjab",
+        city: "Chandigarh University · Punjab",
         blurb: "An interactive design-tech meetup hosted at Chandigarh University, encouraging students to bridge design, code, and creative logic.",
         hosts: "Genesis Community",
         time: "11:00 AM – 4:00 PM IST",
@@ -69,9 +69,9 @@ const pastEvents = [
         slug: "hackarena-2025",
         title: "HackArena 2025",
         subtitle: "Cloud Architecture Sprint",
-        kicker: "Edition Â· Jun 2025",
+        kicker: "Edition · Jun 2025",
         date: "Jun 28-29, 2025",
-        city: "IIIT Delhi Â· New Delhi",
+        city: "IIIT Delhi · New Delhi",
         blurb: "A flagship hackathon hosted at IIIT Delhi. Students built cloud-native tools using Microsoft Azure and modern web technologies under expert mentorship.",
         hosts: "Genesis Community",
         time: "9:00 AM – 6:00 PM IST",
@@ -83,9 +83,9 @@ const pastEvents = [
         slug: "0xgenignite-mumbai",
         title: "0xgenignite Bootcamp",
         subtitle: "Stellar Dev Bootcamp Mumbai",
-        kicker: "Edition Â· Sep 2025",
+        kicker: "Edition · Sep 2025",
         date: "Sep 13, 2025",
-        city: "Microsoft Office Â· Mumbai, MH",
+        city: "Microsoft Office · Mumbai, MH",
         blurb: "An intensive builder bootcamp in Mumbai focused on smart contracts, asset tokenization, and integrating payment systems using Stellar.",
         hosts: "Stellar Foundation & Genesis",
         time: "10:00 AM – 6:00 PM IST",
@@ -97,9 +97,9 @@ const pastEvents = [
         slug: "0xgenignite-bangalore",
         title: "0xgenignite Bootcamp",
         subtitle: "Stellar Dev Bootcamp Bangalore",
-        kicker: "Edition Â· Oct 2025",
+        kicker: "Edition · Oct 2025",
         date: "Oct 5, 2025",
-        city: "Polaris School Â· Bangalore, KA",
+        city: "Polaris School · Bangalore, KA",
         blurb: "The Bangalore chapter of the developer bootcamp series. Focused on building high-performance dApps and decentralized finance applications.",
         hosts: "Stellar Foundation & Genesis",
         time: "10:00 AM – 6:00 PM IST",
@@ -111,9 +111,9 @@ const pastEvents = [
         slug: "0xgenignite-goa",
         title: "0xgenignite NIT Goa",
         subtitle: "Stellar Goa Hackathon",
-        kicker: "Edition Â· Oct 2025",
+        kicker: "Edition · Oct 2025",
         date: "Oct 11-12, 2025",
-        city: "NIT Goa Â· Goa",
+        city: "NIT Goa · Goa",
         blurb: "A coastal builder hackathon inside NIT Goa. Developers worked round-the-clock on consumer products and web3 payment channels.",
         hosts: "Stellar Foundation & Genesis",
         time: "10:00 AM – 5:00 PM IST",
@@ -125,9 +125,9 @@ const pastEvents = [
         slug: "design-a-thon",
         title: "Design-A-Thon",
         subtitle: "Jaipur Design Marathon",
-        kicker: "Edition Â· Oct 2025",
+        kicker: "Edition · Oct 2025",
         date: "Oct 27 – Nov 1, 2025",
-        city: "Manipal University Â· Jaipur, RJ",
+        city: "Manipal University · Jaipur, RJ",
         blurb: "A premium design marathon. Focused on brand identity, interaction design systems, and rapid prototyping for early stage startups.",
         hosts: "Genesis Community",
         time: "9:00 AM – 6:00 PM IST",
@@ -139,9 +139,9 @@ const pastEvents = [
         slug: "ranchi-hacks",
         title: "Ranchi Hacks",
         subtitle: "Jharkhand Developer Hackathon",
-        kicker: "Edition Â· Jan 2026",
+        kicker: "Edition · Jan 2026",
         date: "Jan 17, 2026",
-        city: "Sarla Birla University Â· Ranchi, JH",
+        city: "Sarla Birla University · Ranchi, JH",
         blurb: "A regional hackathon in Ranchi focused on localized problem solving. Empowering students in Jharkhand to solve local challenges via tech.",
         hosts: "Genesis Community",
         time: "9:30 AM – 7:30 PM IST",
@@ -180,7 +180,7 @@ function PastEventCard({ event, index }) {
                 </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
                 <div className="absolute top-5 left-5 flex items-center gap-2">
-                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.2em] bg-black/60 backdrop-blur border border-white/20 text-white">Past Â· Archived</span>
+                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.2em] bg-black/60 backdrop-blur border border-white/20 text-white">Past · Archived</span>
                 </div>
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
                     <span className="overline text-white">{event.kicker}</span>
@@ -196,7 +196,7 @@ function PastEventCard({ event, index }) {
 
                 <div className="mt-8 pt-6 border-t border-[var(--border)] grid grid-cols-2 gap-y-4 gap-x-6">
                     <div>
-                        <div className="overline">Date Â· Time</div>
+                        <div className="overline">Date · Time</div>
                         <div className="mt-1.5 text-sm text-[var(--text)] font-mono">{event.date}</div>
                         <div className="text-xs text-[var(--text-dim)] font-mono">{event.time}</div>
                     </div>
@@ -208,7 +208,7 @@ function PastEventCard({ event, index }) {
 
                 {event.luma && (
                     <a href={event.luma} target="_blank" rel="noopener noreferrer" data-testid={`${event.testid}-luma`} data-cursor data-cursor-label="Luma" className="mt-6 inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-[var(--text-dim)] hover:text-[var(--text)] transition-colors link-draw">
-                        View on Luma <span aria-hidden>â†—</span>
+                        View on Luma <span aria-hidden>↗</span>
                     </a>
                 )}
             </div>
@@ -240,7 +240,7 @@ function UpcomingPanel() {
                     <span className="block w-2 h-2 bg-[var(--text)] rounded-full animate-pulse" />
                     <span className="overline text-[var(--text)]">Registrations open</span>
                 </div>
-                <span className="overline text-left sm:text-right">Upcoming Â· Headline event Â· 02</span>
+                <span className="overline text-left sm:text-right">Upcoming · Headline event · 02</span>
             </div>
 
             <div className="grid md:grid-cols-12">
@@ -261,16 +261,16 @@ function UpcomingPanel() {
                         </p>
 
                         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
-                            <div><div className="overline">Date</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">Jul 25</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">Saturday Â· 2026</div></div>
+                            <div><div className="overline">Date</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">Jul 25</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">Saturday · 2026</div></div>
                             <div><div className="overline">Time</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">10–4</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">10 AM – 4 PM</div></div>
-                            <div><div className="overline">Venue</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">TBA</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">India Â· Offline</div></div>
+                            <div><div className="overline">Venue</div><div className="mt-2 font-display text-3xl text-[var(--heading)] leading-none">TBA</div><div className="text-xs text-[var(--text-dim)] font-mono mt-1">India · Offline</div></div>
                         </div>
                     </motion.div>
 
                     <div className="mt-10 flex flex-col gap-5">
                         <a href={UPCOMING_LUMA_URL} target="_blank" rel="noopener noreferrer" data-testid={LANDING.rsvpSubmit} data-cursor data-cursor-label="Luma" className="btn-cinema self-start group">
                             <span>Reserve spot on Luma</span>
-                            <span aria-hidden className="transition-transform group-hover:translate-x-1">â†—</span>
+                            <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
                         </a>
                         <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[36ch]">
                             Registrations are handled via Luma. You'll be redirected to confirm your seat.
@@ -293,7 +293,7 @@ export default function Events() {
                     <div>
                         <div className="flex items-center gap-3 mb-6">
                             <span className="block w-10 h-px bg-[var(--text-dim)]" />
-                            <span className="overline">Chapter 03 Â· Programme</span>
+                            <span className="overline">Chapter 03 · Programme</span>
                         </div>
                         <h2 className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight leading-[0.95] text-[var(--heading)] max-w-[20ch]">
                             Events / A film festival for freelancers.
@@ -332,7 +332,7 @@ export default function Events() {
                     </p>
                     <Link to="/events" className="btn-cinema flex items-center gap-2 group">
                         <span>Explore Full Events Gallery</span>
-                        <span aria-hidden className="transition-transform group-hover:translate-x-1">â†’</span>
+                        <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
                     </Link>
                 </div>
 

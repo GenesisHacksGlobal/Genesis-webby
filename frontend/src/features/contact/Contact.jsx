@@ -34,7 +34,7 @@ export default function Contact() {
                     <div className="md:col-span-5">
                         <div className="flex items-center gap-3 mb-6">
                             <span className="block w-10 h-px bg-[var(--text-dim)]" />
-                            <span className="overline">Chapter 05 Â· Contact</span>
+                            <span className="overline">Chapter 05 · Contact</span>
                         </div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
@@ -159,7 +159,7 @@ export default function Contact() {
                                         className="btn-cinema"
                                     >
                                         Send message
-                                        <span aria-hidden>â†’</span>
+                                        <span aria-hidden>→</span>
                                     </button>
                                 </div>
 

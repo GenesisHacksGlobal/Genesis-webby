@@ -49,7 +49,7 @@ export default function GalleryPage() {
             to="/"
             className="inline-flex min-h-11 min-w-11 w-fit items-center gap-2 border border-white/20 bg-black/40 px-3.5 py-2.5 text-[11px] uppercase tracking-[0.2em] text-white/85 backdrop-blur-md transition-colors active:border-white/50 active:text-white sm:min-h-0 sm:px-3 sm:py-2 hover:border-white/40 hover:text-white"
           >
-            <span aria-hidden>â†</span>
+            <span aria-hidden>←</span>
             Home
           </Link>
           <div className="min-w-0">
