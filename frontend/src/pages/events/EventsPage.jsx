@@ -5,7 +5,7 @@ import { SAMVEDNA_PHOTOS, NO_AGENDA_1_PHOTOS, GALLERY_PHOTOS } from "@shared/dat
 import { eventDatabase } from "@shared/data/eventDatabase";
 import { Tilt } from "@shared/ui";
 import { Footer } from "@widgets/layout";
-import { ArchiveHero, ArchiveGrid, ArchiveModal, ArchiveCommandBar } from "./components";
+import { ArchiveHero, ArchiveGrid, ArchiveModal, ArchiveCommandBar, HorizontalScrollReel } from "./components";
 
 // ─── Data helpers ────────────────────────────────────────────────────────────
 const CAT_IMAGES = {
@@ -97,6 +97,9 @@ export default function EventsPage() {
 
       {/* Hero */}
       <ArchiveHero total={cleanEvents.length} photos={GALLERY_PHOTOS} />
+
+      {/* GSAP ScrollTrigger Pinned Horizontal Reel */}
+      <HorizontalScrollReel events={cleanEvents} onSelect={setSelected} />
 
       {/* Command Bar */}
       <ArchiveCommandBar
