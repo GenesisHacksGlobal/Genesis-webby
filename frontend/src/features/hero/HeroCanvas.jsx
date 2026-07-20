@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import {
   AdaptiveModelLoader,
   FPSMonitor,
@@ -10,10 +11,11 @@ import { createPlayGate } from "@infra/performance/utils/createPlayGate";
 
 export default function HeroCanvas() {
   const mountRef = useRef(null);
+  const [webglFailed, setWebglFailed] = useState(false);
 
   useEffect(() => {
     const container = mountRef.current;
-    if (!container) return;
+    if (!container) return undefined;
 
     const scene = new THREE.Scene();
 
@@ -25,7 +27,22 @@ export default function HeroCanvas() {
     // Antialias is a constructor flag — QualityManager may prefer MSAA off
     // on low tiers; we start with antialias true for first paint, then
     // pixelRatio from the selected preset becomes the primary cost control.
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      // Force a context check — some environments construct but return null ctx.
+      if (!renderer.getContext()) {
+        throw new Error("WebGL context unavailable");
+      }
+    } catch (err) {
+      if (process.env.NODE_ENV !== "production") {
+        // eslint-disable-next-line no-console
+        console.error("[HeroCanvas] WebGL init failed:", err);
+      }
+      setWebglFailed(true);
+      return undefined;
+    }
+
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -36,6 +53,16 @@ export default function HeroCanvas() {
     renderer.domElement.style.height = "100%";
     renderer.domElement.style.display = "block";
     container.appendChild(renderer.domElement);
+
+    // Minimal IBL only — RoomEnvironment is bright; keep it quiet so the
+    // cinematic key/rim lights stay in charge (full IBL washed the model).
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+    const roomEnv = new RoomEnvironment();
+    const envRT = pmrem.fromScene(roomEnv, 0.04);
+    scene.environment = envRT.texture;
+    if ("environmentIntensity" in scene) scene.environmentIntensity = 0.22;
+    roomEnv.dispose?.();
 
     // Studio-dark setup tuned for the neutral #181818 background:
     // clean white key, orchid + cyan rims for edge pop, low neutral ambient.
@@ -317,11 +344,31 @@ export default function HeroCanvas() {
 
       adaptiveLoader.dispose();
       renderer.dispose();
+      if (scene.environment) {
+        scene.environment.dispose?.();
+        scene.environment = null;
+      }
+      envRT.dispose?.();
+      pmrem.dispose();
       if (container && renderer.domElement.parentNode === container) {
         container.removeChild(renderer.domElement);
       }
     };
   }, []);
+
+  if (webglFailed) {
+    return (
+      <div
+        className="pointer-events-none absolute bottom-[-20px] left-1/2 z-[5] flex h-[420px] w-full max-w-[1150px] -translate-x-1/2 items-end justify-center pb-16 md:h-[560px]"
+        role="img"
+        aria-label="3D hero preview unavailable"
+      >
+        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/35">
+          3D preview unavailable on this device
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div

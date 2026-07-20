@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useTransform } from "framer-motion";
 import { LANDING } from "@shared/constants/testIds";
 import { useSectionScroll } from "@shared/hooks/useSectionScroll";
+import ErrorBoundary from "@shared/ui/ErrorBoundary";
 import HeroCanvas from "./HeroCanvas";
 
 // One letter per word is rendered in Gridular (pixel font),
@@ -89,7 +90,31 @@ export default function Hero() {
       />
 
       {/* 3D Model Canvas */}
-      {showModel && <HeroCanvas />}
+      {showModel && (
+        <ErrorBoundary
+          compact
+          title="3D hero unavailable."
+          fallback={({ reset }) => (
+            <div
+              className="pointer-events-none absolute bottom-8 left-1/2 z-[5] flex -translate-x-1/2 flex-col items-center gap-3"
+              role="status"
+            >
+              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/40">
+                3D preview failed
+              </p>
+              <button
+                type="button"
+                onClick={reset}
+                className="pointer-events-auto btn-ghost !px-4 !py-2 text-[10px]"
+              >
+                Retry
+              </button>
+            </div>
+          )}
+        >
+          <HeroCanvas />
+        </ErrorBoundary>
+      )}
 
       <div className="w-full max-w-[1400px] mx-auto px-5 sm:px-6 md:px-10 pb-10 md:pb-24 mt-2 md:mt-10">
         <motion.h1
@@ -158,7 +183,7 @@ export default function Hero() {
               className="btn-cinema"
             >
               Explore upcoming event
-              <span aria-hidden>â†’</span>
+              <span aria-hidden>→</span>
             </button>
             <button
               data-testid={LANDING.heroCtaSecondary}

@@ -3,3 +3,4 @@ export { default as CountUp } from "./CountUp";
 export { default as SpiralImages } from "./SpiralImages";
 export { default as BlackHole } from "./BlackHole";
 export { default as ScrollSequence } from "./ScrollSequence";
+export { default as ErrorBoundary } from "./ErrorBoundary";

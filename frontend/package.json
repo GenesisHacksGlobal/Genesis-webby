@@ -10,7 +10,7 @@
     "meshoptimizer": "^1.2.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-router-dom": "7.5.1",
+    "react-router-dom": "^7.18.1",
     "react-scripts": "5.0.1",
     "sonner": "2.0.3",
     "three": "^0.185.1"
@@ -20,6 +20,9 @@
     "start": "npm run dev",
     "build": "craco build",
     "test": "craco test",
+    "check:encoding": "node scripts/check-encoding.mjs",
+    "check:critical": "node scripts/check-critical-blockers.mjs",
+    "fix:encoding": "python scripts/fix-encoding.py",
     "optimize:models": "node scripts/optimize-hero-models.mjs",
     "optimize:models:ktx2": "node scripts/optimize-hero-models.mjs --ktx2"
   },
