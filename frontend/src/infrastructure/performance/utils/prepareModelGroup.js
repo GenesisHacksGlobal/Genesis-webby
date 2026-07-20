@@ -120,8 +120,10 @@ export function applyHeroMaterials(root, anisotropy = 1) {
           0.35,
         );
       }
+      // Quiet IBL — enough that glasses/metals catch a hint of reflection,
+      // low enough that RoomEnvironment does not flatten cinematic lighting.
       if (material.envMapIntensity !== undefined) {
-        material.envMapIntensity = 0;
+        material.envMapIntensity = 0.18;
       }
       material.needsUpdate = true;
     });

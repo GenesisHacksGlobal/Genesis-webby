@@ -1,6 +1,6 @@
 /**
  * Production asset pipeline — generates Hero-{Ultra,High,Medium,Low}.glb
- * from the current landing hero source (genesis-model.glb).
+ * from the offline source model (never ship sources from public/).
  *
  * Usage (from frontend/):
  *   node scripts/optimize-hero-models.mjs
@@ -8,10 +8,13 @@
  *
  * Requires: npx @gltf-transform/cli (downloaded on demand)
  *
- * Source priority:
- *   1) public/model/genesis-model.glb          (current hero)
- *   2) public/model/genesis-original.bak
- *   3) public/model/genesis-compressed.glb
+ * Source priority (offline — NOT served by CRA/Vercel):
+ *   1) assets/model-source/genesis-model.glb
+ *   2) assets/model-source/genesis-original.bak
+ *   3) assets/model-source/genesis-compressed.glb
+ *   4) assets/model-source/genesis
+ *
+ * Runtime ships only public/model/Hero-*.glb (+ KTX2 variants).
  */
 
 import { spawnSync } from "node:child_process";
@@ -27,21 +30,26 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, "..");
 const modelDir = path.join(root, "public", "model");
+const sourceDir = path.join(root, "assets", "model-source");
 
 const sourceCandidates = [
-  path.join(modelDir, "genesis-model.glb"),
-  path.join(modelDir, "genesis-original.bak"),
-  path.join(modelDir, "genesis-compressed.glb"),
-  path.join(modelDir, "genesis"),
+  path.join(sourceDir, "genesis-model.glb"),
+  path.join(sourceDir, "genesis-original.bak"),
+  path.join(sourceDir, "genesis-compressed.glb"),
+  path.join(sourceDir, "genesis"),
 ];
 
 const source = sourceCandidates.find((p) => existsSync(p));
 if (!source) {
-  console.error("No source GLB found in public/model/");
+  console.error(
+    "No source GLB found in assets/model-source/.\n" +
+      "Expected one of: genesis-model.glb, genesis-original.bak, genesis-compressed.glb, genesis",
+  );
   process.exit(1);
 }
 
 mkdirSync(modelDir, { recursive: true });
+mkdirSync(sourceDir, { recursive: true });
 
 const withKtx2 = process.argv.includes("--ktx2");
 const CLI = ["--yes", "@gltf-transform/cli@4.1.2"];
@@ -167,12 +175,12 @@ for (const tier of tiers) {
   console.log(`✓ ${tier.name}: ${mb(out)} MB`);
 }
 
-// Keep legacy path as Low alias — safest fallback for failed tier loads
+// Keep an offline Low alias for local tooling — do NOT write into public/
 const low = path.join(modelDir, "Hero-Low.glb");
-const compressedAlias = path.join(modelDir, "genesis-compressed.glb");
+const compressedAlias = path.join(sourceDir, "genesis-compressed.glb");
 if (existsSync(low)) {
   copyFileSync(low, compressedAlias);
-  console.log(`\nSynced genesis-compressed.glb ← Hero-Low.glb`);
+  console.log(`\nSynced assets/model-source/genesis-compressed.glb ← Hero-Low.glb`);
 }
 
 if (withKtx2) {

@@ -10,6 +10,7 @@ Use this folder as the source of truth for contributing to Genesis.
 4. [Performance and optimization](PERFORMANCE.md)
 5. [UI, animation, and 3D guidelines](UI_ANIMATION_3D.md)
 6. [Release checklist](RELEASE_CHECKLIST.md)
+7. [Production readiness audit](PRODUCTION_AUDIT.md) — security, CVEs, 404, encoding, 3D/perf blockers and fix order
 
 ## Core principle
 

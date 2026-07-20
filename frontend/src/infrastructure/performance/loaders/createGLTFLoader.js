@@ -12,7 +12,7 @@ import {
  * - DRACO: existing Google-hosted decoder path (unchanged).
  * - KTX2: Basis transcoder via three.js defaults (bundler) or optional CDN path.
  * - Meshopt: required for gltfpack / EXT_meshopt_compression assets
- *   (e.g. /model/genesis-model.glb).
+ *   (e.g. /model/Hero-Low.glb).
  * WebP/JPEG textures continue to work without KTX2 present in the GLB.
  */
 export function createGLTFLoader({

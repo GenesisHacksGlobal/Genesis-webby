@@ -19,7 +19,7 @@ export const ASSET_PATHS = Object.freeze({
   medium: "/model/Hero-Medium.glb",
   low: "/model/Hero-Low.glb",
   /** Fallback if a tier file is missing at runtime */
-  fallback: "/model/genesis-compressed.glb",
+  fallback: "/model/Hero-Low.glb",
 });
 
 /**
@@ -187,7 +187,7 @@ export const KTX2_TRANSCODER_PATH = "";
 
 /**
  * When true, prefer KTX2-compressed GLB paths if present in ASSET_PATHS_KTX2.
- * Generated from genesis-model.glb via: npm run optimize:models:ktx2
+ * Generated from assets/model-source/genesis-model.glb via: npm run optimize:models:ktx2
  */
 export const PREFER_KTX2_ASSETS = true;
 
@@ -199,7 +199,13 @@ export const ASSET_PATHS_KTX2 = Object.freeze({
   fallback: "/model/Hero-Low-KTX2.glb",
 });
 
+/**
+ * Perf debug overlay / verbose logs.
+ * Production builds ignore localStorage + ?perfDebug=1 entirely so the
+ * toggle cannot be flipped by end users on the public site.
+ */
 export const DEBUG_PERFORMANCE =
+  process.env.NODE_ENV !== "production" &&
   typeof window !== "undefined" &&
   (window.localStorage?.getItem("dezhub:perfDebug") === "1" ||
     /[?&]perfDebug=1/.test(window.location?.search || ""));
