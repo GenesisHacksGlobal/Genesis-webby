@@ -2,6 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Footer } from '@widgets/layout';
+import {
+  ScrollAnimation,
+  ScrollScale,
+  ScrollTranslateX,
+  ScrollTranslateY,
+} from '@/components/ui/team-section';
 
 // ─── Team Data ────────────────────────────────────────────────────────────────
 const TEAM = [
@@ -314,6 +320,88 @@ function MemberModal({ member, onClose }) {
   );
 }
 
+// ─── Kinetic Scroll Section ───────────────────────────────────────────────────
+const TEAM_SLIDER_MEMBERS = [
+  { avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=700&auto=format&fit=crop&q=60', name: 'Aryan Sharma', role: 'CEO' },
+  { avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=700&auto=format&fit=crop&q=60', name: 'Priya Nair', role: 'CTO' },
+  { avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&auto=format&fit=crop&q=60', name: 'Rahul Verma', role: 'Head of Events' },
+  { avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=700&auto=format&fit=crop&q=60', name: 'Sneha Kapoor', role: 'Lead Designer' },
+  { avatar: 'https://images.unsplash.com/photo-1522556189639-b150ed9c4330?w=700&auto=format&fit=crop&q=60', name: 'Dev Malhotra', role: 'Community Lead' },
+  { avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=700&auto=format&fit=crop&q=60', name: 'Aisha Patel', role: 'Partnerships' },
+  { avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=700&auto=format&fit=crop&q=60', name: 'Karan Mehta', role: 'Backend Dev' },
+  { avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=700&auto=format&fit=crop&q=60', name: 'Varun Singh', role: 'Frontend Dev' },
+];
+
+function TeamScrollCard({ member, className, ...props }) {
+  return (
+    <div className={`space-y-4 rounded-2xl border border-white/10 bg-[#121217] overflow-hidden group shadow-lg ${className}`} {...props}>
+      <div className="w-full aspect-square overflow-hidden relative">
+        <img
+          src={member.avatar}
+          alt={member.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#121217] via-transparent to-transparent opacity-80" />
+      </div>
+
+      <div className="space-y-1 pb-4 px-4">
+        <h3 className="text-lg font-display uppercase tracking-tight text-white">{member.name}</h3>
+        <h4 className="font-mono text-xs text-[var(--brand)] uppercase tracking-wider">{member.role}</h4>
+      </div>
+    </div>
+  );
+}
+
+function KineticTeamMarquee() {
+  return (
+    <ScrollAnimation className="overflow-hidden py-16">
+      <ScrollTranslateY className="min-h-svh flex flex-col justify-center items-center gap-8">
+        <div className="w-full">
+          <ScrollTranslateX
+            xRange={['-200%', '0%']}
+            inputRange={[0.4, 0.9]}
+            className="origin-bottom flex flex-nowrap gap-4"
+          >
+            {TEAM_SLIDER_MEMBERS.map((member, index) => (
+              <TeamScrollCard
+                className="min-w-[48vw] md:min-w-[20vw]"
+                key={index}
+                member={member}
+              />
+            ))}
+          </ScrollTranslateX>
+        </div>
+
+        <ScrollScale
+          inputRange={[0, 0.5]}
+          scaleRange={[1.4, 1]}
+          className="w-10/12 flex flex-col justify-center text-center items-center mx-auto origin-center py-6"
+        >
+          <h2 className="text-3xl md:text-5xl font-display uppercase tracking-tight text-white">
+            Compact team of <span className="text-[var(--brand)] font-bold">strategists & builders</span>
+          </h2>
+        </ScrollScale>
+
+        <div className="w-full">
+          <ScrollTranslateX
+            inputRange={[0.4, 0.9]}
+            xRange={['100%', '-50%']}
+            className="flex flex-nowrap gap-4"
+          >
+            {TEAM_SLIDER_MEMBERS.map((member, index) => (
+              <TeamScrollCard
+                className="min-w-[48vw] md:min-w-[20vw]"
+                key={index}
+                member={member}
+              />
+            ))}
+          </ScrollTranslateX>
+        </div>
+      </ScrollTranslateY>
+    </ScrollAnimation>
+  );
+}
+
 // ─── Team Page ────────────────────────────────────────────────────────────────
 export default function TeamPage() {
   const [dept, setDept] = useState('All');
@@ -377,6 +465,9 @@ export default function TeamPage() {
           ))}
         </motion.div>
       </section>
+
+      {/* ── KINETIC SCROLL MARQUEE SECTION ───────────── */}
+      <KineticTeamMarquee />
 
       {/* ── DEPT FILTER BAR ──────────────────────────────── */}
       <div className="sticky top-4 z-40 px-4 sm:px-8 max-w-[1300px] mx-auto mb-12">
