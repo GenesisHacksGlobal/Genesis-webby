@@ -194,10 +194,10 @@ export default function EventMap() {
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, x: 20 }}
                                     transition={{ duration: 0.3 }}
-                                    className="p-6 border border-[#c4b5fd]/35 bg-[rgba(8,2,18,0.45)] shadow-[0_15px_40px_-15px_rgba(196,181,253,0.18)]"
+                                    className="p-6 border border-[var(--brand)]/35 bg-[var(--surface)] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.12)]"
                                 >
                                     <div className="flex items-center justify-between mb-2">
-                                        <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-[#c4b5fd]/10 text-[#c4b5fd] border border-[#c4b5fd]/20">
+                                        <span className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/20">
                                             {activeLocation.stateName}
                                         </span>
                                         <span className="font-mono text-xs text-[var(--text-faint)]">
@@ -245,7 +245,7 @@ export default function EventMap() {
                                                         : hasEvent
                                                         ? "var(--surface-2)"
                                                         : "var(--bg)",
-                                                    stroke: isActiveState ? "#c4b5fd" : "var(--border)",
+                                                    stroke: isActiveState ? "var(--brand)" : "var(--border)",
                                                     strokeWidth: isActiveState ? 1.5 : 0.8,
                                                 }}
                                             />
@@ -286,11 +286,11 @@ export default function EventMap() {
                                                 cx={loc.x}
                                                 cy={loc.y}
                                                 r={isActive ? 8 : 5}
-                                                fill="#c4b5fd"
+                                                fill="var(--brand)"
                                                 className="transition-all duration-300 pointer-events-none"
                                                 style={{
                                                     filter: isActive
-                                                        ? "drop-shadow(0 0 8px #c4b5fd)"
+                                                        ? "drop-shadow(0 0 8px var(--brand))"
                                                         : "none",
                                                 }}
                                             />

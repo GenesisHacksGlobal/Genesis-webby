@@ -132,10 +132,10 @@ export default function Contact() {
                                         onChange={(e) => setForm({ ...form, role: e.target.value })}
                                         className="input-line cursor-pointer appearance-none"
                                     >
-                                        <option value="freelancer" className="bg-[var(--bg)]">Freelancer / individual</option>
-                                        <option value="student" className="bg-[var(--bg)]">Student / college community</option>
-                                        <option value="brand" className="bg-[var(--bg)]">Startup / brand</option>
-                                        <option value="other" className="bg-[var(--bg)]">Other</option>
+        <option value="freelancer" className="bg-white text-black">Freelancer / individual</option>
+                                        <option value="student" className="bg-white text-black">Student / college community</option>
+                                        <option value="brand" className="bg-white text-black">Startup / brand</option>
+                                        <option value="other" className="bg-white text-black">Other</option>
                                     </select>
                                 </div>
 

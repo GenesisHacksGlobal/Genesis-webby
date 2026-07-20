@@ -58,10 +58,12 @@ html {
     scroll-behavior: smooth;
     /* clip keeps sticky working; hidden on html breaks position:sticky */
     overflow-x: clip;
+    position: relative;
 }
 
 body {
     margin: 0;
+    position: relative;
     background-color: var(--bg);
     color: var(--text);
     font-family: var(--font-sans);
@@ -69,6 +71,11 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
+}
+
+#root {
+    position: relative;
+    min-height: 100%;
 }
 
 /* Prevent any element from causing horizontal scroll */
@@ -235,7 +242,7 @@ body {
     gap: 10px;
     padding: 14px 28px;
     background: var(--text);
-    color: #181818;
+    color: var(--bg);
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 13px;

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import { LANDING } from "@shared/constants/testIds";
+import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 import Tilt from "@shared/ui/Tilt";
 import { SAMVEDNA_HERO, NO_AGENDA_1_HERO, POSTER_2 } from "@shared/data/mediaAssets";
 import EventMap from "./EventMap";
@@ -154,7 +155,7 @@ const UPCOMING_LUMA_URL = "https://luma.com/6nxec8uw?tk=Cw5Fsi";
 
 function PastEventCard({ event, index }) {
     const cardRef = useRef(null);
-    const { scrollYProgress } = useScroll({ target: cardRef, offset: ["start 90%", "end 20%"] });
+    const { scrollYProgress } = useSectionScroll({ target: cardRef, offset: ["start 90%", "end 20%"] });
     const clip = useTransform(scrollYProgress, [0, 0.35], ["inset(0 0 100% 0)", "inset(0 0 0% 0)"]);
     const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
     const titleX = useTransform(scrollYProgress, [0, 0.6], [40, 0]);
@@ -177,13 +178,13 @@ function PastEventCard({ event, index }) {
                 <motion.div style={{ clipPath: clip, WebkitClipPath: clip }} className="absolute inset-0">
                     <motion.img src={event.image} alt={event.title} loading="lazy" decoding="async" style={{ y: imgY }} className="w-full h-[120%] object-cover" />
                 </motion.div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
                 <div className="absolute top-5 left-5 flex items-center gap-2">
-                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.2em] bg-background/70 backdrop-blur border border-border text-[var(--text)]">Past Â· Archived</span>
+                    <span className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.2em] bg-black/60 backdrop-blur border border-white/20 text-white">Past Â· Archived</span>
                 </div>
                 <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                    <span className="overline text-[var(--text)]">{event.kicker}</span>
-                    <span className="font-mono text-xs text-[var(--text-dim)]">{event.date}</span>
+                    <span className="overline text-white">{event.kicker}</span>
+                    <span className="font-mono text-xs text-white/70">{event.date}</span>
                 </div>
             </div>
 
@@ -218,7 +219,7 @@ function PastEventCard({ event, index }) {
 
 function UpcomingPanel() {
     const panelRef = useRef(null);
-    const { scrollYProgress: panelProgress } = useScroll({ target: panelRef, offset: ["start end", "end start"] });
+    const { scrollYProgress: panelProgress } = useSectionScroll({ target: panelRef, offset: ["start end", "end start"] });
     const posterScale = useTransform(panelProgress, [0, 1], [0.98, 1.06]);
     const posterY = useTransform(panelProgress, [0, 1], ["2%", "-2%"]);
     const titleY = useTransform(panelProgress, [0, 1], [30, -30]);
@@ -243,7 +244,7 @@ function UpcomingPanel() {
             </div>
 
             <div className="grid md:grid-cols-12">
-                <div className="md:col-span-5 relative bg-[rgba(8,2,18,0.55)] flex items-center justify-center p-6 md:p-10 border-b md:border-b-0 md:border-r border-[var(--border)]">
+                <div className="md:col-span-5 relative bg-[var(--bg-2)] flex items-center justify-center p-6 md:p-10 border-b md:border-b-0 md:border-r border-[var(--border)]">
                     <motion.div style={{ scale: posterScale, y: posterY }} className="relative w-full max-w-[440px] aspect-[4/5] overflow-hidden frame shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]">
                         <img src={POSTER_2} alt="No Agenda Meetup 2.0 — official poster" className="absolute inset-0 w-full h-full object-cover" />
                     </motion.div>
