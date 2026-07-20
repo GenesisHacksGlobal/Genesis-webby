@@ -12,6 +12,7 @@ const ContactPage = lazy(() => import("@pages/contact/ContactPage"));
 const CareersPage = lazy(() => import("@pages/careers/CareersPage"));
 const PrivacyPage = lazy(() => import("@pages/privacy/PrivacyPage"));
 const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
+const TeamPage = lazy(() => import("@pages/team/TeamPage"));
 const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 
 function RouteFallback() {
@@ -110,6 +111,14 @@ export default function AppRouter() {
             element={
               <PageBoundary title="Terms failed to load.">
                 <TermsPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/team"
+            element={
+              <PageBoundary title="Team failed to load.">
+                <TeamPage />
               </PageBoundary>
             }
           />
