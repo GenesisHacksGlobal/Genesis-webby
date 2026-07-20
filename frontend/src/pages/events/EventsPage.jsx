@@ -157,7 +157,7 @@ export default function WorkSection({ cards = defaultCards }) {
     const gridCanvas = document.createElement("canvas");
     gridCanvas.id = "grid-canvas";
     workSection.appendChild(gridCanvas);
-    const gridCtx = gridCanvas.getContext("2d");
+    const gridCtx = gridCanvas.getContext("2d", { willReadFrequently: false });
 
     const resizeGridCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 1.5);

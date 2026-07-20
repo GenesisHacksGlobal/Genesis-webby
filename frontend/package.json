@@ -16,7 +16,8 @@
     "three": "^0.185.1"
   },
   "scripts": {
-    "start": "craco start",
+    "dev": "craco start",
+    "start": "npm run dev",
     "build": "craco build",
     "test": "craco test",
     "optimize:models": "node scripts/optimize-hero-models.mjs",

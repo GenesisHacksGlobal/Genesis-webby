@@ -4,6 +4,8 @@ import "@shared/styles/globals.css";
 import App from "@app/App";
 import { lockStableViewportHeight } from "@shared/lib/viewport";
 
+
+
 lockStableViewportHeight();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

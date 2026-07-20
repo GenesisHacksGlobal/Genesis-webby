@@ -102,13 +102,15 @@ export default function SpiralImages(props) {
             el.src = im.src
             return el
         })
+        // items is hashed into srcKey — avoid reloading on referential churn
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [srcKey])
 
     useEffect(() => {
         const canvas = canvasRef.current
         const container = containerRef.current
         if (!canvas || !container) return
-        const ctx = canvas.getContext("2d")
+        const ctx = canvas.getContext("2d", { willReadFrequently: false })
         if (!ctx) return
 
         const dpr = Math.min(

@@ -201,8 +201,8 @@ export default function BlackHole(incomingProps) {
     const canvas = canvasRef.current;
     const fgCanvas = fgCanvasRef.current;
     if (!canvas || !fgCanvas) return;
-    const ctx = canvas.getContext("2d");
-    const fgCtx = fgCanvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { willReadFrequently: false });
+    const fgCtx = fgCanvas.getContext("2d", { willReadFrequently: false });
     if (!ctx || !fgCtx) return;
 
     let lastTime = performance.now();

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const LOGO_URL =
-    "https://customer-assets.emergentagent.com/job_31a4271f-8bfb-44ef-a6c3-4b205b8fb50d/artifacts/iud9zkn6_logo.png";
+const LOGO_URL = "/images/logo.png";
 
 export default function Intro({ onDone }) {
     const [show, setShow] = useState(true);

@@ -49,7 +49,35 @@ export function prepareModelGroup(gltfScene, { targetSize = 5.7 } = {}) {
 
 /**
  * Material tuning so cinematic cool lights read with soft specular response.
+ * KTX2 / compressed textures must NOT call generateMipmaps — WebGL throws
+ * GL_INVALID_OPERATION for block-compressed formats.
  */
+function configureMap(texture, anisotropy = 1) {
+  if (!texture) return;
+
+  texture.anisotropy = anisotropy;
+  texture.magFilter = THREE.LinearFilter;
+
+  const isCompressed =
+    texture.isCompressedTexture === true ||
+    texture.isCompressedArrayTexture === true;
+  const hasMipmaps =
+    Array.isArray(texture.mipmaps) && texture.mipmaps.length > 1;
+
+  if (isCompressed) {
+    // Basis/KTX2 already packs GPU mips (or none) — never regenerate
+    texture.generateMipmaps = false;
+    texture.minFilter = hasMipmaps
+      ? THREE.LinearMipmapLinearFilter
+      : THREE.LinearFilter;
+  } else {
+    texture.generateMipmaps = true;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+  }
+
+  texture.needsUpdate = true;
+}
+
 export function applyHeroMaterials(root, anisotropy = 1) {
   root.traverse((child) => {
     if (!child.isMesh) return;
@@ -65,13 +93,17 @@ export function applyHeroMaterials(root, anisotropy = 1) {
     materials.forEach((material) => {
       if (!material) return;
 
-      if (material.map) {
-        material.map.anisotropy = anisotropy;
-        material.map.minFilter = THREE.LinearMipmapLinearFilter;
-        material.map.magFilter = THREE.LinearFilter;
-        material.map.generateMipmaps = true;
-        material.map.needsUpdate = true;
-      }
+      [
+        "map",
+        "normalMap",
+        "roughnessMap",
+        "metalnessMap",
+        "aoMap",
+        "emissiveMap",
+        "bumpMap",
+        "displacementMap",
+        "alphaMap",
+      ].forEach((key) => configureMap(material[key], anisotropy));
 
       // Slightly glossier than flat matte so key/rim catch without looking plastic
       if (material.roughness !== undefined) {

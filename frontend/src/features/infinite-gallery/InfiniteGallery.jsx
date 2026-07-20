@@ -37,7 +37,7 @@ async function buildImageAtlas(photos, tileSize = 512) {
   const canvas = document.createElement("canvas");
   canvas.width = atlasGrid * tileSize;
   canvas.height = atlasGrid * tileSize;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { willReadFrequently: false });
   ctx.fillStyle = "#111018";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -73,7 +73,7 @@ async function buildTextAtlas(photos, tileSize = 512) {
   const canvas = document.createElement("canvas");
   canvas.width = atlasGrid * tileSize;
   canvas.height = atlasGrid * tileSize;
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { willReadFrequently: false });
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   photos.forEach((photo, i) => {
