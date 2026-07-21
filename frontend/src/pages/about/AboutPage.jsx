@@ -11,8 +11,9 @@ export default function AboutPage() {
         one room.
       </p>
       <p>
-        We ship gatherings with real energy: panels, workshops, overnight builds,
-        and the long conversations that happen after the stage lights go down.
+        We ship gatherings with real energy: panels, workshops, overnight
+        builds, and the long conversations that happen after the stage lights go
+        down.
       </p>
       <p>
         <Link
