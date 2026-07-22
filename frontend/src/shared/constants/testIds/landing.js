@@ -2,6 +2,7 @@ export const LANDING = {
     // Navbar
     navLogo: "nav-logo",
     navAbout: "nav-link-about",
+    navTeam: "nav-link-team",
     navLoop: "nav-link-loop",
     navEvents: "nav-link-events",
     navGallery: "nav-link-gallery",

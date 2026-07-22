@@ -101,3 +101,94 @@ export function ScrollScale({
     />
   );
 }
+
+export function ScrollOpacity({
+  opacityRange = [0, 1],
+  inputRange = [0, 1],
+  className,
+  style,
+  ...props
+}) {
+  const { scrollProgress } = useScrollAnimationContext();
+  const opacity = useTransform(scrollProgress, inputRange, opacityRange);
+  return (
+    <motion.div
+      className={className}
+      style={{ opacity, willChange: 'opacity', ...style }}
+      {...props}
+    />
+  );
+}
+
+export function ScrollRotate({
+  rotateRange = [0, 360],
+  inputRange = [0, 1],
+  className,
+  style,
+  ...props
+}) {
+  const { scrollProgress } = useScrollAnimationContext();
+  const rotate = useTransform(scrollProgress, inputRange, rotateRange);
+  return (
+    <motion.div
+      className={className}
+      style={{ rotate, willChange: 'transform', ...style }}
+      {...props}
+    />
+  );
+}
+
+export function ScrollBlur({
+  blurRange = [12, 0],
+  inputRange = [0, 1],
+  className,
+  style,
+  ...props
+}) {
+  const { scrollProgress } = useScrollAnimationContext();
+  const blur = useTransform(scrollProgress, inputRange, blurRange);
+  const filter = useTransform(blur, (v) => `blur(${v}px)`);
+  return (
+    <motion.div
+      className={className}
+      style={{ filter, willChange: 'filter', ...style }}
+      {...props}
+    />
+  );
+}
+
+export function ScrollClipPath({
+  clipRange = ['inset(100% 0 0 0)', 'inset(0% 0 0 0)'],
+  inputRange = [0, 1],
+  className,
+  style,
+  ...props
+}) {
+  const { scrollProgress } = useScrollAnimationContext();
+  const clipPath = useTransform(scrollProgress, inputRange, clipRange);
+  return (
+    <motion.div
+      className={className}
+      style={{ clipPath, willChange: 'clip-path', ...style }}
+      {...props}
+    />
+  );
+}
+
+export function ScrollLetterSpacing({
+  spacingRange = ['0.5em', '-0.02em'],
+  inputRange = [0, 1],
+  className,
+  style,
+  ...props
+}) {
+  const { scrollProgress } = useScrollAnimationContext();
+  const letterSpacing = useTransform(scrollProgress, inputRange, spacingRange);
+  return (
+    <motion.div
+      className={className}
+      style={{ letterSpacing, willChange: 'letter-spacing', ...style }}
+      {...props}
+    />
+  );
+}

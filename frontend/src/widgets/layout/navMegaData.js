@@ -28,6 +28,13 @@ export const NAV_MENUS = [
             testid: LANDING.navLoop,
           },
           {
+            title: "Meet the Team",
+            desc: "The builders behind Genesis",
+            kind: "route",
+            target: "/team",
+            testid: LANDING.navTeam,
+          },
+          {
             title: "Events",
             desc: "Meetups, hackathons, and gatherings",
             kind: "route",
