@@ -235,8 +235,10 @@ body {
     color: var(--text-faint);
 }
 
-/* Buttons — clean modern */
+/* Buttons — Genesis: retro / engineering / editorial */
 .btn-cinema {
+    --btn-pixel: 5px;
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -248,16 +250,122 @@ body {
     font-size: 13px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    border: 1px solid var(--text);
+    border: none;
     cursor: pointer;
-    transition: background-color 300ms ease, color 300ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    isolation: isolate;
+    overflow: hidden;
+    /* Stepped pixel corners — CRT / terminal chrome */
+    clip-path: polygon(
+        0 var(--btn-pixel),
+        var(--btn-pixel) var(--btn-pixel),
+        var(--btn-pixel) 0,
+        calc(100% - var(--btn-pixel)) 0,
+        calc(100% - var(--btn-pixel)) var(--btn-pixel),
+        100% var(--btn-pixel),
+        100% calc(100% - var(--btn-pixel)),
+        calc(100% - var(--btn-pixel)) calc(100% - var(--btn-pixel)),
+        calc(100% - var(--btn-pixel)) 100%,
+        var(--btn-pixel) 100%,
+        var(--btn-pixel) calc(100% - var(--btn-pixel)),
+        0 calc(100% - var(--btn-pixel))
+    );
+    transition:
+        background-color 320ms ease,
+        color 320ms ease,
+        transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* Inner technical outline — draws in on hover */
+.btn-cinema::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid transparent;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    transition:
+        inset 360ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 280ms ease,
+        opacity 280ms ease;
+}
+
+/* Scanline veil — dormant until hover */
+.btn-cinema::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 2px,
+        rgba(24, 24, 24, 0.16) 2px,
+        rgba(24, 24, 24, 0.16) 3px
+    );
+    background-size: 100% 7px;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+    transition:
+        opacity 300ms ease,
+        transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .btn-cinema:hover {
-    background: transparent;
-    color: var(--text);
+    background: var(--heading);
+    color: var(--bg);
     transform: translateY(-2px);
 }
+
+.btn-cinema:hover::before {
+    inset: 4px;
+    opacity: 1;
+    border-color: rgba(24, 24, 24, 0.38);
+    animation: btn-outline-breathe 1.4s ease-in-out infinite;
+}
+
+.btn-cinema:hover::after {
+    opacity: 1;
+    transform: translateY(0);
+    animation: btn-scan 0.85s linear infinite;
+}
+
+.btn-cinema:focus-visible {
+    outline: 1px solid var(--heading);
+    outline-offset: 3px;
+}
+
+.btn-cinema--nav {
+    --btn-pixel: 4px;
+    padding: 12px 20px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+}
+
+@keyframes btn-scan {
+    from { background-position: 0 0; }
+    to { background-position: 0 7px; }
+}
+
+@keyframes btn-outline-breathe {
+    0%, 100% { inset: 4px; opacity: 0.75; }
+    50% { inset: 5px; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-cinema:hover::before,
+    .btn-cinema:hover::after {
+        animation: none;
+    }
+    .btn-cinema:hover::after {
+        transform: none;
+    }
+}
+
 .btn-ghost {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -271,11 +379,25 @@ body {
     letter-spacing: 0.08em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: border-color 300ms ease, transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    clip-path: polygon(
+        0 4px, 4px 4px, 4px 0,
+        calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+    );
+    transition:
+        border-color 300ms ease,
+        color 300ms ease,
+        transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-ghost:hover {
-    border-color: var(--text);
+    border-color: var(--heading);
+    color: var(--heading);
     transform: translateY(-2px);
+}
+.btn-ghost:focus-visible {
+    outline: 1px solid var(--heading);
+    outline-offset: 3px;
 }
 
 .tick {

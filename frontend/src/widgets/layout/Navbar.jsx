@@ -7,8 +7,9 @@ import { NAV_MENUS } from "./navMegaData";
 import { useScrambleText } from "./useScrambleText";
 
 const LOGO_URL = "/images/logo.png";
-/** Sui primary blue — matches inspo open/+ CTA chrome */
-const SUI_BLUE = "#298dff";
+/** Nav chrome accent — Genesis lime (matches --heading) */
+const NAV_ACCENT = "#e2efba";
+const NAV_ACCENT_INK = "#181818";
 
 function PlusIcon({ open }) {
   return (
@@ -214,8 +215,11 @@ function NavToggle({ menu, open, hovering, onOpen, onClose, onHoverLabel }) {
       >
         <ScrambleLabel text={menu.label} active={scramble} />
         <span
-          className="flex h-8 w-8 shrink-0 items-center justify-center p-[0.65em] text-white transition-colors duration-300"
-          style={{ backgroundColor: open ? SUI_BLUE : "#131518" }}
+          className="flex h-8 w-8 shrink-0 items-center justify-center p-[0.65em] transition-colors duration-300"
+          style={{
+            backgroundColor: open ? NAV_ACCENT : "#131518",
+            color: open ? NAV_ACCENT_INK : "#fff",
+          }}
         >
           <PlusIcon open={open} />
         </span>
@@ -384,8 +388,7 @@ export default function Navbar() {
               setMobileOpen(false);
               navigate("/events");
             }}
-            className="hidden shrink-0 items-center justify-center px-5 text-[0.875rem] font-normal leading-none text-white transition-opacity hover:opacity-90 md:flex"
-            style={{ backgroundColor: SUI_BLUE }}
+            className="btn-cinema btn-cinema--nav hidden shrink-0 md:inline-flex"
           >
             Reserve seat
           </button>
@@ -402,8 +405,11 @@ export default function Navbar() {
             data-testid="nav-mobile-toggle"
           >
             <span
-              className="flex h-8 w-8 items-center justify-center p-2"
-              style={{ backgroundColor: mobileOpen ? SUI_BLUE : "#131518" }}
+              className="flex h-8 w-8 items-center justify-center p-2 transition-colors"
+              style={{
+                backgroundColor: mobileOpen ? NAV_ACCENT : "#131518",
+                color: mobileOpen ? NAV_ACCENT_INK : "#fff",
+              }}
             >
               <PlusIcon open={mobileOpen} />
             </span>
@@ -446,8 +452,11 @@ export default function Navbar() {
                     >
                       <span className="text-[1.05rem] text-white">{menu.label}</span>
                       <span
-                        className="flex h-7 w-7 items-center justify-center p-1.5 text-white"
-                        style={{ backgroundColor: open ? SUI_BLUE : "#131518" }}
+                        className="flex h-7 w-7 items-center justify-center p-1.5 transition-colors"
+                        style={{
+                          backgroundColor: open ? NAV_ACCENT : "#131518",
+                          color: open ? NAV_ACCENT_INK : "#fff",
+                        }}
                       >
                         <PlusIcon open={open} />
                       </span>
@@ -487,8 +496,7 @@ export default function Navbar() {
                   setMobileOpen(false);
                   navigate("/events");
                 }}
-                className="mt-3 py-3 text-center text-sm text-white"
-                style={{ backgroundColor: SUI_BLUE }}
+                className="btn-cinema btn-cinema--nav mt-3 w-full justify-center"
               >
                 Reserve seat
               </button>
