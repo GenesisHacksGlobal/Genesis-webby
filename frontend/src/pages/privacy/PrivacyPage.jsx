@@ -9,8 +9,8 @@ const SECTIONS = [
       <>
         <p>
           Genesis ("we", "us", "our") is a developer community platform operated
-          by <strong>Dezhub</strong>, based in India. We operate the website at{" "}
-          <strong>genesis.dezhub.in</strong> (the "Site").
+          by <strong>Genesis Hacks</strong>, based in India. We operate the website at{" "}
+          <strong>genesishacks.in</strong> (the "Site").
         </p>
         <p>
           This Privacy Policy explains what personal information we collect, how
@@ -228,7 +228,7 @@ const SECTIONS = [
         </ul>
         <p>
           To exercise any of these rights, please email us at{" "}
-          <a href="mailto:hello@dezhub.in">hello@dezhub.in</a>. We will respond
+          <a href="mailto:hello@genesishacks.in">hello@genesishacks.in</a>. We will respond
           within 30 days. We may need to verify your identity before processing
           certain requests.
         </p>
@@ -271,7 +271,7 @@ const SECTIONS = [
           knowingly collect personal information from children under 13. If you
           are a parent or guardian and believe your child has provided us with
           personal information, please contact us at{" "}
-          <a href="mailto:hello@dezhub.in">hello@dezhub.in</a> and we will
+          <a href="mailto:hello@genesishacks.in">hello@genesishacks.in</a> and we will
           promptly delete such data.
         </p>
         <p>

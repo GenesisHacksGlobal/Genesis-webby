@@ -326,5 +326,5 @@ export const ASSET_PATHS_KTX2 = Object.freeze({
 export const DEBUG_PERFORMANCE =
   process.env.NODE_ENV !== "production" &&
   typeof window !== "undefined" &&
-  (window.localStorage?.getItem("dezhub:perfDebug") === "1" ||
+  (window.localStorage?.getItem("genesis_hacks:perfDebug") === "1" ||
     /[?&]perfDebug=1/.test(window.location?.search || ""));

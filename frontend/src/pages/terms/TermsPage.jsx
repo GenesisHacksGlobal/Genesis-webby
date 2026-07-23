@@ -9,7 +9,7 @@ const SECTIONS = [
       <>
         <p>
           By accessing or using the Genesis website at{" "}
-          <strong>genesis.dezhub.in</strong> (the "Site"), participating in any
+          <strong>genesishacks.in</strong> (the "Site"), participating in any
           Genesis community programme, or interacting with any Genesis service,
           you confirm that you have read, understood, and agree to be bound by
           these Terms of Service ("Terms").
@@ -21,7 +21,7 @@ const SECTIONS = [
         </p>
         <div className="legal-callout">
           <strong>Important:</strong> These Terms constitute a legally binding
-          agreement between you and Genesis (operated by Dezhub, India). Please
+          agreement between you and Genesis (operated by Genesis Hacks, India). Please
           read them carefully before proceeding.
         </div>
       </>
@@ -114,7 +114,7 @@ const SECTIONS = [
         <p>
           All content on the Site — including but not limited to text, graphics,
           logos, photographs, videos, data compilations, and software — is the
-          property of Genesis, Dezhub, or its content licensors and is protected
+          property of Genesis, Genesis Hacks, or its content licensors and is protected
           by applicable intellectual property laws.
         </p>
         <p>
@@ -130,12 +130,12 @@ const SECTIONS = [
           permission.
         </p>
         <div className="legal-callout">
-          The "Genesis" name, logo, and related marks are trademarks of Dezhub.
+          The "Genesis" name, logo, and related marks are trademarks of Genesis Hacks.
           Unauthorised use of these marks is strictly prohibited.
         </div>
         <p>
           To request permission for any use not covered above, contact us at{" "}
-          <a href="mailto:hello@dezhub.in">hello@dezhub.in</a>.
+          <a href="mailto:hello@genesishacks.in">hello@genesishacks.in</a>.
         </p>
       </>
     ),
@@ -190,7 +190,7 @@ const SECTIONS = [
         </p>
         <p>
           <strong>Limitation of liability.</strong> To the fullest extent
-          permitted by applicable law, Genesis and Dezhub shall not be liable for
+          permitted by applicable law, Genesis and Genesis Hacks shall not be liable for
           any indirect, incidental, special, consequential, or punitive damages
           arising out of or in connection with your use of (or inability to use)
           the Site, even if advised of the possibility of such damages.
@@ -265,7 +265,7 @@ const SECTIONS = [
         <p>
           Before initiating any formal legal proceedings, we encourage you to
           first attempt to resolve any dispute informally by contacting us at{" "}
-          <a href="mailto:hello@dezhub.in">hello@dezhub.in</a>. We will make good
+          <a href="mailto:hello@genesishacks.in">hello@genesishacks.in</a>. We will make good
           faith efforts to address your concerns.
         </p>
       </>
@@ -283,10 +283,10 @@ const SECTIONS = [
         <ul className="legal-list">
           <li>
             Email:{" "}
-            <a href="mailto:hello@dezhub.in">hello@dezhub.in</a>
+            <a href="mailto:hello@genesishacks.in">hello@genesishacks.in</a>
           </li>
-          <li>Website: genesis.dezhub.in</li>
-          <li>Community: Genesis, operated by Dezhub, India</li>
+          <li>Website: genesishacks.in</li>
+          <li>Community: Genesis, operated by Genesis Hacks, India</li>
         </ul>
         <p>
           We aim to respond to all enquiries within 5 business days.

@@ -11,10 +11,10 @@ function Letter({ ch, i, dir, progress }) {
     return (
         <motion.span
             style={{ x, y, rotate: rot, opacity }}
-            className="font-display tracking-tight leading-[0.85] text-[22vw] md:text-[18vw] lg:text-[280px] text-[var(--heading)] inline-block hover:opacity-70 transition-colors duration-700 will-change-transform"
+            className="font-display tracking-tight leading-[0.85] text-[10vw] md:text-[8vw] lg:text-[110px] text-[var(--heading)] inline-block hover:opacity-70 transition-colors duration-700 will-change-transform"
             data-cursor
         >
-            {ch}
+            {ch === " " ? "\u00A0" : ch}
         </motion.span>
     );
 }
@@ -27,8 +27,8 @@ export default function HugeWordmark() {
         offset: ["start end", "end start"],
     });
 
-    const letters = "DEZHUB".split("");
-    const dirs = [-1, 1, -1, 1, -1, 1];
+    const letters = "GENESIS HACKS".split("");
+    const dirs = letters.map((_, i) => (i % 2 === 0 ? -1 : 1));
 
     return (
         <section ref={ref} className="relative py-20 md:py-32 overflow-hidden border-t border-border">

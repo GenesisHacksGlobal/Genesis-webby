@@ -8,7 +8,7 @@
  * 4. Caller falls back to mailto:
  */
 
-const CONTACT_EMAIL = "hello@dezhub.in";
+const CONTACT_EMAIL = "hello@genesishacks.in";
 
 function endpoints() {
   const list = [];

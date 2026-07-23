@@ -160,7 +160,7 @@ export default function LegalPage({ type, sections, lastUpdated }) {
           <div className="legal-end-strip">
             <div className="legal-end-inner">
               <p className="legal-end-label">Still have questions?</p>
-              <a href="mailto:hello@dezhub.in" className="btn-cinema">
+              <a href="mailto:hello@genesishacks.in" className="btn-cinema">
                 Contact Us
               </a>
               <Link

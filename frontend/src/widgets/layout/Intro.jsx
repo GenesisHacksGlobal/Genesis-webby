@@ -7,14 +7,14 @@ export default function Intro({ onDone }) {
     const [show, setShow] = useState(true);
 
     useEffect(() => {
-        const seen = sessionStorage.getItem("dezhub_intro_seen");
+        const seen = sessionStorage.getItem("genesis_hacks_intro_seen");
         if (seen) {
             setShow(false);
             onDone?.();
             return;
         }
         // total duration ~3.4s
-        sessionStorage.setItem("dezhub_intro_seen", "1");
+        sessionStorage.setItem("genesis_hacks_intro_seen", "1");
         const t = setTimeout(() => {
             setShow(false);
             onDone?.();
