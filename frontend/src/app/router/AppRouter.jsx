@@ -14,6 +14,7 @@ const CareersPage = lazy(() => import("@pages/careers/CareersPage"));
 const PrivacyPage = lazy(() => import("@pages/privacy/PrivacyPage"));
 const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
 const TeamPage = lazy(() => import("@pages/team/TeamPage"));
+const AdminEventsPage = lazy(() => import("@pages/admin/AdminEventsPage"));
 const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 
 function RouteFallback() {
@@ -118,6 +119,14 @@ export default function AppRouter() {
             element={
               <PageBoundary title="Team failed to load.">
                 <TeamPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/admin-events"
+            element={
+              <PageBoundary title="Admin Portal failed to load.">
+                <AdminEventsPage />
               </PageBoundary>
             }
           />
