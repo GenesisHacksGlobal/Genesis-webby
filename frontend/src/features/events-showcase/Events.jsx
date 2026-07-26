@@ -122,7 +122,7 @@ function UpcomingPanel({ upcomingEvent }) {
 
             <div className="grid md:grid-cols-12">
                 <div className="md:col-span-5 relative bg-[var(--bg-2)] flex items-center justify-center p-6 md:p-10 border-b md:border-b-0 md:border-r border-[var(--border)]">
-                    <motion.div style={{ scale: posterScale, y: posterY }} className="relative w-full max-w-[480px] aspect-[16/10] sm:aspect-[16/9] md:aspect-[16/10] overflow-hidden frame shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] rounded-xl border border-white/10">
+                    <motion.div style={{ scale: posterScale, y: posterY }} className="relative w-full max-w-[420px] aspect-square overflow-hidden frame shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] rounded-2xl border border-white/10">
                         <img src={activeEvent.image || "/assets/BrandImg/1.png"} alt={activeEvent.title} className="absolute inset-0 w-full h-full object-cover" />
                     </motion.div>
                 </div>
@@ -142,9 +142,9 @@ function UpcomingPanel({ upcomingEvent }) {
                         </p>
 
                         <div className="mt-6 flex flex-wrap gap-2">
-                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-white/5 border border-white/10 text-white/80">Agentic AI Track</span>
-                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-white/5 border border-white/10 text-white/80">Web3 & Blockchain Track</span>
-                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/20">Creator Challenge (30 Marks)</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/30">Agentic AI Track</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/30">Web3 & Blockchain Track</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/30">Creator Challenge (30 Marks)</span>
                         </div>
 
                         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
