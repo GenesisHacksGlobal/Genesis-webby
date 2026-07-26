@@ -19,7 +19,6 @@ export default class ErrorBoundary extends React.Component {
     if (typeof this.props.onError === "function") {
       this.props.onError(error, info);
     } else if (process.env.NODE_ENV !== "production") {
-      // eslint-disable-next-line no-console
       console.error("[ErrorBoundary]", error, info?.componentStack);
     }
   }

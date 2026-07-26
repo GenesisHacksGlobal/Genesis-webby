@@ -4,7 +4,6 @@ import { motion, useTransform } from "framer-motion";
 import { LANDING } from "@shared/constants/testIds";
 import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 import Tilt from "@shared/ui/Tilt";
-import { POSTER_2 } from "@shared/data/mediaAssets";
 import { eventService } from "@shared/services/eventService";
 import EventMap from "./EventMap";
 

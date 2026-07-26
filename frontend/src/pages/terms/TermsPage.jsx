@@ -9,10 +9,10 @@ const SECTIONS = [
       <>
         <p>
           By accessing or using the Genesis website at{" "}
-          <strong>genesishacks.in</strong> (the "Site"), participating in any
+          <strong>genesishacks.in</strong> (the &quot;Site&quot;), participating in any
           Genesis community programme, or interacting with any Genesis service,
           you confirm that you have read, understood, and agree to be bound by
-          these Terms of Service ("Terms").
+          these Terms of Service (&quot;Terms&quot;).
         </p>
         <p>
           If you do not agree with any part of these Terms, you must not access
@@ -130,7 +130,7 @@ const SECTIONS = [
           permission.
         </p>
         <div className="legal-callout">
-          The "Genesis" name, logo, and related marks are trademarks of Genesis Hacks.
+          The &quot;Genesis&quot; name, logo, and related marks are trademarks of Genesis Hacks.
           Unauthorised use of these marks is strictly prohibited.
         </div>
         <p>
@@ -178,7 +178,7 @@ const SECTIONS = [
       <>
         <p>
           <strong>As-is provision.</strong> The Site and all its content are
-          provided on an "as is" and "as available" basis, without any warranties
+          provided on an &quot;as is&quot; and &quot;as available&quot; basis, without any warranties
           of any kind, express or implied, including but not limited to warranties
           of merchantability, fitness for a particular purpose, accuracy, or
           non-infringement.
@@ -234,7 +234,7 @@ const SECTIONS = [
       <>
         <p>
           We reserve the right to update or modify these Terms at any time at our
-          sole discretion. When we make changes, we will update the "Last updated"
+          sole discretion. When we make changes, we will update the &quot;Last updated&quot;
           date at the top of this page.
         </p>
         <p>

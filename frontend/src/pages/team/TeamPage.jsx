@@ -3,7 +3,6 @@ import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import useLenis from '@shared/hooks/useLenis';
 import { Navbar, Footer } from '@widgets/layout';
-import { TEAM_MEMBERS } from '@shared/data/teamMembers';
 import { TeamHero } from './components/TeamHero';
 import { TeamSpotlightReel } from './components/TeamSpotlightReel';
 import { TeamKineticMarquee } from './components/TeamKineticMarquee';

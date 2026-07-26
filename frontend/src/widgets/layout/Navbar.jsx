@@ -404,7 +404,7 @@ export default function Navbar() {
               closeMenu();
               setMobileOpen((s) => !s);
             }}
-            className="flex items-center justify-center px-4 text-white transition-colors hover:bg-white/10 md:hidden"
+            className="flex items-center justify-center px-4 text-white transition-colors hover:bg-white/10 lg:hidden"
             aria-label="Menu"
             aria-expanded={mobileOpen}
             data-testid="nav-mobile-toggle"

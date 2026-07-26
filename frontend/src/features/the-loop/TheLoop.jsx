@@ -208,7 +208,7 @@ export default function TheLoop({
 
                 {/* Pillar Title */}
                 <div className="mb-2">
-                  <span className="font-mono text-xs text-white/35 uppercase tracking-widest">{pillar.number} // {pillar.subtitle}</span>
+                  <span className="font-mono text-xs text-white/35 uppercase tracking-widest">{`${pillar.number} // ${pillar.subtitle}`}</span>
                   <h3 className="font-display text-3xl md:text-4xl tracking-tight text-white mt-1 group-hover:text-white transition-colors">
                     {pillar.title}.
                   </h3>

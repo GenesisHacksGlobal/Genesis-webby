@@ -92,10 +92,10 @@ export default function ValuesPage() {
       {/* Intro Manifesto */}
       <div className="space-y-6 text-lg sm:text-xl text-[var(--text)] font-light leading-relaxed max-w-[65ch]">
         <p className="text-xl sm:text-2xl text-[var(--heading)] font-normal leading-snug">
-          Values aren't just decorative words on a wall — they are the operational standards that govern every hackathon, workshop, and line of code produced within Genesis.
+          Values aren&apos;t just decorative words on a wall — they are the operational standards that govern every hackathon, workshop, and line of code produced within Genesis.
         </p>
         <p className="text-[var(--text-dim)]">
-          Whether you're entering your very first 36-hour sprint or scaling a venture-backed startup, these six core tenets guide how we build, collaborate, and grow together.
+          Whether you&apos;re entering your very first 36-hour sprint or scaling a venture-backed startup, these six core tenets guide how we build, collaborate, and grow together.
         </p>
       </div>
 
@@ -117,7 +117,7 @@ export default function ValuesPage() {
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4">
                   <span className={`font-mono text-xs uppercase tracking-widest font-semibold ${v.accent}`}>
-                    {v.num} // {v.title}
+                    {`${v.num} // ${v.title}`}
                   </span>
                 </div>
                 <h3 className="font-display text-2xl text-white uppercase tracking-tight mb-1">
@@ -129,7 +129,7 @@ export default function ValuesPage() {
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/10 font-mono text-xs text-white/50 italic">
-                "{v.tenet}"
+                &quot;{v.tenet}&quot;
               </div>
             </div>
           ))}

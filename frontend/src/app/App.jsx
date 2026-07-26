@@ -20,7 +20,7 @@ function printDevBanner() {
     const colors = ["#FFC2EB", "#FF8AE2", "#FF00CC", "#9E0096"];
 
     lines.forEach((line, i) => {
-      // eslint-disable-next-line no-console
+       
       console.log(
         `%c${line}`,
         `color: ${colors[i]}; font-family: monospace; font-size: 15px; font-weight: bold; line-height: 1.1; text-shadow: 2px 2px 0 #fff;`,

@@ -112,7 +112,7 @@ export function HorizontalScrollReel({ events, onSelect }) {
         {/* Horizontal Track Container */}
         <div className="w-full overflow-hidden">
           <div ref={trackRef} className="flex gap-8 px-6 sm:px-12 w-max items-center">
-            {highlightEvents.map((event, idx) => (
+            {highlightEvents.map((event, _idx) => (
               <div
                 key={event.id}
                 onClick={() => onSelect && onSelect(event)}

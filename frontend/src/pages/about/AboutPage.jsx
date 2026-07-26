@@ -60,7 +60,7 @@ export default function AboutPage() {
       {/* Intro Editorial Copy */}
       <div className="space-y-6 text-lg sm:text-xl text-[var(--text)] font-light leading-relaxed max-w-[65ch]">
         <p className="text-xl sm:text-2xl text-[var(--heading)] font-normal leading-snug">
-          Genesis is India's premier builder community — a high-conviction collective of developers, designers, hardware hackers, and founders dedicated to turning bold ideas into shipping software.
+          Genesis is India&apos;s premier builder community — a high-conviction collective of developers, designers, hardware hackers, and founders dedicated to turning bold ideas into shipping software.
         </p>
         <p className="text-[var(--text-dim)]">
           We bring together high-density technical talent into intense, collaborative environments: overnight builds, hands-on architectural workshops, and raw developer gatherings where real work gets done.
@@ -137,7 +137,7 @@ export default function AboutPage() {
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="font-mono text-xs text-[var(--brand)]">{p.num} // {p.badge}</span>
+                  <span className="font-mono text-xs text-[var(--brand)]">{`${p.num} // ${p.badge}`}</span>
                 </div>
                 <h4 className="font-display text-2xl text-white uppercase tracking-tight mb-1">
                   {p.title}
@@ -160,7 +160,7 @@ export default function AboutPage() {
         <div className="grid md:grid-cols-2 gap-6">
           {TESTIMONIALS.map((t, idx) => (
             <div key={idx} className="p-6 rounded-2xl border border-white/10 bg-white/[0.02] italic text-sm md:text-base text-white/70">
-              "{t.quote}"
+              &quot;{t.quote}&quot;
               <div className="mt-4 not-italic font-mono text-xs text-white/90 font-medium">
                 — {t.author} <span className="text-white/40">({t.role})</span>
               </div>

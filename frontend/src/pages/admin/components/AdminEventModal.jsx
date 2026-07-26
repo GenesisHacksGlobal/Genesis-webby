@@ -168,7 +168,7 @@ export function AdminEventModal({ event, onSave, onClose }) {
               </button>
             </div>
             <p className="text-[11px] font-sans text-white/40">
-              * Selecting <strong>Upcoming</strong> automatically publishes this event to the homepage & Events page "Upcoming Events" section. Selecting <strong>Past</strong> categorizes it under "Past Events".
+              * Selecting <strong>Upcoming</strong> automatically publishes this event to the homepage &amp; Events page &quot;Upcoming Events&quot; section. Selecting <strong>Past</strong> categorizes it under &quot;Past Events&quot;.
             </p>
           </div>
 

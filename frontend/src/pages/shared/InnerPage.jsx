@@ -20,7 +20,7 @@ export default function InnerPage({
       {/* Background Subtle Mesh */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.025]" style={{ backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`, backgroundSize: "60px 60px" }} />
       <Navbar />
-      <main className="relative z-[3] mx-auto max-w-5xl px-6 pb-28 pt-32 md:px-10 md:pt-36">
+      <main className="relative z-[3] mx-auto max-w-5xl px-4 sm:px-6 pb-28 pt-32 md:px-10 md:pt-36">
         <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1 text-[11px] font-mono uppercase tracking-[0.24em] text-[var(--text-dim)] backdrop-blur-md">
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--brand)] animate-pulse" />
           {eyebrow}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView, useMotionValue, animate } from "framer-motion";
+import { useInView, useMotionValue, animate } from "framer-motion";
 
 // Animated number counter that scrubs to target when scrolled into view
 export default function CountUp({ value = 100, suffix = "", duration = 2, className = "" }) {

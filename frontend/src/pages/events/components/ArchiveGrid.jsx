@@ -1,6 +1,5 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tilt } from '@shared/ui';
 import { GalleryGridBlock } from '@/components/ui/gallery-grid-block-shadcnui';
 
 // Category color accents
@@ -12,79 +11,7 @@ const CAT_COLOR = {
 };
 function catColor(c) { return CAT_COLOR[c] || '#c4b5fd'; }
 
-// ─── Grid View Card (uniform) ─────────────────────────────────────────────────
-function GridCard({ event, idx, onSelect }) {
-  const accent = catColor(event.category);
-  const col = 'col-span-1';
-  const minH = 'min-h-[300px]';
 
-  return (
-    <motion.div
-      layout
-      key={event.id}
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.96 }}
-      transition={{ duration: 0.45, delay: Math.min(idx * 0.035, 0.4), ease: [0.16, 1, 0.3, 1] }}
-      className={`${col} ${minH} flex`}
-    >
-      <Tilt glare max={7} className="flex-1">
-        <div
-          onClick={() => onSelect(event)}
-          className="relative w-full h-full rounded-2xl border border-white/8 bg-white/[0.015] hover:bg-white/[0.035] cursor-pointer overflow-hidden flex flex-col justify-between p-6 transition-all duration-500 hover:border-white/20 hover:shadow-[0_24px_60px_rgba(0,0,0,0.5)] group"
-          style={{ '--accent': accent }}
-        >
-          {/* Image bg */}
-          <div className="absolute inset-0 z-0 overflow-hidden">
-            <img
-              src={event.img}
-              alt=""
-              loading="lazy"
-              className="w-full h-full object-cover opacity-[0.12] group-hover:opacity-[0.28] group-hover:scale-105 transition-all duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0f] via-[#0c0c0f]/85 to-transparent" />
-          </div>
-
-          {/* Glow from accent on hover */}
-          <div
-            className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-            style={{ background: `radial-gradient(ellipse 80% 60% at 10% 90%, ${accent}18, transparent 70%)` }}
-          />
-
-          {/* Top: category + year */}
-          <div className="relative z-10 flex items-center justify-between">
-            <span
-              className="px-2.5 py-0.5 rounded-full text-[9px] font-mono uppercase tracking-widest border"
-              style={{ borderColor: `${accent}40`, color: accent, background: `${accent}12` }}
-            >
-              {event.category}
-            </span>
-            <span className="font-mono text-[10px] text-white/30">{event.year}</span>
-          </div>
-
-          {/* Title */}
-          <div className="relative z-10 mt-auto space-y-2">
-            <h3 className="font-display text-xl uppercase tracking-tight text-white group-hover:text-[var(--heading)] leading-tight transition-colors">
-              {event.title}
-            </h3>
-            <p className="font-sans text-xs text-white/45 leading-snug line-clamp-2">{event.location}</p>
-          </div>
-
-          {/* Footer */}
-          <div className="relative z-10 mt-6 pt-4 border-t border-white/8 flex items-center justify-between font-mono text-[10px] text-white/35">
-            <span>{event.date || 'RECORD'}</span>
-            <span
-              className="group-hover:translate-x-1 transition-transform"
-              style={{ color: accent }}
-            >
-              VIEW →
-            </span>
-          </div>
-        </div>
-      </Tilt>
-    </motion.div>
-  );
-}
 
 // ─── Table Row ────────────────────────────────────────────────────────────────
 function TableRow({ event, idx, onSelect }) {

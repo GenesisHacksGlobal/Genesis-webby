@@ -8,9 +8,9 @@ const SECTIONS = [
     content: (
       <>
         <p>
-          Genesis ("we", "us", "our") is a developer community platform operated
+          Genesis (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) is a developer community platform operated
           by <strong>Genesis Hacks</strong>, based in India. We operate the website at{" "}
-          <strong>genesishacks.in</strong> (the "Site").
+          <strong>genesishacks.in</strong> (the &quot;Site&quot;).
         </p>
         <p>
           This Privacy Policy explains what personal information we collect, how
@@ -20,9 +20,15 @@ const SECTIONS = [
         </p>
         <div className="legal-callout">
           <strong>The short version:</strong> We collect only what we need, we
-          don't sell your data, and we give you control over what you share with
+          don&apos;t sell your data, and we give you control over what you share with
           us.
         </div>
+        <p>
+          Because we don&apos;t sell your data and we&apos;ve designed our platform with data minimisation in mind, we satisfy these requirements by default. However, if you are a California resident and wish to submit a formal opt-out or disclosure request, you may do so by contacting us with the subject line &quot;CCPA Request&quot;.
+        </p>
+        <p>
+          We do not discriminate against any user for exercising their privacy rights.
+        </p>
       </>
     ),
   },
@@ -81,7 +87,7 @@ const SECTIONS = [
             improve the experience.
           </li>
           <li>
-            <strong>To communicate about Genesis events</strong> — If you've
+            <strong>To communicate about Genesis events</strong> — If you&apos;ve
             contacted us and expressed interest in our community, we may
             occasionally send you relevant updates. You can opt out at any time.
           </li>
@@ -172,8 +178,7 @@ const SECTIONS = [
     content: (
       <>
         <p>
-          We retain personal data only for as long as necessary for the purposes
-          for which it was collected or as required by applicable law.
+          We don&apos;t sell your personal information. We share it only as necessary to provide our services, comply with legal obligations, or protect rights and safety:
         </p>
         <ul className="legal-list">
           <li>
@@ -184,13 +189,13 @@ const SECTIONS = [
           <li>
             <strong>Analytics data</strong> — Aggregated, anonymised analytics
             data may be retained indefinitely as it contains no personal
-            information. Raw event data in PostHog is subject to PostHog's own
+            information. Raw event data in PostHog is subject to PostHog&apos;s own
             retention policies.
           </li>
         </ul>
         <p>
           You may request deletion of your personal data at any time. See
-          "Your Rights" below.
+          &quot;Your Rights&quot; below.
         </p>
       </>
     ),
@@ -223,7 +228,7 @@ const SECTIONS = [
           </li>
           <li>
             <strong>Right to withdraw consent</strong> — Withdraw consent for
-            analytics at any time by clearing your browser's site data.
+            analytics at any time by clearing your browser&apos;s site data.
           </li>
         </ul>
         <p>
@@ -263,7 +268,7 @@ const SECTIONS = [
   },
   {
     id: "children",
-    title: "Children's Privacy",
+    title: "Children&apos;s Privacy",
     content: (
       <>
         <p>
@@ -289,7 +294,7 @@ const SECTIONS = [
         <p>
           We may update this Privacy Policy from time to time to reflect changes
           in our practices, technology, legal requirements, or other factors. When
-          we do, we will update the "Last updated" date at the top of this page.
+          we do, we will update the &quot;Last updated&quot; date at the top of this page.
         </p>
         <p>
           For significant changes, we will endeavour to provide more prominent
@@ -313,12 +318,14 @@ const SECTIONS = [
           <li>
             Email: <a href="mailto:[EMAIL_ADDRESS]">[EMAIL_ADDRESS]</a>
           </li>
+          <li>
+            Subject line: &quot;Genesis Privacy Query&quot;
+          </li>
           <li>Website: genesis.in</li>
           <li>Operated by: Genesis, India</li>
         </ul>
         <p>
-          We will acknowledge your request within 5 business days and aim to
-          resolve it within 30 days.
+          We will confirm receipt of your request within 10 business days and respond substantively within 30 days. If we require additional time, we will inform you of the reason and extension period. We may request proof of identity to ensure we are acting on the data subject&apos;s request.
         </p>
       </>
     ),

@@ -200,7 +200,7 @@ function CommandPalette({ events, query, setQuery, categories, category, setCate
             </div>
           ))}
           {events.length === 0 && (
-            <p className="text-center py-10 text-xs font-mono text-white/30">No records match "{query}"</p>
+            <p className="text-center py-10 text-xs font-mono text-white/30">No records match &quot;{query}&quot;</p>
           )}
         </div>
         <div className="px-4 py-2 border-t border-white/10 flex justify-between text-[9px] font-mono text-white/30">

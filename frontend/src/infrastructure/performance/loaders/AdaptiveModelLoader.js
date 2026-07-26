@@ -88,7 +88,6 @@ export class AdaptiveModelLoader {
       gltf = await loadGLTF(this._bundle.loader, url);
     } catch (primaryError) {
       if (DEBUG_PERFORMANCE) {
-        // eslint-disable-next-line no-console
         console.warn("[AdaptiveModelLoader] primary failed", url, primaryError);
       }
       const fallback = this.qualityManager.getFallbackUrl();
@@ -147,7 +146,6 @@ export class AdaptiveModelLoader {
     }
 
     if (DEBUG_PERFORMANCE) {
-      // eslint-disable-next-line no-console
       console.info("[AdaptiveModelLoader] presented", payload);
     }
 

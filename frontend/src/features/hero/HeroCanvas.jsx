@@ -38,7 +38,6 @@ export default function HeroCanvas() {
       }
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
-        // eslint-disable-next-line no-console
         console.error("[HeroCanvas] WebGL init failed:", err);
       }
       setWebglFailed(true);

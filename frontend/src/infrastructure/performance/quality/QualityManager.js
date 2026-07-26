@@ -98,7 +98,6 @@ export class QualityManager {
     };
     this._listeners.forEach((fn) => fn(payload));
     if (DEBUG_PERFORMANCE) {
-      // eslint-disable-next-line no-console
       console.info("[QualityManager]", payload);
     }
     return payload;

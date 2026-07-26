@@ -79,7 +79,7 @@ export default function Hero() {
   // minimal parallax — quiet, restrained
   // Base offset lifts BUILD/HACK/SCALE; scroll adds more upward drift.
   // (Framer `y` owns transform, so CSS -translate-y would be overwritten.)
-  const titleY = useTransform(scrollYProgress, [0, 1], [-72, -180]);
+  const titleY = useTransform(scrollYProgress, [0, 1], [0, -180]);
   const titleOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.1]);
   const gridY = useTransform(scrollYProgress, [0, 1], [0, 120]);
 

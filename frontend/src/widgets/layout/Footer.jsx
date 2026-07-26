@@ -243,7 +243,7 @@ export default function Footer() {
                             fontFamily: "var(--font-sans)",
                         }}
                     >
-                        Book a meeting or leave a request. We're ready to embark on this journey with you. Are you?
+                        Book a meeting or leave a request. We&apos;re ready to embark on this journey with you. Are you?
                     </p>
 
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>

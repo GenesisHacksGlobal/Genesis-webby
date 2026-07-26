@@ -76,11 +76,11 @@ export default function Contact() {
               transition={{ duration: 1 }}
               className="font-display text-4xl tracking-tighter leading-[1.02] text-[var(--heading)] sm:text-5xl md:text-6xl"
             >
-              Let's build something together.
+              Let&apos;s build something together.
             </motion.h2>
             <p className="mt-8 max-w-[40ch] leading-relaxed text-[var(--text-dim)]">
               Freelancer, student, campus community or brand — drop a message and
-              we'll get back within 24–48 hours.
+              we&apos;ll get back within 24–48 hours.
             </p>
 
             <div className="mt-12 space-y-8">
