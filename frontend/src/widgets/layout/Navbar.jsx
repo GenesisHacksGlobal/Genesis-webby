@@ -18,9 +18,8 @@ function PlusIcon({ open }) {
       viewBox="0 0 10 10"
       fill="none"
       aria-hidden
-      className={`h-full w-full transition-transform duration-300 ease-[cubic-bezier(0.215,0.61,0.355,1)] ${
-        open ? "rotate-45" : "rotate-0"
-      }`}
+      className={`h-full w-full transition-transform duration-300 ease-[cubic-bezier(0.215,0.61,0.355,1)] ${open ? "rotate-45" : "rotate-0"
+        }`}
     >
       <path
         d="M5.49609 10.001H4.49609V5.91895H5.49609V10.001ZM10 4.49512V5.49512H5.91797V4.49512H10ZM4.08203 5.49512H0V4.49512H4.08203V5.49512ZM5.49609 4.08301H4.49609V0.000976562L5.49609 0V4.08301Z"
@@ -75,9 +74,8 @@ function MegaItem({ item, onActivate, equal }) {
       type="button"
       data-testid={item.testid}
       onClick={() => onActivate(item)}
-      className={`group flex w-full items-start gap-2 px-2 py-3 text-left transition-colors duration-300 hover:bg-white/[0.04] ${
-        equal ? "min-h-0 flex-1 justify-center" : ""
-      }`}
+      className={`group flex w-full items-start gap-2 px-2 py-3 text-left transition-colors duration-300 hover:bg-white/[0.04] ${equal ? "min-h-0 flex-1 justify-center" : ""
+        }`}
     >
       <ItemIcon />
       <span className="flex min-w-0 flex-col gap-1">
@@ -99,9 +97,8 @@ function MegaMajorItem({ item, onActivate, equal }) {
       type="button"
       data-testid={item.testid}
       onClick={() => onActivate(item)}
-      className={`group flex w-full flex-col justify-between gap-4 border border-[#343940] bg-[#181818] px-4 py-4 text-left transition-colors duration-300 hover:border-white/25 hover:bg-[#1c1c1c] ${
-        equal ? "min-h-0 flex-1" : "min-h-[7.5rem]"
-      }`}
+      className={`group flex w-full flex-col justify-between gap-4 border border-[#343940] bg-[#181818] px-4 py-4 text-left transition-colors duration-300 hover:border-white/25 hover:bg-[#1c1c1c] ${equal ? "min-h-0 flex-1" : "min-h-[7.5rem]"
+        }`}
     >
       <span className="flex items-start justify-between gap-3">
         <ItemIcon />
@@ -122,17 +119,15 @@ function MegaMajorItem({ item, onActivate, equal }) {
 function MegaColumn({ col, colIdx, onActivate, equalFill }) {
   return (
     <div
-      className={`flex h-full min-h-[16rem] flex-col px-1 pt-0 ${
-        equalFill ? "pb-4" : "pb-10"
-      } ${colIdx > 0 ? "border-l border-dashed border-[#343940]" : ""}`}
+      className={`flex h-full min-h-[16rem] flex-col px-1 pt-0 ${equalFill ? "pb-4" : "pb-10"
+        } ${colIdx > 0 ? "border-l border-dashed border-[#343940]" : ""}`}
     >
       <div className="mb-2 w-full shrink-0 bg-[#222529] px-3 py-2 font-mono text-[0.625rem] uppercase leading-tight tracking-[-0.02em] text-[#a1a7b2]">
         {col.category}
       </div>
       <div
-        className={`flex min-h-0 flex-1 flex-col ${
-          col.major ? "gap-3" : equalFill ? "gap-0 divide-y divide-dashed divide-[#343940]" : "gap-1"
-        }`}
+        className={`flex min-h-0 flex-1 flex-col ${col.major ? "gap-3" : equalFill ? "gap-0 divide-y divide-dashed divide-[#343940]" : "gap-1"
+          }`}
       >
         {col.items.map((item) =>
           col.major ? (
@@ -338,16 +333,14 @@ export default function Navbar() {
       ref={headerRef}
       onMouseLeave={scheduleClose}
       onMouseEnter={clearCloseTimer}
-      className={`fixed left-0 right-0 top-0 z-50 transform-gpu transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        navHidden ? "-translate-y-full" : "translate-y-0"
-      }`}
+      className={`fixed left-0 right-0 top-0 z-50 transform-gpu transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${navHidden ? "-translate-y-full" : "translate-y-0"
+        }`}
     >
       <div
-        className={`relative border-b transition-colors duration-300 ${
-          mobileOpen || scrolled || activeId
+        className={`relative border-b transition-colors duration-300 ${mobileOpen || scrolled || activeId
             ? "border-white/10 bg-[#0a0a0a]/95 backdrop-blur-xl"
             : "border-transparent bg-transparent"
-        }`}
+          }`}
       >
         <div className="relative mx-auto flex h-[72px] max-w-[90rem] items-stretch justify-between px-3 md:px-6">
           <button
@@ -382,45 +375,43 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <a
-              href="https://hackculture.io/hackathons/hackers-occupied-pune"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-testid={LANDING.navRsvpBtn}
-              data-cursor
-              data-cursor-label="Register"
-              onClick={() => {
-                closeMenu();
-                setMobileOpen(false);
-              }}
-              className="btn-cinema btn-cinema--nav text-[11px] sm:text-xs px-3 py-1.5 sm:px-4 sm:py-2 shrink-0 inline-flex"
-            >
-              Register Now
-            </a>
+          <a
+            href="https://hackculture.io/hackathons/hackers-occupied-pune"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid={LANDING.navRsvpBtn}
+            data-cursor
+            data-cursor-label="Register"
+            onClick={() => {
+              closeMenu();
+              setMobileOpen(false);
+            }}
+            className="btn-cinema btn-cinema--nav hidden shrink-0 lg:inline-flex"
+          >
+            Register Now
+          </a>
 
-            <button
-              type="button"
-              onClick={() => {
-                closeMenu();
-                setMobileOpen((s) => !s);
+          <button
+            type="button"
+            onClick={() => {
+              closeMenu();
+              setMobileOpen((s) => !s);
+            }}
+            className="flex items-center justify-center px-4 text-white transition-colors hover:bg-white/10 lg:hidden"
+            aria-label="Menu"
+            aria-expanded={mobileOpen}
+            data-testid="nav-mobile-toggle"
+          >
+            <span
+              className="flex h-8 w-8 items-center justify-center p-2 transition-colors"
+              style={{
+                backgroundColor: mobileOpen ? NAV_ACCENT : "#131518",
+                color: mobileOpen ? NAV_ACCENT_INK : "#fff",
               }}
-              className="flex min-h-[44px] min-w-[44px] items-center justify-center p-2 text-white transition-colors hover:bg-white/10 lg:hidden"
-              aria-label="Menu"
-              aria-expanded={mobileOpen}
-              data-testid="nav-mobile-toggle"
             >
-              <span
-                className="flex h-8 w-8 items-center justify-center p-2 transition-colors"
-                style={{
-                  backgroundColor: mobileOpen ? NAV_ACCENT : "#131518",
-                  color: mobileOpen ? NAV_ACCENT_INK : "#fff",
-                }}
-              >
-                <PlusIcon open={mobileOpen} />
-              </span>
-            </button>
-          </div>
+              <PlusIcon open={mobileOpen} />
+            </span>
+          </button>
         </div>
 
         <motion.div style={{ width: barWidth }} className="h-px origin-left bg-white/40" />
@@ -444,10 +435,10 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-            className="overflow-hidden border-b border-white/10 bg-[#0a0a0a]/98 backdrop-blur-2xl lg:hidden shadow-2xl"
+            transition={{ duration: 0.28 }}
+            className="overflow-hidden border-b border-white/10 bg-[#0a0a0a] lg:hidden"
           >
-            <div className="flex max-h-[min(75vh,640px)] flex-col gap-1 overflow-y-auto px-4 py-4 sm:px-6">
+            <div className="flex max-h-[min(70vh,640px)] flex-col gap-1 overflow-y-auto px-4 py-4">
               {NAV_MENUS.map((menu) => {
                 const open = mobileSection === menu.id;
                 return (
@@ -455,9 +446,9 @@ export default function Navbar() {
                     <button
                       type="button"
                       onClick={() => setMobileSection(open ? null : menu.id)}
-                      className="flex min-h-[48px] w-full items-center justify-between py-3 text-left"
+                      className="flex w-full items-center justify-between py-3"
                     >
-                      <span className="text-[1.1rem] font-medium text-white tracking-tight">{menu.label}</span>
+                      <span className="text-[1.05rem] text-white">{menu.label}</span>
                       <span
                         className="flex h-7 w-7 items-center justify-center p-1.5 transition-colors"
                         style={{
@@ -477,19 +468,17 @@ export default function Navbar() {
                           className="overflow-hidden pb-3"
                         >
                           {menu.columns.map((col) => (
-                            <div key={col.category} className="mb-4">
-                              <div className="mb-1.5 bg-[#222529] px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[#a1a7b2]">
+                            <div key={col.category} className="mb-3">
+                              <div className="mb-1 bg-[#222529] px-2 py-1.5 font-mono text-[10px] uppercase text-[#a1a7b2]">
                                 {col.category}
                               </div>
-                              <div className="flex flex-col gap-1">
-                                {col.items.map((item) => (
-                                  <MegaItem
-                                    key={item.title}
-                                    item={item}
-                                    onActivate={activateItem}
-                                  />
-                                ))}
-                              </div>
+                              {col.items.map((item) => (
+                                <MegaItem
+                                  key={item.title}
+                                  item={item}
+                                  onActivate={activateItem}
+                                />
+                              ))}
                             </div>
                           ))}
                         </motion.div>
@@ -506,7 +495,7 @@ export default function Navbar() {
                 onClick={() => {
                   setMobileOpen(false);
                 }}
-                className="btn-cinema btn-cinema--nav mt-4 w-full justify-center text-center py-3"
+                className="btn-cinema btn-cinema--nav mt-3 w-full justify-center text-center"
               >
                 Register Now
               </a>
