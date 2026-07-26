@@ -91,14 +91,14 @@ function UpcomingPanel({ upcomingEvent }) {
     const titleY = useTransform(panelProgress, [0, 1], [30, -30]);
 
     const activeEvent = upcomingEvent || {
-        title: "No Agenda Meetup 2.0",
-        subtitle: "Hosted by Genesis Community",
-        blurb: "Opportunities don't come to the best. They come to those who stand out. Six hours, one room, real briefs — no slides.",
-        date: "Jul 25, 2026",
-        time: "10 AM – 4 PM",
-        city: "Gurugram · Offline",
+        title: "HACKERS OCCUPIED PUNE",
+        subtitle: "sudo takeover --city pune · Genesis Creator-First Hackathon",
+        blurb: "24 hours of innovation, collaboration, and building at MIT-WPU Pune. Featuring Agentic AI & Web3 tracks, mentorship from industry leaders, and the signature Creator Challenge.",
+        date: "22–23 August 2026",
+        time: "24-Hour Hybrid Sprint",
+        city: "MIT-WPU, Pune",
         image: POSTER_2,
-        luma: "https://luma.com/6nxec8uw?tk=Cw5Fsi",
+        luma: "https://hackculture.io/hackathons/hackers-occupied-pune",
     };
 
     return (
@@ -115,9 +115,9 @@ function UpcomingPanel({ upcomingEvent }) {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 px-5 sm:px-6 md:px-10 py-4 border-b border-[var(--border)] bg-[var(--bg)]">
                 <div className="flex items-center gap-3">
                     <span className="block w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-                    <span className="overline text-[var(--text)] font-bold">Registrations open // Featured Upcoming</span>
+                    <span className="overline text-[var(--text)] font-bold">Registrations open // Flagship Edition</span>
                 </div>
-                <span className="overline text-left sm:text-right">Upcoming Headline Event</span>
+                <span className="font-mono text-xs text-[var(--brand)]">MIT World Peace University, Pune</span>
             </div>
 
             <div className="grid md:grid-cols-12">
@@ -129,28 +129,45 @@ function UpcomingPanel({ upcomingEvent }) {
 
                 <div className="md:col-span-7 p-6 sm:p-8 md:p-12 bg-[var(--bg)] flex flex-col justify-between">
                     <motion.div style={{ y: titleY }}>
-                        <h3 className="font-display text-4xl sm:text-6xl md:text-7xl leading-[0.92] tracking-tight text-[var(--heading)]">
+                        <div className="inline-block px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/20 mb-3">
+                            sudo takeover --city pune
+                        </div>
+                        <h3 className="font-display text-4xl sm:text-6xl md:text-7xl leading-[0.92] tracking-tight text-[var(--heading)] uppercase">
                             {activeEvent.title}
                         </h3>
-                        <p className="mt-3 text-sm text-[var(--text-dim)] italic">{activeEvent.subtitle || 'Hosted by Genesis'}</p>
+                        <p className="mt-3 text-sm text-[var(--text-dim)] font-mono">{activeEvent.subtitle}</p>
                         <p className="mt-5 text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
                             {activeEvent.blurb}
                         </p>
 
+                        <div className="mt-6 flex flex-wrap gap-2">
+                            <span className="px-2.5 py-1 text-[11px] font-mono bg-white/5 border border-white/10 text-white/80">🤖 Agentic AI</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono bg-white/5 border border-white/10 text-white/80">⛓️ Web3 & Blockchain</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono bg-amber-500/10 border border-amber-500/30 text-amber-300">🎥 Creator Challenge (30 Marks)</span>
+                        </div>
+
                         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
-                            <div><div className="overline">Date</div><div className="mt-2 font-display text-2xl text-[var(--heading)] leading-none">{activeEvent.date}</div></div>
-                            <div><div className="overline">Time</div><div className="mt-2 font-display text-2xl text-[var(--heading)] leading-none">{activeEvent.time || '10 AM – 5 PM'}</div></div>
-                            <div><div className="overline">Location</div><div className="mt-2 font-display text-2xl text-[var(--heading)] leading-none">{activeEvent.city || activeEvent.location || 'India'}</div></div>
+                            <div><div className="overline">Date</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">{activeEvent.date}</div></div>
+                            <div><div className="overline">Format</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">24-Hour Hybrid</div></div>
+                            <div><div className="overline">Location</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">MIT-WPU, Pune</div></div>
                         </div>
                     </motion.div>
 
                     <div className="mt-10 flex flex-col gap-5">
-                        <a href={activeEvent.luma || "https://luma.com/6nxec8uw?tk=Cw5Fsi"} target="_blank" rel="noopener noreferrer" data-testid={LANDING.rsvpSubmit} data-cursor data-cursor-label="Luma" className="btn-cinema self-start group">
-                            <span>Reserve spot on Luma</span>
+                        <a
+                            href={activeEvent.luma || "https://hackculture.io/hackathons/hackers-occupied-pune"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            data-testid={LANDING.rsvpSubmit}
+                            data-cursor
+                            data-cursor-label="Register"
+                            className="btn-cinema self-start group"
+                        >
+                            <span>Register Now</span>
                             <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
                         </a>
-                        <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[36ch]">
-                            Registrations are handled via official event portal. You'll be redirected to confirm your seat.
+                        <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[38ch]">
+                            Registrations are live on HackCulture. Free entry for shortlisted teams.
                         </p>
                     </div>
                 </div>

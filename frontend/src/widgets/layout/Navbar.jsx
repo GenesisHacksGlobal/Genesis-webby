@@ -326,7 +326,11 @@ export default function Navbar() {
   const activateItem = (item) => {
     closeMenu();
     setMobileOpen(false);
-    if (item?.target) navigate(item.target);
+    if (item?.external || item?.target?.startsWith("http")) {
+      window.open(item.target, "_blank", "noopener,noreferrer");
+    } else if (item?.target) {
+      navigate(item.target);
+    }
   };
 
   return (
@@ -378,20 +382,21 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <button
-            type="button"
+          <a
+            href="https://hackculture.io/hackathons/hackers-occupied-pune"
+            target="_blank"
+            rel="noopener noreferrer"
             data-testid={LANDING.navRsvpBtn}
             data-cursor
-            data-cursor-label="RSVP"
+            data-cursor-label="Register"
             onClick={() => {
               closeMenu();
               setMobileOpen(false);
-              navigate("/events");
             }}
             className="btn-cinema btn-cinema--nav hidden shrink-0 md:inline-flex"
           >
-            Reserve seat
-          </button>
+            Register Now
+          </a>
 
           <button
             type="button"
@@ -489,17 +494,18 @@ export default function Navbar() {
                   </div>
                 );
               })}
-              <button
-                type="button"
+              <a
+                href="https://hackculture.io/hackathons/hackers-occupied-pune"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-testid="mobile-nav-rsvp-btn"
                 onClick={() => {
                   setMobileOpen(false);
-                  navigate("/events");
                 }}
-                className="btn-cinema btn-cinema--nav mt-3 w-full justify-center"
+                className="btn-cinema btn-cinema--nav mt-3 w-full justify-center text-center"
               >
-                Reserve seat
-              </button>
+                Register Now
+              </a>
             </div>
           </motion.div>
         ) : null}

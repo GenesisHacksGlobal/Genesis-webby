@@ -44,23 +44,23 @@ function getCategoryPreset(category, idx = 0) {
 const SEED_EVENTS = [
   {
     id: 'evt-upcoming-01',
-    title: 'No Agenda Meetup 2.0',
-    subtitle: 'Hosted by Genesis Community',
-    kicker: 'Edition · July 2026',
-    date: '25 July 2026',
-    time: '10:00 AM – 4:00 PM IST',
-    location: 'Thoughtworks Office, Gurugram, HR',
-    city: 'Gurugram',
-    category: 'Meetup',
+    title: 'HACKERS OCCUPIED PUNE',
+    subtitle: 'Genesis Flagship Creator-First Hackathon',
+    kicker: 'sudo takeover --city pune · 22–23 August 2026',
+    date: '22–23 August 2026',
+    time: '24-Hour Immersive Hybrid Sprint',
+    location: 'MIT World Peace University (MIT-WPU), Pune',
+    city: 'Pune',
+    category: 'Hackathon',
     status: 'upcoming', // 'upcoming' or 'past'
-    mode: 'In-Person',
-    attendees: '300+',
-    sponsors: 'ID8{DEVHUB}, Reskill, TON',
-    blurb: "Opportunities don't come to the best. They come to those who stand out. Six hours, one room, real briefs — no slides.",
-    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1200&auto=format&fit=crop',
-    luma: 'https://luma.com/6nxec8uw?tk=Cw5Fsi',
-    hosts: 'Genesis Team & Community',
-    prizePool: '₹1,00,000',
+    mode: 'Hybrid',
+    attendees: '500+ Hackers',
+    sponsors: 'Genesis, Hack Culture, MIT-WPU',
+    blurb: 'Genesis flagship 24-hour creator-first hackathon at MIT-WPU Pune. Featuring Agentic AI & Web3 tracks, 4 mentor rounds, and the signature Creator Challenge.',
+    image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop',
+    luma: 'https://hackculture.io/hackathons/hackers-occupied-pune',
+    hosts: 'Genesis Community & Hack Culture',
+    prizePool: '₹1,50,000+',
     createdAt: new Date().toISOString(),
   },
   {
@@ -123,9 +123,19 @@ export const eventService = {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored);
+        let parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed;
+          // Automatic migration: Replace old "No Agenda Meetup 2.0" with updated flagship "HACKERS OCCUPIED PUNE"
+          const updatedList = parsed.map((e) => {
+            if (e.id === 'evt-upcoming-01' || (e.title && e.title.toLowerCase().includes('no agenda'))) {
+              return SEED_EVENTS[0];
+            }
+            return e;
+          });
+          if (JSON.stringify(updatedList) !== stored) {
+            this.saveAll(updatedList);
+          }
+          return updatedList;
         }
       }
     } catch (e) {
