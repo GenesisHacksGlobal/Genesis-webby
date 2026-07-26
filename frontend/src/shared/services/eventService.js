@@ -57,7 +57,7 @@ const SEED_EVENTS = [
     attendees: '500+ Hackers',
     sponsors: 'Genesis, Hack Culture, MIT-WPU',
     blurb: 'Genesis flagship 24-hour creator-first hackathon at MIT-WPU Pune. Featuring Agentic AI & Web3 tracks, 4 mentor rounds, and the signature Creator Challenge.',
-    image: '/images/hackers-occupied-pune-poster.png',
+    image: '/assets/BrandImg/1.png',
     luma: 'https://hackculture.io/hackathons/hackers-occupied-pune',
     hosts: 'Genesis Community & Hack Culture',
     prizePool: '₹1,50,000+',
