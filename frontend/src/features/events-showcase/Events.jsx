@@ -97,7 +97,7 @@ function UpcomingPanel({ upcomingEvent }) {
         date: "22–23 August 2026",
         time: "24-Hour Hybrid Sprint",
         city: "MIT-WPU, Pune",
-        image: POSTER_2,
+        image: "/images/hackers-occupied-pune-poster.png",
         luma: "https://hackculture.io/hackathons/hackers-occupied-pune",
     };
 
@@ -122,8 +122,8 @@ function UpcomingPanel({ upcomingEvent }) {
 
             <div className="grid md:grid-cols-12">
                 <div className="md:col-span-5 relative bg-[var(--bg-2)] flex items-center justify-center p-6 md:p-10 border-b md:border-b-0 md:border-r border-[var(--border)]">
-                    <motion.div style={{ scale: posterScale, y: posterY }} className="relative w-full max-w-[440px] aspect-[4/5] overflow-hidden frame shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] rounded-xl">
-                        <img src={activeEvent.image || POSTER_2} alt={activeEvent.title} className="absolute inset-0 w-full h-full object-cover" />
+                    <motion.div style={{ scale: posterScale, y: posterY }} className="relative w-full max-w-[480px] aspect-[16/10] sm:aspect-[16/9] md:aspect-[16/10] overflow-hidden frame shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] rounded-xl border border-white/10">
+                        <img src={activeEvent.image || "/images/hackers-occupied-pune-poster.png"} alt={activeEvent.title} className="absolute inset-0 w-full h-full object-cover" />
                     </motion.div>
                 </div>
 
