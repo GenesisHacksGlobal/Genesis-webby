@@ -5,6 +5,22 @@ import { useSectionScroll } from "@shared/hooks/useSectionScroll";
 import ErrorBoundary from "@shared/ui/ErrorBoundary";
 import HeroCanvas from "./HeroCanvas";
 
+// Inline-style breakpoint helper — avoids Tailwind arbitrary-value purge in production
+function useIsMd() {
+  const [isMd, setIsMd] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.innerWidth >= 768;
+  });
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsMd(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+  return isMd;
+}
+
 // One letter per word is rendered in Gridular (pixel font),
 // the rest in Aeonik — mirroring the "Frontend" reference.
 const words = [
@@ -42,6 +58,7 @@ function MaskWord({ word, gridularIndex, delay }) {
 }
 
 export default function Hero() {
+  const isMd = useIsMd();
   const ref = useRef(null);
   const [showModel, setShowModel] = useState(false);
   const { scrollYProgress } = useSectionScroll({
@@ -122,14 +139,19 @@ export default function Hero() {
           className="relative z-[1] font-display leading-[0.88] md:leading-[0.86] tracking-[0.005em] text-[var(--heading)] text-[19vw] sm:text-[17vw] md:text-[15vw] lg:text-[230px] w-full"
         >
           {words.map((w, i) => {
-            let className = "relative block";
-            if (i === 0) className = "relative block md:-translate-x-[200px]";
-            if (i === 1) {
-              className = "relative block text-right md:translate-x-[240px]";
-            }
-            if (i === 2) className = "relative block md:-translate-x-[200px]";
+            // Use inline styles instead of arbitrary Tailwind classes to avoid
+            // production purge issues with CRA + Craco on Vercel.
+            const wordStyle = isMd
+              ? i === 1
+                ? { transform: "translateX(240px)", textAlign: "right" }
+                : { transform: "translateX(-200px)" }
+              : {};
             return (
-              <span key={w.text} className={className}>
+              <span
+                key={w.text}
+                className="relative block"
+                style={wordStyle}
+              >
                 <MaskWord
                   word={w.text}
                   gridularIndex={w.gridularIndex}
@@ -166,15 +188,22 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-[10] md:-translate-y-24 mt-8 md:mt-12 grid md:grid-cols-12 gap-7 md:gap-10 items-end"
+          className="relative z-[10] mt-8 md:mt-12 grid md:grid-cols-12 gap-7 md:gap-10 items-end"
+          style={isMd ? { transform: "translateY(-96px)" } : {}}
         >
-          <p className="md:col-span-6 md:-translate-x-[220px] text-base sm:text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
+          <p
+            className="md:col-span-6 text-base sm:text-lg md:text-xl text-[var(--text-dim)] max-w-[52ch] leading-relaxed"
+            style={isMd ? { transform: "translateX(-220px)" } : {}}
+          >
             Empowering the next generation of builders through hackathons,
             speaker sessions, hands-on workshops, and community-driven
             experiences across India.
           </p>
 
-          <div className="md:col-span-6 flex flex-col sm:flex-row gap-4 md:justify-end md:translate-x-[120px]">
+          <div
+            className="md:col-span-6 flex flex-col sm:flex-row gap-4 md:justify-end"
+            style={isMd ? { transform: "translateX(120px)" } : {}}
+          >
             <button
               data-testid={LANDING.heroCtaPrimary}
               data-cursor
