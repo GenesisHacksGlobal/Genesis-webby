@@ -63,19 +63,19 @@ function MagnetCard({ title, label, isLast = false }) {
       viewport={{ once: true, amount: 0 }}
       transition={{ duration: 2, delay: entranceDelay, ease: expoOut }}
       className={[
-        "relative flex h-[55vw] w-full flex-col justify-between border border-white bg-[#181818] p-[6.667vw]",
-        "md:h-[25vw] md:w-[20vw] md:border-y-0 md:border-l md:border-r md:border-white md:bg-[#181818] md:p-[1.667vw]",
+        "relative flex w-full flex-col justify-between border border-white bg-[#181818] p-6 sm:p-8 min-h-[170px] -mt-px first:mt-0",
+        "md:h-[25vw] md:w-[20vw] md:min-h-0 md:mt-0 md:border-y-0 md:border-l md:border-r md:border-white md:bg-[#181818] md:p-[1.667vw]",
         "md:border-t",
         isLast ? "md:border-b" : "",
       ].join(" ")}
     >
       <h3
         style={{ fontFamily: '"Aeonik", sans-serif' }}
-        className="text-[12vw] leading-[0.82] tracking-[-0.05em] text-[var(--heading)] md:text-[clamp(3.5rem,5.2vw,6.25rem)]"
+        className="text-4xl sm:text-5xl md:text-[clamp(3.5rem,5.2vw,6.25rem)] leading-[0.85] tracking-[-0.05em] text-[var(--heading)] uppercase"
       >
         {title}
       </h3>
-      <p className="max-w-[18ch] text-[3.6vw] leading-snug text-[var(--heading)] md:w-[80%] md:max-w-none md:text-base">
+      <p className="mt-4 max-w-[24ch] text-sm sm:text-base leading-snug text-[var(--heading)]/85 md:mt-0 md:w-[80%] md:max-w-none md:text-base md:text-[var(--heading)]">
         {label}
       </p>
     </motion.article>
@@ -105,10 +105,10 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative z-[3] bg-[#181818] py-[10vw] text-[var(--heading)] md:pb-[3.333vw] md:pt-[10vw]"
+      className="relative z-[3] bg-[#181818] py-16 text-[var(--heading)] md:pb-[3.333vw] md:pt-[10vw]"
     >
       <div className="mx-auto w-full px-5 md:w-[70vw] md:px-0">
-        <div className="flex flex-col gap-[20vw] md:flex-row md:gap-0 md:justify-between">
+        <div className="flex flex-col gap-12 md:flex-row md:gap-0 md:justify-between">
           {/* Left sticky editorial — inspo item:first-child */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -122,7 +122,7 @@ export default function About() {
               <span className="overline !text-[var(--heading)]/70">Chapter 01 · About</span>
             </div>
 
-            <p className="mt-8 text-[6.2vw] leading-[1.25] tracking-[-0.02em] text-[var(--heading)] md:mt-[1.667vw] md:text-[1.45vw] md:leading-[1.35]">
+            <p className="mt-6 text-xl sm:text-2xl leading-[1.3] tracking-[-0.02em] text-[var(--heading)] md:mt-[1.667vw] md:text-[1.45vw] md:leading-[1.35]">
               Genesis empowers the next generation of builders by creating space
               to learn, experiment, collaborate, and ship meaningful work across
               India.
@@ -153,7 +153,7 @@ export default function About() {
             {/* content-1 — offset + delayed entrance + subtle parallax */}
             <motion.div
               style={isDesktop ? { y: rightColY } : undefined}
-              className="mt-[20vw] flex w-full flex-col md:mt-[10vw] md:w-[20vw] md:-ml-px"
+              className="flex w-full flex-col -mt-px md:mt-[10vw] md:w-[20vw] md:-ml-px"
             >
               {columns[1].map((card, i) => (
                 <MagnetCard

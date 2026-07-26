@@ -279,7 +279,7 @@ export default function ScrollSequence({
     };
     playerRef.current = player;
 
-    gsap.set(stage, { width: "0%", y: barRestY, opacity: 1 });
+    gsap.set(stage, { width: "0%", y: barRestY, opacity: 0 });
 
     /**
      * idle     — bar scrubbing, mid-band loop
@@ -326,7 +326,16 @@ export default function ScrollSequence({
     };
 
     const syncBarWidth = (progress) => {
-      gsap.set(stage, { width: `${Math.min(1, Math.max(0, progress)) * 100}%` });
+      const p = Math.min(1, Math.max(0, progress));
+      if (p <= 0.005) {
+        gsap.set(stage, { width: "0%", opacity: 0 });
+      } else {
+        gsap.set(stage, {
+          width: `${p * 100}%`,
+          opacity: 1,
+          y: barRestY,
+        });
+      }
     };
 
     const onLenisScroll = () => ScrollTrigger.update();
@@ -344,7 +353,7 @@ export default function ScrollSequence({
       if (phase !== "idle") return;
       phase = "forward";
       widthScrub = false;
-      gsap.set(stage, { width: "100%" });
+      gsap.set(stage, { width: "100%", opacity: 1 });
 
       stopScroll();
       player.playThrough();
