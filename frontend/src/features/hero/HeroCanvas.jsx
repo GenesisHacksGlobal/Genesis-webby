@@ -56,18 +56,16 @@ export default function HeroCanvas() {
     renderer.domElement.style.display = "block";
     container.appendChild(renderer.domElement);
 
-    // Minimal IBL only — RoomEnvironment is bright; keep it quiet so the
-    // cinematic key/rim lights stay in charge (full IBL washed the model).
     const pmrem = new THREE.PMREMGenerator(renderer);
     pmrem.compileEquirectangularShader();
     const roomEnv = new RoomEnvironment();
     const envRT = pmrem.fromScene(roomEnv, 0.04);
     scene.environment = envRT.texture;
-    if ("environmentIntensity" in scene) scene.environmentIntensity = 0.22;
+    if ("environmentIntensity" in scene) scene.environmentIntensity = 0.45;
     roomEnv.dispose?.();
 
     // Studio-dark setup — intensities/visibility scaled by LIGHT_RIGS[tier].
-    const ambientLight = new THREE.AmbientLight(0x26262e, 0.55);
+    const ambientLight = new THREE.AmbientLight(0x3a3a4c, 0.65);
     scene.add(ambientLight);
 
     const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);

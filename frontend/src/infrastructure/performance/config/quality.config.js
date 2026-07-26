@@ -13,11 +13,13 @@ export const QUALITY_LEVELS = Object.freeze([
 /** Ordered from lightest → heaviest for clamp / step helpers */
 export const QUALITY_ORDER = QUALITY_LEVELS;
 
+const PUBLIC_PATH = typeof process !== "undefined" && process.env && process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "";
+
 export const ASSET_PATHS = Object.freeze({
-  ultra: "/model/Hero-Ultra.glb",
-  high: "/model/Hero-High.glb",
-  medium: "/model/Hero-Medium.glb",
-  low: "/model/Hero-Low.glb",
+  ultra: `${PUBLIC_PATH}/model/Hero-Ultra.glb`,
+  high: `${PUBLIC_PATH}/model/Hero-High.glb`,
+  medium: `${PUBLIC_PATH}/model/Hero-Medium.glb`,
+  low: `${PUBLIC_PATH}/model/Hero-Low.glb`,
   /** Fallback if a tier file is missing at runtime */
   fallback: "/model/Hero-Low.glb",
 });
@@ -176,23 +178,48 @@ export const QUALITY_PRESETS = Object.freeze({
 
 /**
  * Per-tier light budgets for the hero scene.
- * low/medium: ambient + key only (cheapest fragment lighting).
- * high/ultra: full cinematic rig (fill, rims, catch, under-bounce).
+ * All tiers maintain the full signature color rig (key, fill, magenta rim, cyan kick, catch, under-glow)
+ * to ensure consistent colors and lighting across all production devices and performance profiles.
  */
 export const LIGHT_RIGS = Object.freeze({
   low: {
-    ambient: { enabled: true, color: 0x26262e, intensity: 0.75 },
+    ambient: { enabled: true, color: 0x3a3a4c, intensity: 0.7 },
     key: {
       enabled: true,
       color: 0xffffff,
-      intensity: 2.6,
+      intensity: 2.8,
       position: [4.5, 6.5, 5.5],
     },
-    fill: { enabled: false },
-    rim: { enabled: false },
-    kick: { enabled: false },
-    catch: { enabled: false },
-    under: { enabled: false },
+    fill: {
+      enabled: true,
+      color: 0xb9a8ff,
+      intensity: 0.9,
+      position: [-5.5, 2.2, 4],
+    },
+    rim: {
+      enabled: true,
+      color: 0xd97ef9,
+      intensity: 3.6,
+      position: [-3.5, 4.5, -6],
+    },
+    kick: {
+      enabled: true,
+      color: 0x5eead4,
+      intensity: 2.6,
+      position: [5.5, 3, -5],
+    },
+    catch: {
+      enabled: true,
+      color: 0xe6ecff,
+      intensity: 1.0,
+      position: [0.4, 1.8, 5.5],
+    },
+    under: {
+      enabled: true,
+      color: 0x6d51c9,
+      intensity: 0.5,
+      position: [0, -3.2, 2.5],
+    },
   },
   medium: {
     ambient: { enabled: true, color: 0x26262e, intensity: 0.65 },
@@ -205,13 +232,33 @@ export const LIGHT_RIGS = Object.freeze({
     fill: {
       enabled: true,
       color: 0xb9a8ff,
-      intensity: 0.85,
+      intensity: 1.0,
       position: [-5.5, 2.2, 4],
     },
-    rim: { enabled: false },
-    kick: { enabled: false },
-    catch: { enabled: false },
-    under: { enabled: false },
+    rim: {
+      enabled: true,
+      color: 0xd97ef9,
+      intensity: 4.0,
+      position: [-3.5, 4.5, -6],
+    },
+    kick: {
+      enabled: true,
+      color: 0x5eead4,
+      intensity: 3.0,
+      position: [5.5, 3, -5],
+    },
+    catch: {
+      enabled: true,
+      color: 0xe6ecff,
+      intensity: 1.2,
+      position: [0.4, 1.8, 5.5],
+    },
+    under: {
+      enabled: true,
+      color: 0x6d51c9,
+      intensity: 0.6,
+      position: [0, -3.2, 2.5],
+    },
   },
   high: {
     ambient: { enabled: true, color: 0x26262e, intensity: 0.55 },
@@ -293,9 +340,9 @@ export const LIGHT_RIGS = Object.freeze({
   },
 });
 
-export const DRACO_DECODER_PATH = "/draco/";
+export const DRACO_DECODER_PATH = `${PUBLIC_PATH}/draco/`;
 
-export const KTX2_TRANSCODER_PATH = "/basis/";
+export const KTX2_TRANSCODER_PATH = `${PUBLIC_PATH}/basis/`;
 
 /**
  * When true, prefer KTX2-compressed GLB paths if present in ASSET_PATHS_KTX2.
@@ -304,11 +351,11 @@ export const KTX2_TRANSCODER_PATH = "/basis/";
 export const PREFER_KTX2_ASSETS = false;
 
 export const ASSET_PATHS_KTX2 = Object.freeze({
-  ultra: "/model/Hero-Ultra-KTX2.glb",
-  high: "/model/Hero-High-KTX2.glb",
-  medium: "/model/Hero-Medium-KTX2.glb",
-  low: "/model/Hero-Low-KTX2.glb",
-  fallback: "/model/Hero-Low-KTX2.glb",
+  ultra: `${PUBLIC_PATH}/model/Hero-Ultra-KTX2.glb`,
+  high: `${PUBLIC_PATH}/model/Hero-High-KTX2.glb`,
+  medium: `${PUBLIC_PATH}/model/Hero-Medium-KTX2.glb`,
+  low: `${PUBLIC_PATH}/model/Hero-Low-KTX2.glb`,
+  fallback: `${PUBLIC_PATH}/model/Hero-Low-KTX2.glb`,
 });
 
 /**

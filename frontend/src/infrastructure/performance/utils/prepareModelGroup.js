@@ -105,25 +105,23 @@ export function applyHeroMaterials(root, anisotropy = 1) {
         "alphaMap",
       ].forEach((key) => configureMap(material[key], anisotropy));
 
-      // Slightly glossier than flat matte so key/rim catch without looking plastic
+      // Specular & metalness tuning so colored rim/kick lights reflect beautifully
       if (material.roughness !== undefined) {
         material.roughness = THREE.MathUtils.clamp(
           material.roughness * 0.85,
-          0.42,
-          0.72,
+          0.3,
+          0.8,
         );
       }
       if (material.metalness !== undefined) {
         material.metalness = THREE.MathUtils.clamp(
-          material.metalness * 0.45,
+          material.metalness,
           0,
-          0.35,
+          0.75,
         );
       }
-      // Quiet IBL — enough that glasses/metals catch a hint of reflection,
-      // low enough that RoomEnvironment does not flatten cinematic lighting.
       if (material.envMapIntensity !== undefined) {
-        material.envMapIntensity = 0.18;
+        material.envMapIntensity = 0.5;
       }
       material.needsUpdate = true;
     });
