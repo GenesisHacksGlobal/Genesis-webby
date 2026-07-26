@@ -114,10 +114,10 @@ function UpcomingPanel({ upcomingEvent }) {
         >
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 px-5 sm:px-6 md:px-10 py-4 border-b border-[var(--border)] bg-[var(--bg)]">
                 <div className="flex items-center gap-3">
-                    <span className="block w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                    <span className="block w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
                     <span className="overline text-[var(--text)] font-bold">Registrations open // Flagship Edition</span>
                 </div>
-                <span className="font-mono text-xs text-[var(--brand)]">MIT World Peace University, Pune</span>
+                <span className="overline text-left sm:text-right">MIT World Peace University, Pune</span>
             </div>
 
             <div className="grid md:grid-cols-12">
@@ -129,21 +129,22 @@ function UpcomingPanel({ upcomingEvent }) {
 
                 <div className="md:col-span-7 p-6 sm:p-8 md:p-12 bg-[var(--bg)] flex flex-col justify-between">
                     <motion.div style={{ y: titleY }}>
-                        <div className="inline-block px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/20 mb-3">
-                            sudo takeover --city pune
-                        </div>
-                        <h3 className="font-display text-4xl sm:text-6xl md:text-7xl leading-[0.92] tracking-tight text-[var(--heading)] uppercase">
+                        <span className="overline text-[var(--brand)] block mb-3 font-bold">sudo takeover --city pune</span>
+
+                        <h3 className="font-sans font-extrabold text-3xl sm:text-5xl md:text-6xl leading-[0.96] tracking-tight text-[var(--heading)] uppercase">
                             {activeEvent.title}
                         </h3>
-                        <p className="mt-3 text-sm text-[var(--text-dim)] font-mono">{activeEvent.subtitle}</p>
+
+                        <p className="mt-3 text-sm text-[var(--text-dim)] italic">{activeEvent.subtitle}</p>
+
                         <p className="mt-5 text-[var(--text-dim)] max-w-[52ch] leading-relaxed">
                             {activeEvent.blurb}
                         </p>
 
                         <div className="mt-6 flex flex-wrap gap-2">
-                            <span className="px-2.5 py-1 text-[11px] font-mono bg-white/5 border border-white/10 text-white/80">🤖 Agentic AI</span>
-                            <span className="px-2.5 py-1 text-[11px] font-mono bg-white/5 border border-white/10 text-white/80">⛓️ Web3 & Blockchain</span>
-                            <span className="px-2.5 py-1 text-[11px] font-mono bg-amber-500/10 border border-amber-500/30 text-amber-300">🎥 Creator Challenge (30 Marks)</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-white/5 border border-white/10 text-white/80">Agentic AI Track</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-white/5 border border-white/10 text-white/80">Web3 & Blockchain Track</span>
+                            <span className="px-2.5 py-1 text-[11px] font-mono uppercase tracking-wider bg-[var(--brand)]/10 text-[var(--brand)] border border-[var(--brand)]/20">Creator Challenge (30 Marks)</span>
                         </div>
 
                         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
@@ -163,7 +164,7 @@ function UpcomingPanel({ upcomingEvent }) {
                             data-cursor-label="Register"
                             className="btn-cinema self-start group"
                         >
-                            <span>Register Now</span>
+                            <span>Register Now on HackCulture</span>
                             <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
                         </a>
                         <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[38ch]">
