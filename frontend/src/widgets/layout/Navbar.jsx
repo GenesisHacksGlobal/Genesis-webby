@@ -361,7 +361,7 @@ export default function Navbar() {
             </span>
           </button>
 
-          <nav className="absolute left-1/2 top-0 hidden h-[72px] -translate-x-1/2 items-center justify-center gap-0 lg:flex">
+          <nav className="absolute left-1/2 top-0 hidden h-[72px] -translate-x-1/2 items-center justify-center gap-0 md:flex">
             {NAV_MENUS.map((menu) => (
               <NavToggle
                 key={menu.id}
@@ -386,7 +386,7 @@ export default function Navbar() {
               closeMenu();
               setMobileOpen(false);
             }}
-            className="btn-cinema btn-cinema--nav hidden shrink-0 lg:inline-flex"
+            className="btn-cinema btn-cinema--nav hidden shrink-0 md:inline-flex"
           >
             Register Now
           </a>
@@ -397,7 +397,7 @@ export default function Navbar() {
               closeMenu();
               setMobileOpen((s) => !s);
             }}
-            className="flex items-center justify-center px-4 text-white transition-colors hover:bg-white/10 lg:hidden"
+            className="flex items-center justify-center px-4 text-white transition-colors hover:bg-white/10 md:hidden"
             aria-label="Menu"
             aria-expanded={mobileOpen}
             data-testid="nav-mobile-toggle"
@@ -417,7 +417,7 @@ export default function Navbar() {
         <motion.div style={{ width: barWidth }} className="h-px origin-left bg-white/40" />
 
         {/* Desktop mega panel — emerges from under the bar */}
-        <div className="pointer-events-none absolute inset-x-0 top-full hidden lg:block">
+        <div className="pointer-events-none absolute inset-x-0 top-full hidden md:block">
           <div className="pointer-events-auto">
             <AnimatePresence mode="wait">
               {activeMenu ? (
@@ -436,69 +436,73 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.28 }}
-            className="overflow-hidden border-b border-white/10 bg-[#0a0a0a] lg:hidden"
+            className="overflow-hidden border-b border-white/10 bg-[#0a0a0a] md:hidden"
           >
-            <div className="flex max-h-[min(70vh,640px)] flex-col gap-1 overflow-y-auto px-4 py-4">
-              {NAV_MENUS.map((menu) => {
-                const open = mobileSection === menu.id;
-                return (
-                  <div key={menu.id} className="border-b border-white/10 last:border-0">
-                    <button
-                      type="button"
-                      onClick={() => setMobileSection(open ? null : menu.id)}
-                      className="flex w-full items-center justify-between py-3"
-                    >
-                      <span className="text-[1.05rem] text-white">{menu.label}</span>
-                      <span
-                        className="flex h-7 w-7 items-center justify-center p-1.5 transition-colors"
-                        style={{
-                          backgroundColor: open ? NAV_ACCENT : "#131518",
-                          color: open ? NAV_ACCENT_INK : "#fff",
-                        }}
-                      >
-                        <PlusIcon open={open} />
-                      </span>
-                    </button>
-                    <AnimatePresence>
-                      {open ? (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="overflow-hidden pb-3"
-                        >
-                          {menu.columns.map((col) => (
-                            <div key={col.category} className="mb-3">
-                              <div className="mb-1 bg-[#222529] px-2 py-1.5 font-mono text-[10px] uppercase text-[#a1a7b2]">
-                                {col.category}
-                              </div>
-                              {col.items.map((item) => (
-                                <MegaItem
-                                  key={item.title}
-                                  item={item}
-                                  onActivate={activateItem}
-                                />
-                              ))}
-                            </div>
-                          ))}
-                        </motion.div>
-                      ) : null}
-                    </AnimatePresence>
-                  </div>
-                );
-              })}
+            <div className="flex max-h-[min(80vh,640px)] flex-col gap-3 overflow-y-auto px-4 py-5">
+              {/* Primary Mobile Register Now CTA in Hamburger Menu */}
               <a
                 href="https://hackculture.io/hackathons/hackers-occupied-pune"
                 target="_blank"
                 rel="noopener noreferrer"
-                data-testid="mobile-nav-rsvp-btn"
+                data-testid="mobile-nav-rsvp-btn-top"
                 onClick={() => {
                   setMobileOpen(false);
                 }}
-                className="btn-cinema btn-cinema--nav mt-3 w-full justify-center text-center"
+                className="btn-cinema btn-cinema--nav w-full justify-center text-center shadow-[0_0_20px_rgba(196,181,253,0.35)]"
               >
-                Register Now
+                Register Now ↗
               </a>
+
+              <div className="pt-2 border-t border-white/10 space-y-1">
+                {NAV_MENUS.map((menu) => {
+                  const open = mobileSection === menu.id;
+                  return (
+                    <div key={menu.id} className="border-b border-white/10 last:border-0">
+                      <button
+                        type="button"
+                        onClick={() => setMobileSection(open ? null : menu.id)}
+                        className="flex w-full items-center justify-between py-3"
+                      >
+                        <span className="text-[1.05rem] text-white">{menu.label}</span>
+                        <span
+                          className="flex h-7 w-7 items-center justify-center p-1.5 transition-colors"
+                          style={{
+                            backgroundColor: open ? NAV_ACCENT : "#131518",
+                            color: open ? NAV_ACCENT_INK : "#fff",
+                          }}
+                        >
+                          <PlusIcon open={open} />
+                        </span>
+                      </button>
+                      <AnimatePresence>
+                        {open ? (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden pb-3"
+                          >
+                            {menu.columns.map((col) => (
+                              <div key={col.category} className="mb-3">
+                                <div className="mb-1 bg-[#222529] px-2 py-1.5 font-mono text-[10px] uppercase text-[#a1a7b2]">
+                                  {col.category}
+                                </div>
+                                {col.items.map((item) => (
+                                  <MegaItem
+                                    key={item.title}
+                                    item={item}
+                                    onActivate={activateItem}
+                                  />
+                                ))}
+                              </div>
+                            ))}
+                          </motion.div>
+                        ) : null}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
         ) : null}
