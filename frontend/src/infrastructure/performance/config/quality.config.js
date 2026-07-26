@@ -293,17 +293,9 @@ export const LIGHT_RIGS = Object.freeze({
   },
 });
 
-export const DRACO_DECODER_PATH =
-  "https://www.gstatic.com/draco/versioned/decoders/1.5.7/";
+export const DRACO_DECODER_PATH = "/draco/";
 
-/**
- * Optional override for Basis/KTX2 transcoder folder.
- * Leave empty to use three.js default (bundler resolves via import.meta.url).
- * Example CDN:
- * https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/libs/basis/
- */
-export const KTX2_TRANSCODER_PATH =
-  "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/libs/basis/";
+export const KTX2_TRANSCODER_PATH = "/basis/";
 
 /**
  * When true, prefer KTX2-compressed GLB paths if present in ASSET_PATHS_KTX2.
