@@ -302,13 +302,14 @@ export const DRACO_DECODER_PATH =
  * Example CDN:
  * https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/libs/basis/
  */
-export const KTX2_TRANSCODER_PATH = "";
+export const KTX2_TRANSCODER_PATH =
+  "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/libs/basis/";
 
 /**
  * When true, prefer KTX2-compressed GLB paths if present in ASSET_PATHS_KTX2.
  * Generated from assets/model-source/genesis-model.glb via: npm run optimize:models:ktx2
  */
-export const PREFER_KTX2_ASSETS = true;
+export const PREFER_KTX2_ASSETS = false;
 
 export const ASSET_PATHS_KTX2 = Object.freeze({
   ultra: "/model/Hero-Ultra-KTX2.glb",
