@@ -169,7 +169,7 @@ export default function Hero() {
                       delay: 0.55 + i * 0.18,
                       ease: [0.16, 1, 0.3, 1],
                     }}
-                    className="inline-block normal-case tracking-normal text-[14vw] sm:text-[12vw] md:text-[10vw] lg:text-[148px] leading-none"
+                    className="inline-block normal-case tracking-normal text-[10vw] sm:text-[12vw] md:text-[10vw] lg:text-[148px] leading-none pl-3 sm:pl-6 md:pl-0"
                     style={{
                       fontFamily: '"Leirtag Aquelli", cursive',
                       color: "hsl(285 85% 80%)",
