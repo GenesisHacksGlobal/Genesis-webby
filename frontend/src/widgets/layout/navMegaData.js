@@ -188,11 +188,17 @@ export const NAV_MENUS = [
         category: "Talk/",
         items: [
           {
-            title: "Contact",
+            title: "Contact Us",
             desc: "Message the Genesis crew",
             kind: "route",
             target: "/contact",
             testid: LANDING.navContact,
+          },
+          {
+            title: "Partner / Collaborate",
+            desc: "Sponsorship & campus chapter inquiries",
+            kind: "route",
+            target: "/partner",
           },
         ],
       },
@@ -206,10 +212,10 @@ export const NAV_MENUS = [
             target: "/events",
           },
           {
-            title: "Register Now",
-            desc: "Lock in your team spot for Hackers Occupied Pune",
-            external: true,
-            target: "https://hackculture.io/hackathons/hackers-occupied-pune",
+            title: "Work at Genesis",
+            desc: "Join our team & builder collective",
+            kind: "route",
+            target: "/careers",
           },
         ],
       },
@@ -228,6 +234,12 @@ export const NAV_MENUS = [
             kind: "route",
             target: "/values",
           },
+          {
+            title: "Team Directory",
+            desc: "Meet the organizers & leads",
+            kind: "route",
+            target: "/team",
+          },
         ],
       },
       {
@@ -238,6 +250,46 @@ export const NAV_MENUS = [
             desc: "See the community in motion",
             kind: "route",
             target: "/gallery",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "partner",
+    label: "Partner",
+    testid: "nav-partner",
+    columns: [
+      {
+        category: "Collaborate/",
+        items: [
+          {
+            title: "Partner With Us",
+            desc: "Submit sponsorship or campus proposals",
+            kind: "route",
+            target: "/partner",
+          },
+        ],
+      },
+      {
+        category: "Join Us/",
+        items: [
+          {
+            title: "Work With Us",
+            desc: "Apply to join team or contribute",
+            kind: "route",
+            target: "/careers",
+          },
+        ],
+      },
+      {
+        category: "Reach Out/",
+        items: [
+          {
+            title: "Contact Us",
+            desc: "Direct messages and support",
+            kind: "route",
+            target: "/contact",
           },
         ],
       },
