@@ -11,6 +11,7 @@ const AboutPage = lazy(() => import("@pages/about/AboutPage"));
 const ValuesPage = lazy(() => import("@pages/values/ValuesPage"));
 const ContactPage = lazy(() => import("@pages/contact/ContactPage"));
 const CareersPage = lazy(() => import("@pages/careers/CareersPage"));
+const PartnerPage = lazy(() => import("@pages/partner/PartnerPage"));
 const PrivacyPage = lazy(() => import("@pages/privacy/PrivacyPage"));
 const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
 const TeamPage = lazy(() => import("@pages/team/TeamPage"));
@@ -95,6 +96,14 @@ export default function AppRouter() {
             element={
               <PageBoundary title="Careers failed to load.">
                 <CareersPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/partner"
+            element={
+              <PageBoundary title="Partner page failed to load.">
+                <PartnerPage />
               </PageBoundary>
             }
           />

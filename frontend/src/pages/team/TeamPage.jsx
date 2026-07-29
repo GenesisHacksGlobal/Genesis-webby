@@ -8,6 +8,7 @@ import { TeamSpotlightReel } from './components/TeamSpotlightReel';
 import { TeamKineticMarquee } from './components/TeamKineticMarquee';
 import { TeamDepartmentChapters } from './components/TeamDepartmentChapters';
 import { TeamMemberDirectory, MemberModal } from './components/TeamMemberDirectory';
+import WorkWithUsForm from '@/features/forms/WorkWithUsForm';
 
 function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -27,6 +28,7 @@ export default function TeamPage() {
 
   const [dept, setDept] = useState('All');
   const [selectedMember, setSelectedMember] = useState(null);
+  const [isWorkFormOpen, setIsWorkFormOpen] = useState(false);
 
   return (
     <div className="relative min-h-screen bg-[#08080b] text-white overflow-x-hidden selection:bg-[var(--brand)] selection:text-black">
@@ -84,14 +86,29 @@ export default function TeamPage() {
             If you&apos;re passionate about developer communities, cutting-edge software, and creating unforgettably sleek experiences, we&apos;d love to build together.
           </p>
 
-          <Link
-            to="/careers"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-mono text-xs uppercase font-bold tracking-wider text-black bg-[var(--brand)] hover:bg-white transition-all shadow-[0_0_40px_rgba(196,181,253,0.35)] group-hover:scale-105"
-          >
-            Explore Open Roles ↗
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => setIsWorkFormOpen(true)}
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-mono text-xs uppercase font-bold tracking-wider text-black bg-[var(--brand)] hover:bg-white transition-all shadow-[0_0_40px_rgba(196,181,253,0.35)] group-hover:scale-105 cursor-pointer"
+            >
+              Work With Us (Join Team) ↗
+            </button>
+            <Link
+              to="/careers"
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-2xl font-mono text-xs uppercase font-bold tracking-wider text-white bg-white/10 hover:bg-white/20 border border-white/15 transition-all"
+            >
+              Explore Open Roles
+            </Link>
+          </div>
         </motion.div>
       </section>
+
+      {/* Work With Us Form Modal */}
+      <WorkWithUsForm
+        isOpen={isWorkFormOpen}
+        onClose={() => setIsWorkFormOpen(false)}
+      />
 
       {/* Member Profile Modal */}
       <AnimatePresence>

@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { LANDING } from "@shared/constants/testIds";
-import {
-  CONTACT_EMAIL,
-  buildMailtoHref,
-  submitContactLead,
-} from "./submitContactLead";
+import { CONTACT_EMAIL, buildMailtoHref } from "./submitContactLead";
+import { submitFormToSheets } from "@shared/services/formSubmissionService";
 
 const SOCIALS = [
   {
@@ -40,7 +37,10 @@ export default function Contact() {
     }
 
     setStatus("submitting");
-    const result = await submitContactLead(form);
+    const result = await submitFormToSheets({
+      formType: "contact",
+      data: form,
+    });
 
     if (result.ok) {
       setStatus("success");
@@ -53,7 +53,7 @@ export default function Contact() {
     setMailtoHref(href);
     setStatus("error");
     setError(
-      "We could not reach the lead inbox automatically. You can still email us directly.",
+      "We could not submit directly. You can still email us directly.",
     );
   };
 

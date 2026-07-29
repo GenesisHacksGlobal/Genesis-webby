@@ -55,6 +55,12 @@ export const NAV_MENUS = [
             testid: LANDING.navContact,
           },
           {
+            title: "Partner / Collaborate",
+            desc: "Sponsor or co-host with us",
+            kind: "route",
+            target: "/partner",
+          },
+          {
             title: "Work at Genesis",
             desc: "Join the crew — roles and collabs",
             kind: "route",
