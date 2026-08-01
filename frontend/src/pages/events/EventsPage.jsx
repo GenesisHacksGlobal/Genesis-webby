@@ -82,13 +82,6 @@ export default function EventsPage() {
         ← Genesis
       </Link>
 
-      {/* Admin Portal quick link */}
-      <Link
-        to="/admin-events"
-        className="fixed top-6 right-6 z-50 inline-flex items-center gap-2 px-3.5 py-1.5 text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--brand)] border border-[var(--brand)]/30 hover:border-[var(--brand)] bg-black/60 backdrop-blur-md rounded-full transition-all"
-      >
-        ⚙ Admin Portal
-      </Link>
 
       {/* Hero */}
       <ArchiveHero total={processedEvents.length} photos={GALLERY_PHOTOS} />

@@ -135,13 +135,13 @@ export function ArchiveHero({ total, photos }) {
         >
           <div className="text-center">
             <span className="block text-3xl font-bold text-white tabular-nums">
-              <AnimatedCounter target={total} />+
+              <AnimatedCounter target={100} />+
             </span>
             <span className="text-[10px] mt-1 block">EVENT RECORDS</span>
           </div>
           <div className="w-px h-10 bg-white/10" />
           <div className="text-center">
-            <span className="block text-3xl font-bold text-white">5+</span>
+            <span className="block text-3xl font-bold text-white">2+</span>
             <span className="text-[10px] mt-1 block">YEARS</span>
           </div>
           <div className="w-px h-10 bg-white/10" />
@@ -158,7 +158,7 @@ export function ArchiveHero({ total, photos }) {
           transition={{ delay: 0.65 }}
           className="mt-8 max-w-md font-sans text-base text-white/50 font-light leading-relaxed"
         >
-          Five years of hackathons, workshops, AI summits and community developer gatherings — all in one place.
+          Two years of hackathons, workshops, AI summits and community developer gatherings — all in one place.
         </motion.p>
 
         {/* Scroll cue */}
