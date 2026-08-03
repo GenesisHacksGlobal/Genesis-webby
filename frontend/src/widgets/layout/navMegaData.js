@@ -41,6 +41,12 @@ export const NAV_MENUS = [
             target: "/events",
             testid: LANDING.navEvents,
           },
+          {
+            title: "Organizer Guide",
+            desc: "Master playbooks, budgets & checklists",
+            kind: "route",
+            target: "/guide",
+          },
         ],
       },
       {
@@ -243,8 +249,14 @@ export const NAV_MENUS = [
         ],
       },
       {
-        category: "Media/",
+        category: "Media & Resources/",
         items: [
+          {
+            title: "Organizer Guide",
+            desc: "Hackathon playbooks & toolkits",
+            kind: "route",
+            target: "/guide",
+          },
           {
             title: "Gallery",
             desc: "See the community in motion",
