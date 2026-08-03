@@ -2,6 +2,7 @@ import React from "react";
 import { MotionConfig } from "framer-motion";
 import { Toaster } from "sonner";
 import ErrorBoundary from "@shared/ui/ErrorBoundary";
+import EasterEggs from "@shared/components/EasterEggs";
 
 /**
  * Global providers for the Genesis web app.
@@ -12,6 +13,7 @@ export default function AppProviders({ children }) {
     <ErrorBoundary title="Genesis hit an unexpected error.">
       <MotionConfig reducedMotion="user">
         {children}
+        <EasterEggs />
         <Toaster theme="dark" position="bottom-right" />
       </MotionConfig>
     </ErrorBoundary>

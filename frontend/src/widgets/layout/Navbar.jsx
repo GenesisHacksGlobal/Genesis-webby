@@ -312,11 +312,27 @@ export default function Navbar() {
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, []);
 
+  const logoClicksRef = useRef([]);
+
   const goHome = () => {
     setMobileOpen(false);
     closeMenu();
     if (location.pathname !== "/") navigate("/");
     else window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleLogoClick = () => {
+    const now = Date.now();
+    const recent = [...logoClicksRef.current, now].filter((t) => now - t < 2500);
+    logoClicksRef.current = recent;
+
+    if (recent.length >= 7) {
+      logoClicksRef.current = [];
+      if (window.genesis && window.genesis.overclock) {
+        window.genesis.overclock();
+      }
+    }
+    goHome();
   };
 
   const activateItem = (item) => {
@@ -347,7 +363,7 @@ export default function Navbar() {
           <button
             type="button"
             data-testid={LANDING.navLogo}
-            onClick={goHome}
+            onClick={handleLogoClick}
             className="flex shrink-0 items-center gap-3 px-2 transition-opacity hover:opacity-80 md:px-3"
             aria-label="Genesis India"
           >
