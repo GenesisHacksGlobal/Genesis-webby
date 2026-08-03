@@ -74,8 +74,9 @@ function MegaItem({ item, onActivate, equal }) {
       type="button"
       data-testid={item.testid}
       onClick={() => onActivate(item)}
-      className={`group flex w-full items-start gap-2 px-2 py-3 text-left transition-colors duration-300 hover:bg-white/[0.04] ${equal ? "min-h-0 flex-1 justify-center" : ""
-        }`}
+      className={`group flex w-full items-start gap-3 px-3 py-3 text-left transition-colors duration-300 hover:bg-white/[0.04] ${
+        equal ? "min-h-0 flex-1 justify-start" : ""
+      }`}
     >
       <ItemIcon />
       <span className="flex min-w-0 flex-col gap-1">
