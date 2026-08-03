@@ -27,11 +27,15 @@ Hidden throughout the application are interactive Easter Eggs designed for curio
 
 ---
 
-## ⚡ 3. The 7-Click Logo Frenzy
+## ⚡ 3. RGB Overclock Mode (`r-g-b` / `o-v-e-r-c-l-o-c-k` / 7-Click Logo)
 
-- **Trigger Method**: Click the Genesis logo in the top navbar **7 times within 2.5 seconds**.
+- **Unique Secret Codes**: 
+  - Type `rgb` anywhere on the website.
+  - OR Type `overclock` anywhere on the website.
+  - OR Click the Genesis logo in the top navbar **7 times within 2.5 seconds**.
 - **What Happens**:
-  - 🌈 Activates **RGB Overclock Mode** — shifting all brand accent colors into a continuous 360° dynamic rainbow hue cycle across the site for 15 seconds!
+  - 🎶 Plays a retro audio pulse.
+  - 🌈 Activates **RGB Overclock Mode** — shifting all brand accent colors into a continuous 360° dynamic rainbow hue cycle across the entire website for 15 seconds!
 
 ---
 

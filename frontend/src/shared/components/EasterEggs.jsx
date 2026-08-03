@@ -10,6 +10,8 @@ const KONAMI_CODE = [
 ];
 
 const LEET_CODE = ["1", "3", "3", "7"];
+const RGB_CODE = ["r", "g", "b"];
+const OVERCLOCK_CODE = ["o", "v", "e", "r", "c", "l", "o", "c", "k"];
 
 // Web Audio API Retro Sound Effects Generator
 function playRetroFanfare() {
@@ -44,19 +46,22 @@ export default function EasterEggs() {
   const [activeEgg, setActiveEgg] = useState(null); // 'konami' | 'leet' | 'console'
   const [konamiProgress, setKonamiProgress] = useState([]);
   const [leetProgress, setLeetProgress] = useState([]);
+  const [rgbProgress, setRgbProgress] = useState([]);
+  const [overclockProgress, setOverclockProgress] = useState([]);
   const canvasRef = useRef(null);
 
-  // 1. Listen for Keyboard Easter Eggs (Konami & 1337)
+  // 1. Listen for Keyboard Easter Eggs (Konami, 1337, RGB, Overclock)
   useEffect(() => {
     const handleKeyDown = (e) => {
       // Avoid triggering when user is typing inside an input or textarea
       if (["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) return;
 
       const key = e.key;
+      const lowerKey = key.toLowerCase();
 
       // Konami Code Tracker
       setKonamiProgress((prev) => {
-        const next = [...prev, key.length === 1 ? key.toLowerCase() : key];
+        const next = [...prev, key.length === 1 ? lowerKey : key];
         const target = KONAMI_CODE.map(k => k.length === 1 ? k.toLowerCase() : k);
 
         // Check matching sequence
@@ -79,6 +84,34 @@ export default function EasterEggs() {
           return [];
         }
         return next.slice(-6);
+      });
+
+      // Unique RGB Secret Code Tracker ("rgb")
+      setRgbProgress((prev) => {
+        const next = [...prev, lowerKey];
+        const currentMatch = next.slice(-RGB_CODE.length);
+        if (currentMatch.join("") === RGB_CODE.join("")) {
+          if (window.genesis && window.genesis.overclock) {
+            window.genesis.overclock();
+          }
+          playRetroFanfare();
+          return [];
+        }
+        return next.slice(-4);
+      });
+
+      // Unique Overclock Secret Code Tracker ("overclock")
+      setOverclockProgress((prev) => {
+        const next = [...prev, lowerKey];
+        const currentMatch = next.slice(-OVERCLOCK_CODE.length);
+        if (currentMatch.join("") === OVERCLOCK_CODE.join("")) {
+          if (window.genesis && window.genesis.overclock) {
+            window.genesis.overclock();
+          }
+          playRetroFanfare();
+          return [];
+        }
+        return next.slice(-12);
       });
     };
 
