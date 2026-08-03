@@ -1,6 +1,6 @@
 /**
- * Hackathon Organizer Guide Data Store
- * Modeled after MLH Guide (https://guide.mlh.com/) adapted for Genesis community standards.
+ * Genesis Hackathon Organizer Guide Data Store
+ * Operational playbooks, timelines, and frameworks for the Genesis community.
  */
 
 export const GUIDE_CATEGORIES = [
@@ -76,14 +76,14 @@ export const GUIDE_CATEGORIES = [
         }
       },
       {
-        slug: "what-is-genesis-mlh",
-        title: "What is Genesis & MLH?",
-        desc: "Understanding hacker movement ecosystems",
+        slug: "what-is-genesis",
+        title: "What is Genesis?",
+        desc: "Empowering the next generation of builders",
         readTime: "3 min read",
         lastUpdated: "August 2026",
         content: {
-          subtitle: "Building platforms for the next generation of creators",
-          heroText: "Major League Hacking (MLH) and Genesis India form the backbone of the student developer ecosystem—supporting hundreds of events and over 100,000 hackers globally each year.",
+          subtitle: "Building platforms and support systems for student creators",
+          heroText: "Genesis forms the premier backbone of the student developer ecosystem—supporting hackathons, builder meetups, and thousands of creators across the globe.",
           sections: [
             {
               id: "ecosystem-support",
