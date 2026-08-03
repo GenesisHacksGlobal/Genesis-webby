@@ -109,6 +109,14 @@ export default function AppRouter() {
             }
           />
           <Route
+            path="/event-membership"
+            element={
+              <PageBoundary title="Event Membership page failed to load.">
+                <PartnerPage />
+              </PageBoundary>
+            }
+          />
+          <Route
             path="/privacy"
             element={
               <PageBoundary title="Privacy failed to load.">
