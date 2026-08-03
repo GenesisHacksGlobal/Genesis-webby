@@ -276,6 +276,12 @@ export const NAV_MENUS = [
         category: "Collaborate/",
         items: [
           {
+            title: "Member Event Application",
+            desc: "Join the Genesis Hackathon Season & unlock benefits",
+            kind: "route",
+            target: "/event-membership",
+          },
+          {
             title: "Partner With Us",
             desc: "Submit sponsorship or campus proposals",
             kind: "route",
