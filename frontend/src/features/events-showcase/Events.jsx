@@ -153,7 +153,7 @@ function UpcomingPanel({ upcomingEvent }) {
                         </div>
                     </motion.div>
 
-                    <div className="mt-10 flex flex-col gap-5">
+                    <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-4">
                         <a
                             href={activeEvent.luma || "https://hackculture.io/hackathons/hackers-occupied-pune"}
                             target="_blank"
@@ -166,10 +166,17 @@ function UpcomingPanel({ upcomingEvent }) {
                             <span>Register Now on HackCulture</span>
                             <span aria-hidden className="transition-transform group-hover:translate-x-1">↗</span>
                         </a>
-                        <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[38ch]">
-                            Registrations are live on HackCulture. Free entry for shortlisted teams.
-                        </p>
+                        <Link
+                            to="/events/hackers-occupied-pune"
+                            className="px-5 py-3 rounded-xl border border-white/20 hover:border-white/40 text-xs font-mono font-bold uppercase tracking-wider text-white bg-white/5 hover:bg-white/10 transition-all flex items-center gap-2 self-start"
+                        >
+                            <span>📅 Schedule & Live Timer</span>
+                            <span aria-hidden>→</span>
+                        </Link>
                     </div>
+                    <p className="mt-3 text-[11px] font-mono uppercase tracking-[0.18em] text-[var(--text-faint)] max-w-[45ch]">
+                        Registrations live on HackCulture. 43 scheduled event activities live on site.
+                    </p>
                 </div>
             </div>
         </motion.div>

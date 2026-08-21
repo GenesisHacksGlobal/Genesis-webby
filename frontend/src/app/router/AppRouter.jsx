@@ -17,6 +17,7 @@ const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
 const TeamPage = lazy(() => import("@pages/team/TeamPage"));
 const AdminEventsPage = lazy(() => import("@pages/admin/AdminEventsPage"));
 const GuidePage = lazy(() => import("@pages/guide/GuidePage"));
+const HackersOccupiedPunePage = lazy(() => import("@pages/events/HackersOccupiedPunePage"));
 const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 
 function RouteFallback() {
@@ -65,6 +66,22 @@ export default function AppRouter() {
             element={
               <PageBoundary title="Events failed to load.">
                 <EventsPage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/events/hackers-occupied-pune"
+            element={
+              <PageBoundary title="Hackers Occupied Pune failed to load.">
+                <HackersOccupiedPunePage />
+              </PageBoundary>
+            }
+          />
+          <Route
+            path="/hackers-occupied-pune"
+            element={
+              <PageBoundary title="Hackers Occupied Pune failed to load.">
+                <HackersOccupiedPunePage />
               </PageBoundary>
             }
           />

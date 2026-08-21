@@ -85,6 +85,12 @@ export const NAV_MENUS = [
         category: "Upcoming/",
         items: [
           {
+            title: "Hackers Occupied Pune",
+            desc: "Live Countdown Timer & 43-Slot Event Schedule",
+            kind: "route",
+            target: "/events/hackers-occupied-pune",
+          },
+          {
             title: "Headline event",
             desc: "Next offline gathering — RSVP open",
             kind: "route",

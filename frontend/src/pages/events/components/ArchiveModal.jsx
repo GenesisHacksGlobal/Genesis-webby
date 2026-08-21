@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import HackersOccupiedPuneSchedule from '@features/events-showcase/HackersOccupiedPuneSchedule';
 
 const CAT_COLOR = {
   Hackathon: '#c4b5fd',
@@ -11,7 +13,8 @@ function catColor(c) { return CAT_COLOR[c] || '#c4b5fd'; }
 
 export function ArchiveModal({ event, onClose, isUrl }) {
   const accent = catColor(event.category);
-  const link = isUrl(event.media) ? event.media : isUrl(event.attendees) ? event.attendees : null;
+  const link = isUrl(event.media) ? event.media : isUrl(event.attendees) ? event.attendees : (event.luma || null);
+  const isPuneEvent = (event.title || '').toLowerCase().includes('occupied pune') || event.id === 'evt-upcoming-01';
 
   return (
     <motion.div
@@ -27,12 +30,12 @@ export function ArchiveModal({ event, onClose, isUrl }) {
         exit={{ scale: 0.93, opacity: 0, y: 24 }}
         transition={{ type: 'spring', duration: 0.5, bounce: 0.08 }}
         onClick={e => e.stopPropagation()}
-        className="relative w-full max-w-3xl bg-[#111116] border border-white/15 rounded-3xl overflow-hidden shadow-[0_60px_120px_rgba(0,0,0,0.9)] max-h-[92vh] flex flex-col archive-scrollbar"
+        className={`relative w-full ${isPuneEvent ? 'max-w-5xl' : 'max-w-3xl'} bg-[#111116] border border-white/15 rounded-3xl overflow-hidden shadow-[0_60px_120px_rgba(0,0,0,0.9)] max-h-[92vh] flex flex-col archive-scrollbar`}
       >
         {/* Hero banner */}
         <div className="relative h-64 sm:h-80 shrink-0 overflow-hidden">
           <img
-            src={event.img}
+            src={event.img || event.image}
             alt={event.title}
             className="w-full h-full object-cover"
           />
@@ -58,7 +61,7 @@ export function ArchiveModal({ event, onClose, isUrl }) {
               >
                 {event.category}
               </span>
-              <span className="font-mono text-[10px] text-white/40">{event.year}</span>
+              <span className="font-mono text-[10px] text-white/40">{event.year || '2026'}</span>
             </div>
             <h2 className="font-display text-2xl sm:text-4xl text-white uppercase tracking-tight leading-none">
               {event.title}
@@ -73,7 +76,7 @@ export function ArchiveModal({ event, onClose, isUrl }) {
             {[
               { label: 'Location', value: event.location },
               { label: 'Date', value: event.date || '—' },
-              { label: 'Attendance', value: isUrl(event.attendees) ? 'See record →' : (event.attendees || '500+ est.') },
+              { label: 'Attendance / Registration', value: isUrl(event.attendees) ? 'See record →' : (event.attendees || '500+ est.') },
             ].map(({ label, value }) => (
               <div key={label} className="rounded-xl p-4 border border-white/8 bg-white/[0.025] space-y-1">
                 <span className="font-mono text-[9px] uppercase tracking-wider block" style={{ color: accent }}>
@@ -88,9 +91,32 @@ export function ArchiveModal({ event, onClose, isUrl }) {
           <div className="space-y-2 pt-2">
             <h5 className="font-mono text-[10px] uppercase tracking-widest text-white/30">Archive Overview</h5>
             <p className="font-sans text-sm text-white/70 leading-relaxed">
-              {event.title} brought together developers, innovators, and mentors for an immersive experience focused on coding, technical workshops, and collaborative problem-solving. This record is part of the Genesis digital archive spanning 2022–2026.
+              {event.blurb || `${event.title} brought together developers, innovators, and mentors for an immersive experience focused on coding, technical workshops, and collaborative problem-solving.`}
             </p>
           </div>
+
+          {/* Dedicated Interactive Schedule section for Hackers Occupied Pune */}
+          {isPuneEvent && (
+            <div className="pt-6 border-t border-white/10 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h5 className="font-mono text-xs uppercase tracking-widest text-[var(--brand)] font-bold">
+                    Official Event Schedule & Live Timer
+                  </h5>
+                  <p className="text-xs text-white/50 font-mono">43 Scheduled Activities · 22–23 August 2026</p>
+                </div>
+                <Link
+                  to="/events/hackers-occupied-pune"
+                  onClick={onClose}
+                  className="px-3.5 py-1.5 rounded-xl border border-[var(--brand)]/30 bg-[var(--brand)]/10 text-[var(--brand)] font-mono text-xs font-bold hover:bg-[var(--brand)] hover:text-black transition-all"
+                >
+                  Open Full Page View ↗
+                </Link>
+              </div>
+
+              <HackersOccupiedPuneSchedule showHeader={true} />
+            </div>
+          )}
 
           {/* Sponsors */}
           {event.sponsors && event.sponsors !== '-' && event.sponsors.trim() !== '' && (
@@ -104,21 +130,32 @@ export function ArchiveModal({ event, onClose, isUrl }) {
 
           {/* CTA row */}
           <div className="pt-4 border-t border-white/8 flex flex-wrap items-center justify-between gap-3">
-            {link ? (
-              <a
-                href={link}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-[11px] uppercase font-bold tracking-wider text-black transition-all"
-                style={{ background: accent, boxShadow: `0 0 30px ${accent}40` }}
-              >
-                View Record ↗
-              </a>
-            ) : (
-              <span className="font-mono text-[10px] text-white/25">
-                GENESIS ARCHIVE RECORD #{event.id}
-              </span>
-            )}
+            <div className="flex items-center gap-3">
+              {link ? (
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-[11px] uppercase font-bold tracking-wider text-black transition-all"
+                  style={{ background: accent, boxShadow: `0 0 30px ${accent}40` }}
+                >
+                  Register / View Record ↗
+                </a>
+              ) : (
+                <span className="font-mono text-[10px] text-white/25">
+                  GENESIS ARCHIVE RECORD #{event.id}
+                </span>
+              )}
+              {isPuneEvent && (
+                <Link
+                  to="/events/hackers-occupied-pune"
+                  onClick={onClose}
+                  className="px-4 py-2.5 rounded-xl border border-white/20 text-white font-mono text-[11px] uppercase tracking-wider hover:bg-white/10 transition-all"
+                >
+                  📅 Full Schedule Page
+                </Link>
+              )}
+            </div>
             <button
               onClick={onClose}
               className="px-5 py-2.5 rounded-xl border border-white/15 hover:border-white/30 text-white font-mono text-[11px] uppercase tracking-wider transition-all"
