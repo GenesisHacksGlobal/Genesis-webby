@@ -109,9 +109,8 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
     return ['All', ...cats];
   }, []);
 
-  const scheduleData = PUNE_SCHEDULE_DATA || [];
-
   const filteredSchedule = useMemo(() => {
+    const scheduleData = PUNE_SCHEDULE_DATA || [];
     return scheduleData.filter((item) => {
       if (!item) return false;
       const matchDay = dayFilter === 'all' || item.dayNum === Number(dayFilter);
@@ -126,7 +125,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
         (item.startTime || '').includes(q);
       return matchDay && matchCat && matchQuery;
     });
-  }, [dayFilter, categoryFilter, searchQuery, scheduleData]);
+  }, [dayFilter, categoryFilter, searchQuery]);
 
   const targetDate = EVENT_DETAILS?.startDate || "2026-08-22T11:00:00+05:30";
   const endDate = EVENT_DETAILS?.endDate || "2026-08-23T16:00:00+05:30";

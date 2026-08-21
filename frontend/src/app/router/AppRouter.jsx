@@ -17,7 +17,7 @@ const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
 const TeamPage = lazy(() => import("@pages/team/TeamPage"));
 const AdminEventsPage = lazy(() => import("@pages/admin/AdminEventsPage"));
 const GuidePage = lazy(() => import("@pages/guide/GuidePage"));
-const HackersOccupiedPunePage = lazy(() => import("@pages/events/HackersOccupiedPunePage"));
+import HackersOccupiedPunePage from "@pages/events/HackersOccupiedPunePage";
 const NotFoundPage = lazy(() => import("@pages/not-found/NotFoundPage"));
 
 function RouteFallback() {

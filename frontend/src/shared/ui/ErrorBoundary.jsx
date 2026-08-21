@@ -78,7 +78,7 @@ function DefaultErrorFallback({
         This section failed to render. You can try again, or continue browsing
         the rest of the site.
       </p>
-      {process.env.NODE_ENV !== "production" && error?.message ? (
+      {error?.message ? (
         <pre className="mt-6 max-w-full overflow-x-auto rounded border border-white/10 bg-black/40 px-4 py-3 text-left font-mono text-[11px] text-red-300/90">
           {String(error.message)}
         </pre>
