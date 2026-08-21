@@ -2,36 +2,45 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EVENT_DETAILS, ACTIVITY_CATEGORIES, PUNE_SCHEDULE_DATA } from '@shared/data/puneEventScheduleData';
 
-// ─── Countdown Timer Component ───────────────────────────────────────────────
+// ─── Live Countdown Timer Component ───────────────────────────────────────────
 function LiveCountdownTimer({ targetDateStr, endDateStr }) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0, status: 'upcoming' });
 
   useEffect(() => {
     const calculateTime = () => {
-      const now = new Date().getTime();
-      const target = new Date(targetDateStr).getTime();
-      const end = new Date(endDateStr).getTime();
+      try {
+        const now = new Date().getTime();
+        const startTarget = targetDateStr ? new Date(targetDateStr).getTime() : new Date("2026-08-22T11:00:00+05:30").getTime();
+        const endTarget = endDateStr ? new Date(endDateStr).getTime() : new Date("2026-08-23T16:00:00+05:30").getTime();
 
-      if (now < target) {
-        const diff = target - now;
-        setTimeLeft({
-          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((diff / 1000 / 60) % 60),
-          seconds: Math.floor((diff / 1000) % 60),
-          status: 'upcoming',
-        });
-      } else if (now >= target && now <= end) {
-        const diff = end - now;
-        setTimeLeft({
-          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((diff / 1000 / 60) % 60),
-          seconds: Math.floor((diff / 1000) % 60),
-          status: 'live',
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, status: 'ended' });
+        if (isNaN(startTarget) || isNaN(endTarget)) {
+          setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, status: 'upcoming' });
+          return;
+        }
+
+        if (now < startTarget) {
+          const diff = startTarget - now;
+          setTimeLeft({
+            days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((diff / (1000 * 60)) % 60),
+            seconds: Math.floor((diff / 1000) % 60),
+            status: 'upcoming',
+          });
+        } else if (now >= startTarget && now <= endTarget) {
+          const diff = endTarget - now;
+          setTimeLeft({
+            days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+            hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+            minutes: Math.floor((diff / (1000 * 60)) % 60),
+            seconds: Math.floor((diff / 1000) % 60),
+            status: 'live',
+          });
+        } else {
+          setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, status: 'ended' });
+        }
+      } catch (err) {
+        console.error("Timer calculation error:", err);
       }
     };
 
@@ -74,7 +83,7 @@ function LiveCountdownTimer({ targetDateStr, endDateStr }) {
               {i > 0 && <span className="text-xl sm:text-3xl font-bold text-white/20 -mt-4">:</span>}
               <div className="flex flex-col items-center">
                 <div className="flex items-center justify-center min-w-[56px] sm:min-w-[70px] h-14 sm:h-18 rounded-xl bg-black/60 border border-white/10 text-xl sm:text-3xl font-extrabold text-white shadow-inner font-mono tracking-wider">
-                  {String(val).padStart(2, '0')}
+                  {String(val || 0).padStart(2, '0')}
                 </div>
                 <span className="text-[9px] uppercase tracking-widest text-white/40 mt-1.5 font-bold">
                   {label}
@@ -96,31 +105,38 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
   const [viewMode, setViewMode] = useState('timeline'); // 'timeline' or 'table'
 
   const categoriesList = useMemo(() => {
-    return ['All', ...Object.keys(ACTIVITY_CATEGORIES)];
+    const cats = ACTIVITY_CATEGORIES ? Object.keys(ACTIVITY_CATEGORIES) : [];
+    return ['All', ...cats];
   }, []);
 
+  const scheduleData = PUNE_SCHEDULE_DATA || [];
+
   const filteredSchedule = useMemo(() => {
-    return PUNE_SCHEDULE_DATA.filter((item) => {
+    return scheduleData.filter((item) => {
+      if (!item) return false;
       const matchDay = dayFilter === 'all' || item.dayNum === Number(dayFilter);
       const matchCat = categoryFilter === 'All' || item.type === categoryFilter;
-      const q = searchQuery.toLowerCase();
+      const q = (searchQuery || '').toLowerCase().trim();
       const matchQuery =
         !q ||
-        item.activity.toLowerCase().includes(q) ||
-        item.type.toLowerCase().includes(q) ||
-        item.notes.toLowerCase().includes(q) ||
-        item.participantImpact.toLowerCase().includes(q) ||
-        item.startTime.includes(q);
+        (item.activity || '').toLowerCase().includes(q) ||
+        (item.type || '').toLowerCase().includes(q) ||
+        (item.notes || '').toLowerCase().includes(q) ||
+        (item.participantImpact || '').toLowerCase().includes(q) ||
+        (item.startTime || '').includes(q);
       return matchDay && matchCat && matchQuery;
     });
-  }, [dayFilter, categoryFilter, searchQuery]);
+  }, [dayFilter, categoryFilter, searchQuery, scheduleData]);
+
+  const targetDate = EVENT_DETAILS?.startDate || "2026-08-22T11:00:00+05:30";
+  const endDate = EVENT_DETAILS?.endDate || "2026-08-23T16:00:00+05:30";
 
   return (
     <div className="w-full space-y-8 text-white">
       {showHeader && (
         <LiveCountdownTimer
-          targetDateStr={EVENT_DETAILS.startDate}
-          endDateStr={EVENT_DETAILS.endDate}
+          targetDateStr={targetDate}
+          endDateStr={endDate}
         />
       )}
 
@@ -219,7 +235,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
         {/* Category Pills */}
         <div className="flex flex-wrap gap-1.5 pt-2 border-t border-white/8">
           {categoriesList.map((cat) => {
-            const meta = ACTIVITY_CATEGORIES[cat];
+            const meta = ACTIVITY_CATEGORIES ? ACTIVITY_CATEGORIES[cat] : null;
             const isSelected = categoryFilter === cat;
             return (
               <button
@@ -242,7 +258,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
 
       {/* Schedule Items Counter */}
       <div className="flex items-center justify-between text-xs font-mono text-white/50 px-1">
-        <span>SHOWING {filteredSchedule.length} OF {PUNE_SCHEDULE_DATA.length} SCHEDULE EVENTS</span>
+        <span>SHOWING {filteredSchedule.length} OF {scheduleData.length} SCHEDULE EVENTS</span>
         {(categoryFilter !== 'All' || searchQuery || dayFilter !== 'all') && (
           <button
             onClick={() => { setDayFilter('all'); setCategoryFilter('All'); setSearchQuery(''); }}
@@ -256,9 +272,9 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
       {/* TIMELINE VIEW */}
       {viewMode === 'timeline' && (
         <div className="relative pl-4 sm:pl-8 space-y-4 before:absolute before:left-2 sm:before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-[var(--brand)] before:via-white/20 before:to-purple-500/40">
-          <AnimatePresence>
+          <AnimatePresence mode="popLayout">
             {filteredSchedule.map((item, idx) => {
-              const catMeta = ACTIVITY_CATEGORIES[item.type] || {
+              const catMeta = (ACTIVITY_CATEGORIES && ACTIVITY_CATEGORIES[item.type]) || {
                 color: '#c4b5fd',
                 bg: 'rgba(196,181,253,0.1)',
                 border: 'rgba(196,181,253,0.3)',
@@ -266,24 +282,24 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
 
               return (
                 <motion.div
-                  key={item.id}
+                  key={`timeline-item-${item.id || idx}`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2, delay: Math.min(idx * 0.02, 0.3) }}
+                  transition={{ duration: 0.2, delay: Math.min(idx * 0.015, 0.2) }}
                   className={`relative group rounded-2xl border bg-gradient-to-r p-4 sm:p-5 transition-all hover:border-white/30 ${
                     item.milestone
                       ? 'border-white/20 bg-white/[0.04] shadow-[0_4px_20px_rgba(0,0,0,0.5)]'
                       : 'border-white/10 bg-white/[0.015]'
                   }`}
                   style={{
-                    borderColor: item.milestone ? catMeta.color + '60' : undefined,
+                    borderColor: item.milestone ? (catMeta.color || '#c4b5fd') + '60' : undefined,
                   }}
                 >
                   {/* Timeline node dot */}
                   <div
                     className="absolute -left-4 sm:-left-8 top-6 w-3 h-3 rounded-full border-2 bg-black transition-all group-hover:scale-125"
-                    style={{ borderColor: catMeta.color }}
+                    style={{ borderColor: catMeta.color || '#c4b5fd' }}
                   />
 
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
@@ -369,10 +385,10 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/8 font-sans">
-              {filteredSchedule.map((item) => {
-                const catMeta = ACTIVITY_CATEGORIES[item.type] || { color: '#c4b5fd' };
+              {filteredSchedule.map((item, idx) => {
+                const catMeta = (ACTIVITY_CATEGORIES && ACTIVITY_CATEGORIES[item.type]) || { color: '#c4b5fd' };
                 return (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                  <tr key={`table-item-${item.id || idx}`} className="hover:bg-white/5 transition-colors">
                     <td className="py-3 px-4 font-mono text-[11px] text-white/60 whitespace-nowrap">{item.date}</td>
                     <td className="py-3 px-4 font-mono text-xs font-bold text-white whitespace-nowrap">
                       {item.startTime} {item.endTime !== item.startTime ? `– ${item.endTime}` : ''}
@@ -385,7 +401,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
                     <td className="py-3 px-4 whitespace-nowrap">
                       <span
                         className="px-2 py-0.5 text-[9px] font-mono font-bold uppercase rounded-full border"
-                        style={{ color: catMeta.color, borderColor: catMeta.color + '50', backgroundColor: catMeta.color + '15' }}
+                        style={{ color: catMeta.color || '#c4b5fd', borderColor: (catMeta.color || '#c4b5fd') + '50', backgroundColor: (catMeta.color || '#c4b5fd') + '15' }}
                       >
                         {item.type}
                       </span>

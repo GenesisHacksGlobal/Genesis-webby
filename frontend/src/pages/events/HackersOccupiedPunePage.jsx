@@ -7,8 +7,18 @@ import { EVENT_DETAILS } from '@shared/data/puneEventScheduleData';
 
 export default function HackersOccupiedPunePage() {
   useEffect(() => {
-    window.scrollTo(0, 0);
+    try {
+      window.scrollTo(0, 0);
+    } catch (e) {
+      // Ignore scroll error if any
+    }
   }, []);
+
+  const eventMeta = EVENT_DETAILS || {
+    lumaUrl: "https://hackculture.io/hackathons/hackers-occupied-pune",
+    venueShort: "MIT-WPU, Pune",
+    prizePool: "₹1,50,000+",
+  };
 
   return (
     <div className="relative min-h-screen bg-[#0c0c0f] text-white selection:bg-[var(--brand)] selection:text-black font-sans">
@@ -27,7 +37,7 @@ export default function HackersOccupiedPunePage() {
           </span>
         </div>
         <a
-          href={EVENT_DETAILS.lumaUrl}
+          href={eventMeta.lumaUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--brand)] text-black text-xs font-mono font-bold uppercase tracking-wider hover:opacity-90 transition-all shadow-[0_0_20px_rgba(196,181,253,0.3)]"
@@ -70,7 +80,7 @@ export default function HackersOccupiedPunePage() {
             >
               <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 space-y-1">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">Venue</span>
-                <p className="font-mono text-xs text-white font-bold">{EVENT_DETAILS.venueShort}</p>
+                <p className="font-mono text-xs text-white font-bold">{eventMeta.venueShort}</p>
               </div>
               <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 space-y-1">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">Dates</span>
@@ -78,7 +88,7 @@ export default function HackersOccupiedPunePage() {
               </div>
               <div className="rounded-xl border border-white/10 bg-white/[0.02] p-3.5 space-y-1">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-white/40">Prize Pool</span>
-                <p className="font-mono text-xs text-[var(--brand)] font-bold">{EVENT_DETAILS.prizePool}</p>
+                <p className="font-mono text-xs text-[var(--brand)] font-bold">{eventMeta.prizePool}</p>
               </div>
             </motion.div>
 
@@ -90,7 +100,7 @@ export default function HackersOccupiedPunePage() {
               className="flex flex-wrap items-center gap-4 pt-2"
             >
               <a
-                href={EVENT_DETAILS.lumaUrl}
+                href={eventMeta.lumaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-cinema flex items-center gap-2 group"
@@ -204,7 +214,7 @@ export default function HackersOccupiedPunePage() {
           ].map((card) => (
             <div
               key={card.title}
-              className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 space-y-4 hover:border-white/25 transition-all"
+              className="rounded-2xl border border-white/10 bg-[#121218] p-6 space-y-4 hover:border-white/25 transition-all"
             >
               <span
                 className="px-2.5 py-0.5 text-[9px] font-mono font-bold uppercase rounded-full border"
