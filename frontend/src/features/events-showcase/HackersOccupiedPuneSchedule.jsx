@@ -257,7 +257,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
 
       {/* Schedule Items Counter */}
       <div className="flex items-center justify-between text-xs font-mono text-white/50 px-1">
-        <span>SHOWING {filteredSchedule.length} OF {scheduleData.length} SCHEDULE EVENTS</span>
+        <span>SHOWING {filteredSchedule.length} OF {(PUNE_SCHEDULE_DATA || []).length} SCHEDULE EVENTS</span>
         {(categoryFilter !== 'All' || searchQuery || dayFilter !== 'all') && (
           <button
             onClick={() => { setDayFilter('all'); setCategoryFilter('All'); setSearchQuery(''); }}
