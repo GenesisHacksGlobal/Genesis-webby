@@ -12,9 +12,23 @@ const CAT_COLOR = {
 function catColor(c) { return CAT_COLOR[c] || '#c4b5fd'; }
 
 export function ArchiveModal({ event, onClose, isUrl }) {
-  const accent = catColor(event.category);
-  const link = isUrl(event.media) ? event.media : isUrl(event.attendees) ? event.attendees : (event.luma || null);
-  const isPuneEvent = (event.title || '').toLowerCase().includes('occupied pune') || event.id === 'evt-upcoming-01';
+  if (!event) return null;
+
+  const accent = catColor(event?.category);
+  const checkUrl = typeof isUrl === 'function'
+    ? isUrl
+    : (s) => s && typeof s === 'string' && (s.startsWith('http://') || s.startsWith('https://'));
+
+  const link = checkUrl(event?.media)
+    ? event.media
+    : checkUrl(event?.attendees)
+    ? event.attendees
+    : (event?.luma || null);
+
+  const isPuneEvent = Boolean(
+    event &&
+    ((event.title || '').toLowerCase().includes('occupied pune') || event.id === 'evt-upcoming-01')
+  );
 
   return (
     <motion.div
@@ -35,8 +49,8 @@ export function ArchiveModal({ event, onClose, isUrl }) {
         {/* Hero banner */}
         <div className="relative h-64 sm:h-80 shrink-0 overflow-hidden">
           <img
-            src={event.img || event.image}
-            alt={event.title}
+            src={event?.img || event?.image || '/assets/BrandImg/1.png'}
+            alt={event?.title || 'Event'}
             className="w-full h-full object-cover"
           />
           {/* Gradient */}
@@ -53,115 +67,113 @@ export function ArchiveModal({ event, onClose, isUrl }) {
           </button>
 
           {/* Title overlay */}
-          <div className="absolute bottom-6 left-6 right-16 space-y-2">
-            <div className="flex items-center gap-2">
+          <div className="absolute bottom-6 left-6 right-6 space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span
-                className="px-2.5 py-0.5 text-[9px] font-mono uppercase tracking-widest rounded-full border font-bold"
-                style={{ borderColor: `${accent}50`, color: accent, background: `${accent}20` }}
+                className="px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-widest border"
+                style={{ color: accent, borderColor: `${accent}40`, backgroundColor: `${accent}15` }}
               >
-                {event.category}
+                {event?.category || 'Event'}
               </span>
-              <span className="font-mono text-[10px] text-white/40">{event.year || '2026'}</span>
+              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono text-white/60 bg-black/40 border border-white/10">
+                {event?.year || '2026'}
+              </span>
+              <span className="px-2.5 py-0.5 rounded-md text-[10px] font-mono text-white/60 bg-black/40 border border-white/10">
+                {event?.city || 'Pune'}
+              </span>
             </div>
-            <h2 className="font-display text-2xl sm:text-4xl text-white uppercase tracking-tight leading-none">
-              {event.title}
+            <h2 className="font-display text-2xl sm:text-4xl text-white uppercase tracking-tight leading-tight">
+              {event?.title}
             </h2>
+            {event?.kicker && (
+              <p className="font-mono text-xs text-[var(--brand)]">{event.kicker}</p>
+            )}
           </div>
         </div>
 
-        {/* Body */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8 space-y-6 archive-scrollbar">
-          {/* Meta grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            {[
-              { label: 'Location', value: event.location },
-              { label: 'Date', value: event.date || '—' },
-              { label: 'Attendance / Registration', value: isUrl(event.attendees) ? 'See record →' : (event.attendees || '500+ est.') },
-            ].map(({ label, value }) => (
-              <div key={label} className="rounded-xl p-4 border border-white/8 bg-white/[0.025] space-y-1">
-                <span className="font-mono text-[9px] uppercase tracking-wider block" style={{ color: accent }}>
-                  {label}
-                </span>
-                <p className="font-sans text-sm text-white font-medium leading-snug">{value}</p>
-              </div>
-            ))}
+        {/* Content body */}
+        <div className="p-6 sm:p-8 space-y-6 overflow-y-auto flex-1 archive-scrollbar">
+          {/* Meta bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 rounded-2xl bg-white/[0.02] border border-white/10 font-mono text-xs">
+            <div>
+              <span className="text-[9px] uppercase tracking-wider text-white/40 block">Location</span>
+              <span className="text-white font-bold">{event?.location || event?.city || 'Pune'}</span>
+            </div>
+            <div>
+              <span className="text-[9px] uppercase tracking-wider text-white/40 block">Date</span>
+              <span className="text-white font-bold">{event?.date || event?.year}</span>
+            </div>
+            <div>
+              <span className="text-[9px] uppercase tracking-wider text-white/40 block">Scale</span>
+              <span className="text-[var(--brand)] font-bold">{event?.attendees || '500+ Hackers'}</span>
+            </div>
+            <div>
+              <span className="text-[9px] uppercase tracking-wider text-white/40 block">Organizers</span>
+              <span className="text-white font-bold">{event?.sponsors || 'Genesis'}</span>
+            </div>
           </div>
 
-          {/* Overview */}
-          <div className="space-y-2 pt-2">
-            <h5 className="font-mono text-[10px] uppercase tracking-widest text-white/30">Archive Overview</h5>
-            <p className="font-sans text-sm text-white/70 leading-relaxed">
-              {event.blurb || `${event.title} brought together developers, innovators, and mentors for an immersive experience focused on coding, technical workshops, and collaborative problem-solving.`}
-            </p>
-          </div>
+          {/* Blurb */}
+          {event?.blurb && (
+            <div className="space-y-2">
+              <h4 className="font-mono text-[10px] uppercase tracking-widest text-white/40">About Event</h4>
+              <p className="text-sm sm:text-base text-white/80 leading-relaxed font-sans">{event.blurb}</p>
+            </div>
+          )}
 
-          {/* Dedicated Interactive Schedule section for Hackers Occupied Pune */}
+          {/* Hackers Occupied Pune Master Schedule Section */}
           {isPuneEvent && (
-            <div className="pt-6 border-t border-white/10 space-y-4">
-              <div className="flex items-center justify-between">
+            <div className="pt-6 border-t border-white/10 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <h5 className="font-mono text-xs uppercase tracking-widest text-[var(--brand)] font-bold">
-                    Official Event Schedule & Live Timer
-                  </h5>
-                  <p className="text-xs text-white/50 font-mono">43 Scheduled Activities · 22–23 August 2026</p>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono text-emerald-400 uppercase tracking-wider font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Official Schedule Integrated
+                  </div>
+                  <h3 className="font-display text-2xl uppercase tracking-tight text-white mt-1">
+                    Hackathon Agenda & Live Timeline
+                  </h3>
                 </div>
                 <Link
                   to="/events/hackers-occupied-pune"
                   onClick={onClose}
-                  className="px-3.5 py-1.5 rounded-xl border border-[var(--brand)]/30 bg-[var(--brand)]/10 text-[var(--brand)] font-mono text-xs font-bold hover:bg-[var(--brand)] hover:text-black transition-all"
+                  className="px-4 py-2 rounded-xl bg-[var(--brand)] text-black font-mono text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-all text-center shrink-0"
                 >
-                  Open Full Page View ↗
+                  Open Dedicated Page ↗
                 </Link>
               </div>
 
-              <HackersOccupiedPuneSchedule showHeader={true} />
+              {/* Embed schedule component */}
+              <HackersOccupiedPuneSchedule showHeader={false} />
             </div>
           )}
 
-          {/* Sponsors */}
-          {event.sponsors && event.sponsors !== '-' && event.sponsors.trim() !== '' && (
-            <div className="space-y-2 pt-2 border-t border-white/8">
-              <h5 className="font-mono text-[10px] uppercase tracking-widest text-white/30">Supporting Partners</h5>
-              <div className="font-mono text-xs text-white/60 bg-white/[0.02] border border-white/8 rounded-xl px-4 py-3">
-                {event.sponsors}
-              </div>
-            </div>
-          )}
-
-          {/* CTA row */}
-          <div className="pt-4 border-t border-white/8 flex flex-wrap items-center justify-between gap-3">
+          {/* Actions */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+            <span className="font-mono text-[10px] text-white/30">ID: {event?.id}</span>
             <div className="flex items-center gap-3">
-              {link ? (
-                <a
-                  href={link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-[11px] uppercase font-bold tracking-wider text-black transition-all"
-                  style={{ background: accent, boxShadow: `0 0 30px ${accent}40` }}
-                >
-                  Register / View Record ↗
-                </a>
-              ) : (
-                <span className="font-mono text-[10px] text-white/25">
-                  GENESIS ARCHIVE RECORD #{event.id}
-                </span>
-              )}
               {isPuneEvent && (
                 <Link
                   to="/events/hackers-occupied-pune"
                   onClick={onClose}
-                  className="px-4 py-2.5 rounded-xl border border-white/20 text-white font-mono text-[11px] uppercase tracking-wider hover:bg-white/10 transition-all"
+                  className="px-4 py-2 rounded-xl border border-white/20 text-xs font-mono text-white hover:bg-white/10 transition-all"
                 >
-                  📅 Full Schedule Page
+                  View Full Schedule
                 </Link>
               )}
+              {link ? (
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-cinema text-xs py-2 px-5"
+                >
+                  Official Event Link ↗
+                </a>
+              ) : (
+                <span className="font-mono text-xs text-white/40 italic">Archived Record</span>
+              )}
             </div>
-            <button
-              onClick={onClose}
-              className="px-5 py-2.5 rounded-xl border border-white/15 hover:border-white/30 text-white font-mono text-[11px] uppercase tracking-wider transition-all"
-            >
-              Close
-            </button>
           </div>
         </div>
       </motion.div>
