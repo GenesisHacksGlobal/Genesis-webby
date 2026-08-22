@@ -67,7 +67,7 @@ export default function HackersOccupiedPunePage() {
                 sudo takeover --city pune · 22–23 August 2026
               </p>
               <p className="text-sm md:text-base text-white/80 leading-relaxed max-w-2xl">
-                Genesis flagship 24-hour creator-first hackathon hosted at MIT World Peace University (MIT-WPU), Pune. Featuring Agentic AI & Web3 tracks, 3 intensive mentoring rounds, 3 Logitech sponsor challenges, and the signature Creator Challenge.
+                Genesis flagship 24-hour creator-first hackathon hosted at VIT Pune, Maharashtra. Featuring Agentic AI & Web3 tracks, 3 intensive mentoring rounds, 3 Logitech sponsor challenges, and the signature Creator Challenge.
               </p>
             </motion.div>
 
