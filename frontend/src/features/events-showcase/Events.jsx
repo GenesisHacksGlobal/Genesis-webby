@@ -92,10 +92,10 @@ function UpcomingPanel({ upcomingEvent }) {
     const activeEvent = upcomingEvent || {
         title: "HACKERS OCCUPIED PUNE",
         subtitle: "sudo takeover --city pune · Genesis Creator-First Hackathon",
-        blurb: "24 hours of innovation, collaboration, and building at MIT-WPU Pune. Featuring Agentic AI & Web3 tracks, mentorship from industry leaders, and the signature Creator Challenge.",
+        blurb: "24 hours of innovation, collaboration, and building at Vishwakarma Institute of Technology (VIT), Pune. Featuring Agentic AI & Web3 tracks, mentorship from industry leaders, and the signature Creator Challenge.",
         date: "22–23 August 2026",
         time: "24-Hour Hybrid Sprint",
-        city: "MIT-WPU, Pune",
+        city: "VIT, Pune",
         image: "/assets/BrandImg/1.png",
         luma: "https://hackculture.io/hackathons/hackers-occupied-pune",
     };
@@ -116,7 +116,7 @@ function UpcomingPanel({ upcomingEvent }) {
                     <span className="block w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
                     <span className="overline text-[var(--text)] font-bold">Registrations open // Flagship Edition</span>
                 </div>
-                <span className="overline text-left sm:text-right">MIT World Peace University, Pune</span>
+                <span className="overline text-left sm:text-right">Vishwakarma Institute of Technology, Pune</span>
             </div>
 
             <div className="grid md:grid-cols-12">
@@ -149,7 +149,7 @@ function UpcomingPanel({ upcomingEvent }) {
                         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-lg border-t border-b border-[var(--border)] py-6">
                             <div><div className="overline">Date</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">{activeEvent.date}</div></div>
                             <div><div className="overline">Format</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">24-Hour Hybrid</div></div>
-                            <div><div className="overline">Location</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">MIT-WPU, Pune</div></div>
+                            <div><div className="overline">Location</div><div className="mt-2 font-display text-xl text-[var(--heading)] leading-none">VIT, Pune</div></div>
                         </div>
                     </motion.div>
 

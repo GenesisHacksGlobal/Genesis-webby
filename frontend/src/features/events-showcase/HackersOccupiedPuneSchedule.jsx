@@ -61,13 +61,13 @@ function LiveCountdownTimer({ targetDateStr, endDateStr }) {
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
             {timeLeft.status === 'upcoming' && 'Event Starts In (22 Aug 2026, 11:00 AM IST)'}
             {timeLeft.status === 'live' && '🔴 Hackathon Live Now — Time Remaining'}
-            {timeLeft.status === 'ended' && 'Event Concluded — MIT-WPU Pune'}
+            {timeLeft.status === 'ended' && 'Event Concluded — VIT, Pune'}
           </div>
           <h3 className="font-display text-2xl md:text-3xl text-white uppercase tracking-tight mt-3">
             Hackers Occupied Pune Timer
           </h3>
           <p className="text-xs text-white/50 font-mono mt-1">
-            MIT World Peace University · 24-Hour Hybrid Creator Sprint
+            Vishwakarma Institute of Technology (VIT), Pune · 24-Hour Hybrid Creator Sprint
           </p>
         </div>
 
