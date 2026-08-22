@@ -1,14 +1,14 @@
 /**
  * Hackers Occupied Pune - Official Event Schedule Data (22–23 August 2026)
- * MIT World Peace University (MIT-WPU), Pune
+ * Vishwakarma Institute of Technology (VIT), Pune
  */
 
 export const EVENT_DETAILS = {
   title: "HACKERS OCCUPIED PUNE",
   tagline: "sudo takeover --city pune",
   subtitle: "Genesis Flagship Creator-First Hackathon",
-  location: "MIT World Peace University (MIT-WPU), Pune",
-  venueShort: "MIT-WPU, Pune",
+  location: "Vishwakarma Institute of Technology (VIT), Pune",
+  venueShort: "VIT, Pune",
   startDate: "2026-08-22T11:00:00+05:30",
   endDate: "2026-08-23T16:00:00+05:30",
   hackingStart: "2026-08-22T14:00:00+05:30",

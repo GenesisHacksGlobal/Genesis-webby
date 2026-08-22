@@ -16,7 +16,7 @@ export default function HackersOccupiedPunePage() {
 
   const eventMeta = EVENT_DETAILS || {
     lumaUrl: "https://hackculture.io/hackathons/hackers-occupied-pune",
-    venueShort: "MIT-WPU, Pune",
+    venueShort: "VIT, Pune",
     prizePool: "₹1,50,000+",
   };
 
