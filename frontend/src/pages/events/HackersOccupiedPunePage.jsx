@@ -154,7 +154,7 @@ export default function HackersOccupiedPunePage() {
             Detailed Event Schedule & Timeline
           </h2>
           <p className="text-sm text-white/60 max-w-2xl">
-            Browse all 44 scheduled activities for Hackers Occupied Pune. Use the filters to view specific days, hacking periods, mentoring rounds, Logitech sponsor activities, and meal breaks.
+            Browse all 45 scheduled activities for Hackers Occupied Pune. Use the filters to view specific days, hacking periods, mentoring rounds, Logitech sponsor activities, and meal breaks.
           </p>
         </div>
 
@@ -178,7 +178,7 @@ export default function HackersOccupiedPunePage() {
             {
               title: "Agentic AI & Web3 Tracks",
               desc: "Build autonomous AI agents, multi-agent workflows, cross-chain protocols, or decentralized infrastructure. Compete for flagship track prizes.",
-              badge: "Problem Statements at 14:00 (Aug 22)",
+              badge: "Problem Statements at 15:00 (Aug 22)",
               color: "#34d399",
             },
             {
@@ -195,13 +195,13 @@ export default function HackersOccupiedPunePage() {
             },
             {
               title: "Creator Challenge (30 Marks)",
-              desc: "10-15 creator challenges released right at hacking start (14:00 Aug 22) with a strict submission deadline at 11:00 AM on Aug 23.",
+              desc: "10-15 creator challenges released right at hacking start (15:00 Aug 22) with a strict submission deadline at 11:00 AM on Aug 23.",
               badge: "Deadline 11:00 AM",
               color: "#a855f7",
             },
             {
               title: "SalesForce Speaker Session",
-              desc: "Exclusive session on Aug 23 from 12:30 to 13:15 featuring SalesForce engineers and leaders. All 25 finalists receive e-certificates.",
+              desc: "Exclusive session on Aug 23 from 13:45 to 15:00 featuring SalesForce engineers and leaders (Optional session for interested participants; e-certificates provided).",
               badge: "E-Certificates Provided",
               color: "#2dd4bf",
             },
