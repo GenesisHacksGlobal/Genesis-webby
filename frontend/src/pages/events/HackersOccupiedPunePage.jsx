@@ -154,7 +154,7 @@ export default function HackersOccupiedPunePage() {
             Detailed Event Schedule & Timeline
           </h2>
           <p className="text-sm text-white/60 max-w-2xl">
-            Browse all 43 scheduled activities for Hackers Occupied Pune. Use the filters to view specific days, hacking periods, mentoring rounds, Logitech sponsor activities, and meal breaks.
+            Browse all 44 scheduled activities for Hackers Occupied Pune. Use the filters to view specific days, hacking periods, mentoring rounds, Logitech sponsor activities, and meal breaks.
           </p>
         </div>
 
@@ -183,7 +183,7 @@ export default function HackersOccupiedPunePage() {
             },
             {
               title: "3 Mentoring Rounds",
-              desc: "Round 1 (18:00 Aug 22), Round 2 (23:00 Aug 22), and Round 3 (07:00 Aug 23). Top industry mentors evaluate progress directly at team tables.",
+              desc: "Round 1 (18:00 Aug 22), Round 2 (23:00 Aug 22), and Final Round (08:30 Aug 23). Top industry mentors evaluate progress directly at team tables.",
               badge: "5 Mins Per Team",
               color: "#818cf8",
             },
@@ -195,13 +195,13 @@ export default function HackersOccupiedPunePage() {
             },
             {
               title: "Creator Challenge (30 Marks)",
-              desc: "10-15 creator challenges released right at hacking start (14:00 Aug 22). Complete side-quests throughout the 24 hours to earn points.",
-              badge: "Creator Track",
+              desc: "10-15 creator challenges released right at hacking start (14:00 Aug 22) with a strict submission deadline at 11:00 AM on Aug 23.",
+              badge: "Deadline 11:00 AM",
               color: "#a855f7",
             },
             {
               title: "SalesForce Speaker Session",
-              desc: "Exclusive session on Aug 23 from 13:00 to 15:00 featuring SalesForce engineers and leaders. All 25 finalists receive e-certificates.",
+              desc: "Exclusive session on Aug 23 from 12:30 to 13:15 featuring SalesForce engineers and leaders. All 25 finalists receive e-certificates.",
               badge: "E-Certificates Provided",
               color: "#2dd4bf",
             },

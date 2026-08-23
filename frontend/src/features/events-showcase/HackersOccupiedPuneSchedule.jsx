@@ -11,7 +11,7 @@ function LiveCountdownTimer({ targetDateStr, endDateStr }) {
       try {
         const now = new Date().getTime();
         const startTarget = targetDateStr ? new Date(targetDateStr).getTime() : new Date("2026-08-22T11:00:00+05:30").getTime();
-        const endTarget = endDateStr ? new Date(endDateStr).getTime() : new Date("2026-08-23T16:00:00+05:30").getTime();
+        const endTarget = endDateStr ? new Date(endDateStr).getTime() : new Date("2026-08-23T13:45:00+05:30").getTime();
 
         if (isNaN(startTarget) || isNaN(endTarget)) {
           setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, status: 'upcoming' });
@@ -128,7 +128,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
   }, [dayFilter, categoryFilter, searchQuery]);
 
   const targetDate = EVENT_DETAILS?.startDate || "2026-08-22T11:00:00+05:30";
-  const endDate = EVENT_DETAILS?.endDate || "2026-08-23T16:00:00+05:30";
+  const endDate = EVENT_DETAILS?.endDate || "2026-08-23T13:45:00+05:30";
 
   return (
     <div className="w-full space-y-8 text-white">
@@ -142,7 +142,7 @@ export default function HackersOccupiedPuneSchedule({ showHeader = true }) {
       {/* Stats Summary Bar */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         {[
-          { label: 'Total Schedule Slots', val: '43 Items' },
+          { label: 'Total Schedule Slots', val: `${PUNE_SCHEDULE_DATA?.length || 44} Items` },
           { label: 'Hacking Duration', val: '24 Hours' },
           { label: 'Mentoring Rounds', val: '3 Rounds' },
           { label: 'Logitech Challenges', val: '3 Activities' },
