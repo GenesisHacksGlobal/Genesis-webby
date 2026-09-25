@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ErrorBoundary from "@shared/ui/ErrorBoundary";
 import ConsentBanner from "@shared/consent/ConsentBanner";
 import Loader from "@/components/ui/loader-15";
@@ -12,6 +12,7 @@ const ValuesPage = lazy(() => import("@pages/values/ValuesPage"));
 const ContactPage = lazy(() => import("@pages/contact/ContactPage"));
 const CareersPage = lazy(() => import("@pages/careers/CareersPage"));
 const PartnerPage = lazy(() => import("@pages/partner/PartnerPage"));
+const CollaboratePage = lazy(() => import("@pages/partner/CollaboratePage"));
 const PrivacyPage = lazy(() => import("@pages/privacy/PrivacyPage"));
 const TermsPage = lazy(() => import("@pages/terms/TermsPage"));
 const TeamPage = lazy(() => import("@pages/team/TeamPage"));
@@ -126,12 +127,16 @@ export default function AppRouter() {
             }
           />
           <Route
-            path="/event-membership"
+            path="/collaborate"
             element={
-              <PageBoundary title="Event Membership page failed to load.">
-                <PartnerPage />
+              <PageBoundary title="Collaborate page failed to load.">
+                <CollaboratePage />
               </PageBoundary>
             }
+          />
+          <Route
+            path="/event-membership"
+            element={<Navigate to="/collaborate" replace />}
           />
           <Route
             path="/privacy"

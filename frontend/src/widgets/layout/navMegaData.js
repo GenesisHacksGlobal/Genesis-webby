@@ -61,10 +61,16 @@ export const NAV_MENUS = [
             testid: LANDING.navContact,
           },
           {
-            title: "Partner / Collaborate",
-            desc: "Sponsor or co-host with us",
+            title: "Partner With Us",
+            desc: "Sponsorships and campus chapters",
             kind: "route",
             target: "/partner",
+          },
+          {
+            title: "Collaborate With Us",
+            desc: "Co-host, list your event, judge or mentor",
+            kind: "route",
+            target: "/collaborate",
           },
           {
             title: "Work at Genesis",
@@ -207,10 +213,16 @@ export const NAV_MENUS = [
             testid: LANDING.navContact,
           },
           {
-            title: "Partner / Collaborate",
-            desc: "Sponsorship & campus chapter inquiries",
+            title: "Partner With Us",
+            desc: "Sponsorships and campus chapters",
             kind: "route",
             target: "/partner",
+          },
+          {
+            title: "Collaborate With Us",
+            desc: "Co-host, list your event, judge or mentor",
+            kind: "route",
+            target: "/collaborate",
           },
         ],
       },
@@ -282,14 +294,14 @@ export const NAV_MENUS = [
         category: "Collaborate/",
         items: [
           {
-            title: "Member Event Application",
-            desc: "Join the Genesis Hackathon Season & unlock benefits",
+            title: "Collaborate With Us",
+            desc: "Co-host, list your event, judge or mentor",
             kind: "route",
-            target: "/event-membership",
+            target: "/collaborate",
           },
           {
             title: "Partner With Us",
-            desc: "Submit sponsorship or campus proposals",
+            desc: "Sponsorships and campus chapters",
             kind: "route",
             target: "/partner",
           },
